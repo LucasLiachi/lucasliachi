@@ -1,8 +1,0 @@
-
----
-## Formação acadêmica:
-
-
-
----
-## Projetos extras:

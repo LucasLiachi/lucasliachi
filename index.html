@@ -1,59 +1,534 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lucas Liachi - Biblioteca de conhecimento</title>
-
-    <!-- Controle de Cache -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-
-    <!-- Segurança e otimização de DNS -->
-    <meta http-equiv="x-dns-prefetch-control" content="on">
-    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
-    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
-
-    <!-- Preconnect para recursos externos -->
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="preconnect" href="https://cdn.jsdelivr.net">
-
-    <!-- Estilos -->
-    <link rel="stylesheet" href="styles.css?v=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+    <title>Portfolio profissional de Lucas Liachi</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Lucas Liachi - Portfólio</h1>
-        <input type="text" id="search" placeholder="Pesquisar...">
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo-area">
+                <div class="profile-image">
+                    <img src="assets/images/perfil.jpeg" alt="Lucas Liachi">
+                </div>
+                <h1>Portfolio Lucas Liachi</h1>
+            </div>
+            <div class="nav-section">
+                <div class="top-controls">
+                    <div class="search-box">
+                        <input type="search" id="search" data-i18n-placeholder="search" placeholder="Search...">
+                    </div>
+                    <div class="language-selector">
+                        <button class="lang-button active" data-lang="pt">PT</button>
+                        <button class="lang-button" data-lang="en">EN</button>
+                        <button class="lang-button" data-lang="es">ES</button>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <button class="menu-toggle" aria-label="Menu" aria-expanded="false">☰</button>
+                    <ul class="nav-links" role="menubar">
+                        <li role="none"><a href="javascript:void(0)" onclick="refreshHome()" data-key="home" role="menuitem">Home</a></li>
+                        <li role="none"><a href="#sobre" data-key="about" role="menuitem">About</a></li>
+                        <li role="none"><a href="#projetos" data-key="projects" role="menuitem">Projects</a></li>
+                        <li role="none"><a href="#contato" data-key="contact" role="menuitem">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
     </header>
 
-    <nav id="sidebar">
-        <ul id="menu">
-            <li><a href="content/about.md">Sobre</a></li>
-            <li><a href="content/about/carrer.md">- Carreira Profissional</a></li>
-            <li><a href="content/about/academic.md">- Formações e Cursos</a></li>
-            <li><a href="content/areas.md">Áreas de conhecimento</a></li>
-            <li><a href="content/repository/process/process.md">- Processos</a></li>
-            <li><a href="content/repository/governance-corp/governance-corp.md">- Governança Corporativa</a></li>
-            <li><a href="content/repository/governance-it/governance-it.md">- Goverança de TI</a></li>
-            <li><a href="content/repository/development/development.md">- Desenvolvimento</a></li>
-            <li><a href="content/repository/statistics/statistics.md">- Estatística</a></li>
-        </ul>
-    </nav>
+    <main>
+        <section id="sobre" class="container content-section">
+            <h2 data-i18n="about.title">Sobre</h2>
+            <p data-i18n="about.description">Profissional com experiência em gerenciamento de processos e governança organizacional.</p>
+            <div class="grid">
+                <article class="card">
+                    <h3 data-i18n="about.resume.title">Resumo</h3>
+                    <p data-i18n="about.resume.description">Uma breve descrição sobre minha trajetória e experiências profissionais</p>
+                    <div class="read-more">
+                        <a href="#" class="about-link" data-path="content/en/about/resume.md" data-i18n="about.readMore">Read More</a>
+                    </div>
+                </article>
+                <article class="card">
+                    <h3 data-i18n="about.career.title">Carreira Profissional</h3>
+                    <p data-i18n="about.career.description">Linha do tempo com experiências e conquistas profissionais</p>
+                    <div class="read-more">
+                        <a href="#" class="about-link" data-path="content/en/about/career.md" data-i18n="about.readMore">Read More</a>
+                    </div>
+                </article>
+                <article class="card">
+                    <h3 data-i18n="about.academic.title">Perfil Acadêmico</h3>
+                    <p data-i18n="about.academic.description">Formação acadêmica e especializações universitárias</p>
+                    <div class="read-more">
+                        <a href="#" class="about-link" data-path="content/en/about/academic.md" data-i18n="about.readMore">Read More</a>
+                    </div>
+                </article>
+            </div>
+        </section>
 
-    <main id="content"></main>
+        <section id="projetos" class="container content-section">
+            <h2 data-i18n="projects.title">Projetos</h2>
+            <div class="grid">
+                <article class="card">
+                    <h3 data-i18n="projects.governance.title">Governança</h3>
+                    <p data-i18n="projects.governance.description">Governança corporativa e governança de tecnologia</p>
+                    <div class="read-more">
+                        <a href="#" class="about-link" data-path="content/en/projects/governance.md" data-i18n="about.readMore">Read More</a>
+                    </div>
+                </article>
+                <article class="card">
+                    <h3 data-i18n="projects.agile.title">Projetos e Agilidade</h3>
+                    <p data-i18n="projects.agile.description">Práticas em gerenciamento de projetos e agilidade</p>
+                    <div class="read-more">
+                        <a href="#" class="about-link" data-path="content/en/projects/agile.md" data-i18n="about.readMore">Read More</a>
+                    </div>
+                </article>
+                <article class="card">
+                    <h3 data-i18n="projects.development.title">Desenvolvimento de Software</h3>
+                    <p data-i18n="projects.development.description">Desenvolvimento de sistemas e práticas de DevSecOps</p>
+                    <div class="read-more">
+                        <a href="#" class="about-link" data-path="content/en/projects/development.md" data-i18n="about.readMore">Read More</a>
+                    </div>
+                </article>
+                <article class="card">
+                    <h3 data-i18n="projects.processes.title">Processos Empresariais</h3>
+                    <p data-i18n="projects.processes.description">Gerenciamento de processos empresariais ponta a ponta</p>
+                    <div class="read-more">
+                        <a href="#" class="about-link" data-path="content/en/projects/processes.md" data-i18n="about.readMore">Read More</a>
+                    </div>
+                </article>
+                <article class="card">
+                    <h3 data-i18n="projects.production.title">Controle de Produção</h3>
+                    <p data-i18n="projects.production.description">Ferramentas e recursos para acompanhamento da produção</p>
+                    <div class="read-more">
+                        <a href="#" class="about-link" data-path="content/en/projects/production.md" data-i18n="about.readMore">Read More</a>
+                    </div>
+                </article>
+                <article class="card">
+                    <h3 data-i18n="projects.statistics.title">Estatística e Análise de Dados</h3>
+                    <p data-i18n="projects.statistics.description">Conhecimento explorado em análises estatísticas</p>
+                    <div class="read-more">
+                        <a href="#" class="about-link" data-path="content/en/projects/statistics.md" data-i18n="about.readMore">Read More</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="contato" class="container content-section">
+            <h2 data-i18n="contact.title">Contato</h2>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/lucasliachi/" target="_blank" rel="noopener noreferrer">
+                    <img src="assets/images/linkedin.png" alt="LinkedIn" class="social-icon">
+                </a>
+                <a href="https://github.com/LucasLiachi" target="_blank" rel="noopener noreferrer">
+                    <img src="assets/images/github.png" alt="GitHub" class="social-icon">
+                </a>
+                <a href="https://medium.com/@lucasliachi" target="_blank" rel="noopener noreferrer">
+                    <img src="assets/images/medium.png" alt="Medium" class="social-icon">
+                </a>
+            </div>
+        </section>
+    </main>
 
     <footer>
-        <p>&copy; 2024 Lucas Liachi - Todos os direitos reservados.</p>
+        <div class="container">
+            <p>&copy; 2024 Lucas Liachi</p>
+        </div>
     </footer>
 
-    <!-- Scripts seguros e otimizados -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-    <script src="scripts.js?v=1.0"></script>
+    <script>
+        // Adicionar variável global no topo do script
+        let currentLang = 'pt';
+
+        const translations = {
+            en: {
+                tagline: 'Professional Webpage',
+                search: 'Search...',
+                about: {
+                    title: 'About',
+                    description: 'Professional specialized in process management and governance, with experience in implementing agile methodologies and governance frameworks. Currently leading continuous improvement and digital transformation initiatives.',
+                    readMore: 'Read More',
+                    resume: {
+                        title: 'Resume',
+                        description: 'A brief description about my journey and professional experiences'
+                    },
+                    career: {
+                        title: 'Professional Career',
+                        description: 'Timeline with professional experiences and achievements'
+                    },
+                    academic: {
+                        title: 'Academic Profile',
+                        description: 'Academic background and university specializations'
+                    }
+                },
+                back: 'Back',
+                projects: {
+                    title: 'Projects',
+                    governance: {
+                        title: 'Governance',
+                        description: 'Corporate governance and technology governance'
+                    },
+                    agile: {
+                        title: 'Projects and Agility',
+                        description: 'Project management practices and agility'
+                    },
+                    development: {
+                        title: 'Software Development',
+                        description: 'Systems development and DevSecOps practices'
+                    },
+                    processes: {
+                        title: 'Business Processes',
+                        description: 'End-to-end business process management'
+                    },
+                    production: {
+                        title: 'Production Control',
+                        description: 'Tools and resources for production monitoring'
+                    },
+                    statistics: {
+                        title: 'Statistics and Data Analysis',
+                        description: 'Knowledge explored in statistical analysis'
+                    }
+                },
+                contact: {
+                    title: 'Contact'
+                },
+                menu: {
+                    home: 'Home',
+                    about: 'About',
+                    projects: 'Projects',
+                    contact: 'Contact'
+                }
+            },
+            es: {
+                tagline: 'Página Web Profesional',
+                search: 'Buscar...',
+                about: {
+                    title: 'Acerca de',
+                    description: 'Profesional especializado en gestión de procesos y gobernanza, con experiencia en implementación de metodologías ágiles y marcos de gobernanza. Actualmente, lidero iniciativas de mejora continua y transformación digital.',
+                    readMore: 'Leer Más',
+                    resume: {
+                        title: 'Resumen',
+                        description: 'Una breve descripción sobre mi trayectoria y experiencias profesionales'
+                    },
+                    career: {
+                        title: 'Carrera Profesional',
+                        description: 'Línea de tiempo con experiencias y logros profesionales'
+                    },
+                    academic: {
+                        title: 'Perfil Académico',
+                        description: 'Formación académica y especializaciones universitarias'
+                    }
+                },
+                back: 'Volver',
+                projects: {
+                    title: 'Proyectos',
+                    governance: {
+                        title: 'Gobernanza',
+                        description: 'Gobernanza corporativa y gobernanza tecnológica'
+                    },
+                    agile: {
+                        title: 'Proyectos y Agilidad',
+                        description: 'Prácticas en gestión de proyectos y agilidad'
+                    },
+                    development: {
+                        title: 'Desarrollo de Software',
+                        description: 'Desarrollo de sistemas y prácticas de DevSecOps'
+                    },
+                    processes: {
+                        title: 'Procesos Empresariales',
+                        description: 'Gestión de procesos empresariales de extremo a extremo'
+                    },
+                    production: {
+                        title: 'Control de Producción',
+                        description: 'Herramientas y recursos para el seguimiento de la producción'
+                    },
+                    statistics: {
+                        title: 'Estadística y Análisis de Datos',
+                        description: 'Conocimiento explorado en análisis estadísticos'
+                    }
+                },
+                contact: {
+                    title: 'Contacto'
+                },
+                menu: {
+                    home: 'Inicio',
+                    about: 'Acerca de',
+                    projects: 'Proyectos',
+                    contact: 'Contacto'
+                }
+            },
+            pt: {
+                tagline: 'Página Profissional',
+                search: 'Pesquisar...',
+                about: {
+                    title: 'Sobre',
+                    description: 'Profissional especializado em gestão de processos e governança, com experiência em implementação de metodologias ágeis e frameworks de governança. Atualmente, lidero iniciativas de melhoria contínua e transformação digital.',
+                    readMore: 'Leia Mais',
+                    resume: {
+                        title: 'Resumo',
+                        description: 'Uma breve descrição sobre minha trajetória e experiências profissionais'
+                    },
+                    career: {
+                        title: 'Carreira Profissional',
+                        description: 'Linha do tempo com experiências e conquistas profissionais'
+                    },
+                    academic: {
+                        title: 'Perfil Acadêmico',
+                        description: 'Formação acadêmica e especializações universitárias'
+                    }
+                },
+                back: 'Voltar',
+                projects: {
+                    title: 'Projetos',
+                    governance: {
+                        title: 'Governança',
+                        description: 'Governança corporativa e governança de tecnologia'
+                    },
+                    agile: {
+                        title: 'Projetos e Agilidade',
+                        description: 'Práticas em gerenciamento de projetos e agilidade'
+                    },
+                    development: {
+                        title: 'Desenvolvimento de Software',
+                        description: 'Desenvolvimento de sistemas e práticas de DevSecOps'
+                    },
+                    processes: {
+                        title: 'Processos Empresariais',
+                        description: 'Gerenciamento de processos empresariais ponta a ponta'
+                    },
+                    production: {
+                        title: 'Controle de Produção',
+                        description: 'Ferramentas e recursos para acompanhamento da produção'
+                    },
+                    statistics: {
+                        title: 'Estatística e Análise de Dados',
+                        description: 'Conhecimento explorado em análises estatísticas'
+                    }
+                },
+                contact: {
+                    title: 'Contato'
+                },
+                menu: {
+                    home: 'Início',
+                    about: 'Sobre',
+                    projects: 'Projetos',
+                    contact: 'Contato'
+                }
+            }
+        };
+
+        function reattachAboutListener() {
+            const aboutLink = document.querySelector('.about-link');
+            if (aboutLink) {
+                aboutLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const path = this.getAttribute('data-path');
+                    fetch(path)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Content not found');
+                            }
+                            return response.text();
+                        })
+                        .then(text => {
+                            const html = marked.parse(text);
+                            const container = document.querySelector('#sobre');
+                            container.innerHTML = html;
+                            
+                            // Criar botão back
+                            const backButton = document.createElement('button');
+                            backButton.className = 'back-button';
+                            backButton.textContent = translations[currentLang].back;
+                            backButton.addEventListener('click', () => {
+                                refreshHome(); // Changed from resetAboutSection to refreshHome
+                            });
+                            container.appendChild(backButton);
+                        })
+                        .catch(error => {
+                            console.error('Error loading about content:', error);
+                            document.querySelector('#sobre').innerHTML += '<p>Error loading content.</p>';
+                        });
+                });
+            }
+        }
+
+        // Adicionar nova função para resetar a seção about
+        function resetAboutSection(lang) {
+            const aboutSection = document.querySelector('#sobre');
+            if (aboutSection) {
+                aboutSection.innerHTML = `
+                    <h2 data-i18n="about.title">${translations[lang].about.title}</h2>
+                    <p data-i18n="about.description">${translations[lang].about.description}</p>
+                    <div class="grid">
+                        <article class="card">
+                            <h3 data-i18n="about.resume.title">${translations[lang].about.resume.title}</h3>
+                            <p data-i18n="about.resume.description">${translations[lang].about.resume.description}</p>
+                            <div class="read-more">
+                                <a href="#" class="about-link" data-path="content/${lang}/about/resume.md" data-i18n="about.readMore">${translations[lang].about.readMore}</a>
+                            </div>
+                        </article>
+                        <article class="card">
+                            <h3 data-i18n="about.career.title">${translations[lang].about.career.title}</h3>
+                            <p data-i18n="about.career.description">${translations[lang].about.career.description}</p>
+                            <div class="read-more">
+                                <a href="#" class="about-link" data-path="content/${lang}/about/career.md" data-i18n="about.readMore">${translations[lang].about.readMore}</a>
+                            </div>
+                        </article>
+                        <article class="card">
+                            <h3 data-i18n="about.academic.title">${translations[lang].about.academic.title}</h3>
+                            <p data-i18n="about.academic.description">${translations[lang].about.academic.description}</p>
+                            <div class="read-more">
+                                <a href="#" class="about-link" data-path="content/${lang}/about/academic.md" data-i18n="about.readMore">${translations[lang].about.readMore}</a>
+                            </div>
+                        </article>
+                    </div>
+                `;
+                reattachAboutListener();
+            }
+        }
+
+        function switchLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+
+            // Update translations for all elements with data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = key.split('.').reduce((obj, i) => obj[i], translations[lang]);
+                if (translation) element.textContent = translation;
+            });
+            
+            // Update translations for menu items
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                const key = link.getAttribute('data-key');
+                if (translations[lang].menu && translations[lang].menu[key]) {
+                    link.textContent = translations[lang].menu[key];
+                }
+            });
+            
+            // Update placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                const translation = translations[lang][key];
+                if (translation) element.placeholder = translation;
+            });
+
+            // Update buttons active state
+            document.querySelectorAll('.lang-button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+
+            // Reset about section
+            resetAboutSection(lang);
+
+            // Reset URL
+            history.pushState(null, '', window.location.pathname);
+        }
+
+        // Modificar a função refreshHome para carregar o conteúdo inicial corretamente
+        function refreshHome() {
+            // Reseta todas as seções para o estado inicial
+            document.querySelectorAll('section').forEach(section => {
+                section.style.display = 'block';
+            });
+            
+            // Volta para o topo da página
+            window.scrollTo(0, 0);
+            
+            // Reseta o URL
+            history.pushState(null, '', window.location.pathname);
+            
+            // Recarrega as seções com o idioma atual
+            resetAboutSection(currentLang);
+            
+            // Atualiza o menu ativo
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.toggle('active', link.getAttribute('data-key') === 'home');
+            });
+        }
+
+        function loadMarkdownContent(path) {
+            fetch(path)
+                .then(response => response.text())
+                .then(text => {
+                    const html = marked.parse(text);
+                    const contentDiv = document.querySelector('#sobre');
+                    
+                    // Hide other sections
+                    document.querySelector('#projetos').style.display = 'none';
+                    document.querySelector('#contato').style.display = 'none';
+                    
+                    // Clear existing content
+                    contentDiv.innerHTML = html;
+                    
+                    // Add back button
+                    const backButton = document.createElement('button');
+                    backButton.className = 'back-button';
+                    backButton.textContent = translations[currentLang].back;
+                    backButton.onclick = () => {
+                        refreshHome(); // Use refreshHome instead of restoreMainPage
+                        return false;
+                    };
+                    contentDiv.appendChild(backButton);
+                })
+                .catch(error => {
+                    console.error('Error loading content:', error);
+                    document.querySelector('#sobre').innerHTML = '<p>Erro ao carregar conteúdo.</p>';
+                });
+        }
+
+        function resetAboutSection(lang) {
+            const aboutSection = document.querySelector('#sobre');
+            if (aboutSection) {
+                aboutSection.innerHTML = `
+                    <h2 data-i18n="about.title">${translations[lang].about.title}</h2>
+                    <p data-i18n="about.description">${translations[lang].about.description}</p>
+                    <div class="grid">
+                        <article class="card">
+                            <h3 data-i18n="about.resume.title">${translations[lang].about.resume.title}</h3>
+                            <p data-i18n="about.resume.description">${translations[lang].about.resume.description}</p>
+                            <div class="read-more">
+                                <a href="#" class="about-link" data-path="content/${lang}/about.md" data-i18n="about.readMore" 
+                                   onclick="loadMarkdownContent('content/${lang}/about.md'); return false;">
+                                    ${translations[lang].about.readMore}
+                                </a>
+                            </div>
+                        </article>
+                        <article class="card">
+                            <h3 data-i18n="about.career.title">${translations[lang].about.career.title}</h3>
+                            <p data-i18n="about.career.description">${translations[lang].about.career.description}</p>
+                            <div class="read-more">
+                                <a href="#" class="about-link" data-path="content/${lang}/about/career.md" data-i18n="about.readMore">${translations[lang].about.readMore}</a>
+                            </div>
+                        </article>
+                        <article class="card">
+                            <h3 data-i18n="about.academic.title">${translations[lang].about.academic.title}</h3>
+                            <p data-i18n="about.academic.description">${translations[lang].about.academic.description}</p>
+                            <div class="read-more">
+                                <a href="#" class="about-link" data-path="content/${lang}/about/academic.md" data-i18n="about.readMore">${translations[lang].about.readMore}</a>
+                            </div>
+                        </article>
+                    </div>
+                `;
+                reattachAboutListener();
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.lang-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const lang = e.target.dataset.lang;
+                    switchLanguage(lang);
+                });
+            });
+
+            reattachAboutListener();
+            switchLanguage('pt'); // Alterado de 'en' para 'pt'
+        });
+    </script>
 </body>
 </html>

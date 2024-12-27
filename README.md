@@ -29,3 +29,6 @@ Compartilho artigos alinhados com os temas em:
 ![](https://github-readme-stats.vercel.app/api?username=lucasliachi&theme=blue-green)
 
 ![](https://github-readme-stats.vercel.app/api/top-langs/?username=lucasliachi&theme=blue-green)
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
