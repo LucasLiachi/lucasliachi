@@ -82,10 +82,10 @@
           <!-- Home/Início -->
           <li role="none"><a href="#hero" id="nav-home" data-i18n="navbar.home" role="menuitem">Home</a></li>
           
-          <!-- Projects -->
+          <!-- Projects - Primeiro na navegação -->
           <li role="none"><a href="#projects" id="nav-projects" data-i18n="navbar.projects" role="menuitem">Projects</a></li>
           
-          <!-- About -->
+          <!-- About - Segundo na navegação -->
           <li role="none"><a href="#about" id="nav-about" data-i18n="navbar.about" role="menuitem">About</a></li>
         </ul>
       </nav>
@@ -121,7 +121,64 @@
       </div>
     </section>
     
-    <!-- Resume section -->
+    <!-- Projects section - Movida para primeira posição -->
+    <section id="projects" class="section">
+      <div class="container">
+        <h2 class="section-title" id="projects-title" data-i18n="projects.title">Projects</h2>
+        
+        <!-- Projects Search Bar -->
+        <div class="projects-search">
+          <div class="search-container">
+            <input 
+              type="search" 
+              id="projects-search" 
+              placeholder="Search projects..." 
+              aria-label="Search projects by title, description or technology"
+              autocomplete="off"
+            >
+            <button id="clear-search" class="clear-search" aria-label="Clear search" style="display: none;">
+              ✕
+            </button>
+          </div>
+          
+          <!-- Category Filter Dropdown -->
+          <div class="filter-container">
+            <select id="category-filter" aria-label="Filter projects by category" data-i18n-placeholder="projects.filter.placeholder">
+              <option value="all" data-i18n="projects.filter.all">All Categories</option>
+              <option value="process" data-i18n="projects.filter.process">Process</option>
+              <option value="governance" data-i18n="projects.filter.governance">Governance</option>
+              <option value="technology" data-i18n="projects.filter.technology">Technology</option>
+              <option value="statistics" data-i18n="projects.filter.statistics">Statistics</option>
+            </select>
+          </div>
+          
+          <div id="search-results-count" class="search-results-count" style="display: none;"></div>
+        </div>
+        
+        <!-- Project categories -->
+        <div class="project-categories">
+          <div id="projects-process" class="project-category active">
+            <div class="projects-grid" id="process-projects-container">
+              <!-- Process projects will be populated by JavaScript -->
+            </div>
+          </div>
+          
+          <div id="projects-technology" class="project-category">
+            <div class="projects-grid" id="technology-projects-container">
+              <!-- Technology projects will be populated by JavaScript -->
+            </div>
+          </div>
+          
+          <div id="projects-statistics" class="project-category">
+            <div class="projects-grid" id="statistics-projects-container">
+              <!-- Statistics projects will be populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resume section - Movida para segunda posição -->
     <section id="about" class="section">
       <div class="container">
         <h2 class="section-title" id="about-title" data-i18n="about.title">Resume</h2>
@@ -177,62 +234,6 @@
         </div>
       </div>
     </section>
-
-    <!-- Projects section -->
-    <section id="projects" class="section">
-      <div class="container">
-        <h2 class="section-title" id="projects-title" data-i18n="projects.title">Projects</h2>
-        
-        <!-- Projects Search Bar -->
-        <div class="projects-search">
-          <div class="search-container">
-            <input 
-              type="search" 
-              id="projects-search" 
-              placeholder="Search projects..." 
-              aria-label="Search projects by title, description or technology"
-              autocomplete="off"
-            >
-            <button id="clear-search" class="clear-search" aria-label="Clear search" style="display: none;">
-              ✕
-            </button>
-          </div>
-          
-          <!-- Category Filter Dropdown -->
-          <div class="filter-container">
-            <select id="category-filter" aria-label="Filter projects by category" data-i18n-placeholder="projects.filter.placeholder">
-              <option value="all" data-i18n="projects.filter.all">All Categories</option>
-              <option value="process" data-i18n="projects.filter.process">Process</option>
-              <option value="governance" data-i18n="projects.filter.governance">Governance</option>
-              <option value="technology" data-i18n="projects.filter.technology">Technology</option>
-              <option value="statistics" data-i18n="projects.filter.statistics">Statistics</option>
-            </select>
-          </div>
-          
-          <div id="search-results-count" class="search-results-count" style="display: none;"></div>
-        </div>
-        
-        <!-- Project categories -->
-        <div class="project-categories">
-          <div id="projects-process" class="project-category active">
-            <div class="projects-grid" id="process-projects-container">
-              <!-- Process projects will be populated by JavaScript -->
-            </div>
-          </div>
-          
-          <div id="projects-technology" class="project-category">
-            <div class="projects-grid" id="technology-projects-container">
-              <!-- Technology projects will be populated by JavaScript -->
-            </div>
-          </div>
-          
-          <div id="projects-statistics" class="project-category">
-            <div class="projects-grid" id="statistics-projects-container">
-              <!-- Statistics projects will be populated by JavaScript -->
-            </div>
-          </div>
-        </div>
-      </div>
   </main>
 
   <footer>
@@ -252,5 +253,4 @@
   <script src="src/scripts/main.js"></script>
 </body>
 </html>
-</body>
 </html>
