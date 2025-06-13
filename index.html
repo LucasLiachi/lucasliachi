@@ -1,534 +1,256 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio profissional de Lucas Liachi</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lucas Liachi - Technology Governance Specialist</title>
+  <meta name="description" content="Professional portfolio of Lucas Liachi, a Technology Governance specialist with expertise in strategic alignment of IT initiatives with organizational goals.">
+  
+  <!-- SEO Meta Tags -->
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Lucas Liachi">
+  <meta name="keywords" content="technology governance, IT management, business process, process optimization, project management, statistics, portfolio">
+  <meta property="og:title" content="Lucas Liachi - Technology Governance Specialist">
+  <meta property="og:description" content="Professional portfolio showcasing expertise in technology governance, IT management, and business process optimization.">
+  <meta property="og:image" content="src/images/perfil.jpeg">
+  <meta property="og:url" content="https://lucasliachi.github.io/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  
+  <!-- Preload Critical Assets -->
+  <link rel="preload" href="src/styles/main.css" as="style">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style">
+  <link rel="preload" href="src/images/perfil.jpeg" as="image" fetchpriority="high">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="src/styles/main.css">
+  <link rel="stylesheet" href="src/styles/experience.css">
+  <link rel="stylesheet" href="src/styles/projects.css">
+  <link rel="stylesheet" href="src/styles/projects-filter.css">
+  <link rel="icon" type="image/x-icon" href="src/images/favicon.ico">
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Lucas Liachi",
+    "url": "https://lucasliachi.github.io/",
+    "image": "src/images/perfil.jpeg",
+    "jobTitle": "Technology Governance Specialist",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Technology Industry"
+    },
+    "sameAs": [
+      "https://www.linkedin.com/in/lucasliachi/",
+      "https://github.com/LucasLiachi",
+      "https://medium.com/@lucasliachi"
+    ]
+  }
+  </script>
+  
+  <!-- Markdown Parser with defer -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
 </head>
 <body>
-    <header class="main-header">
-        <div class="container header-container">
-            <div class="logo-area">
-                <div class="profile-image">
-                    <img src="assets/images/perfil.jpeg" alt="Lucas Liachi">
-                </div>
-                <h1>Portfolio Lucas Liachi</h1>
-            </div>
-            <div class="nav-section">
-                <div class="top-controls">
-                    <div class="search-box">
-                        <input type="search" id="search" data-i18n-placeholder="search" placeholder="Search...">
-                    </div>
-                    <div class="language-selector">
-                        <button class="lang-button active" data-lang="pt">PT</button>
-                        <button class="lang-button" data-lang="en">EN</button>
-                        <button class="lang-button" data-lang="es">ES</button>
-                    </div>
-                </div>
-                <nav class="main-nav">
-                    <button class="menu-toggle" aria-label="Menu" aria-expanded="false">☰</button>
-                    <ul class="nav-links" role="menubar">
-                        <li role="none"><a href="javascript:void(0)" onclick="refreshHome()" data-key="home" role="menuitem">Home</a></li>
-                        <li role="none"><a href="#sobre" data-key="about" role="menuitem">About</a></li>
-                        <li role="none"><a href="#projetos" data-key="projects" role="menuitem">Projects</a></li>
-                        <li role="none"><a href="#contato" data-key="contact" role="menuitem">Contact</a></li>
-                    </ul>
-                </nav>
-            </div>
+  <!-- Skip to content link for accessibility -->
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
+  
+  <header>
+    <div class="container header-container">
+      <div class="logo-section">
+        <div class="logo">
+          <a href="index.html">Lucas Liachi</a>
         </div>
-    </header>
-
-    <main>
-        <section id="sobre" class="container content-section">
-            <h2 data-i18n="about.title">Sobre</h2>
-            <p data-i18n="about.description">Profissional com experiência em gerenciamento de processos e governança organizacional.</p>
-            <div class="grid">
-                <article class="card">
-                    <h3 data-i18n="about.resume.title">Resumo</h3>
-                    <p data-i18n="about.resume.description">Uma breve descrição sobre minha trajetória e experiências profissionais</p>
-                    <div class="read-more">
-                        <a href="#" class="about-link" data-path="content/en/about/resume.md" data-i18n="about.readMore">Read More</a>
-                    </div>
-                </article>
-                <article class="card">
-                    <h3 data-i18n="about.career.title">Carreira Profissional</h3>
-                    <p data-i18n="about.career.description">Linha do tempo com experiências e conquistas profissionais</p>
-                    <div class="read-more">
-                        <a href="#" class="about-link" data-path="content/en/about/career.md" data-i18n="about.readMore">Read More</a>
-                    </div>
-                </article>
-                <article class="card">
-                    <h3 data-i18n="about.academic.title">Perfil Acadêmico</h3>
-                    <p data-i18n="about.academic.description">Formação acadêmica e especializações universitárias</p>
-                    <div class="read-more">
-                        <a href="#" class="about-link" data-path="content/en/about/academic.md" data-i18n="about.readMore">Read More</a>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <section id="projetos" class="container content-section">
-            <h2 data-i18n="projects.title">Projetos</h2>
-            <div class="grid">
-                <article class="card">
-                    <h3 data-i18n="projects.governance.title">Governança</h3>
-                    <p data-i18n="projects.governance.description">Governança corporativa e governança de tecnologia</p>
-                    <div class="read-more">
-                        <a href="#" class="about-link" data-path="content/en/projects/governance.md" data-i18n="about.readMore">Read More</a>
-                    </div>
-                </article>
-                <article class="card">
-                    <h3 data-i18n="projects.agile.title">Projetos e Agilidade</h3>
-                    <p data-i18n="projects.agile.description">Práticas em gerenciamento de projetos e agilidade</p>
-                    <div class="read-more">
-                        <a href="#" class="about-link" data-path="content/en/projects/agile.md" data-i18n="about.readMore">Read More</a>
-                    </div>
-                </article>
-                <article class="card">
-                    <h3 data-i18n="projects.development.title">Desenvolvimento de Software</h3>
-                    <p data-i18n="projects.development.description">Desenvolvimento de sistemas e práticas de DevSecOps</p>
-                    <div class="read-more">
-                        <a href="#" class="about-link" data-path="content/en/projects/development.md" data-i18n="about.readMore">Read More</a>
-                    </div>
-                </article>
-                <article class="card">
-                    <h3 data-i18n="projects.processes.title">Processos Empresariais</h3>
-                    <p data-i18n="projects.processes.description">Gerenciamento de processos empresariais ponta a ponta</p>
-                    <div class="read-more">
-                        <a href="#" class="about-link" data-path="content/en/projects/processes.md" data-i18n="about.readMore">Read More</a>
-                    </div>
-                </article>
-                <article class="card">
-                    <h3 data-i18n="projects.production.title">Controle de Produção</h3>
-                    <p data-i18n="projects.production.description">Ferramentas e recursos para acompanhamento da produção</p>
-                    <div class="read-more">
-                        <a href="#" class="about-link" data-path="content/en/projects/production.md" data-i18n="about.readMore">Read More</a>
-                    </div>
-                </article>
-                <article class="card">
-                    <h3 data-i18n="projects.statistics.title">Estatística e Análise de Dados</h3>
-                    <p data-i18n="projects.statistics.description">Conhecimento explorado em análises estatísticas</p>
-                    <div class="read-more">
-                        <a href="#" class="about-link" data-path="content/en/projects/statistics.md" data-i18n="about.readMore">Read More</a>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <section id="contato" class="container content-section">
-            <h2 data-i18n="contact.title">Contato</h2>
-            <div class="social-links">
-                <a href="https://www.linkedin.com/in/lucasliachi/" target="_blank" rel="noopener noreferrer">
-                    <img src="assets/images/linkedin.png" alt="LinkedIn" class="social-icon">
-                </a>
-                <a href="https://github.com/LucasLiachi" target="_blank" rel="noopener noreferrer">
-                    <img src="assets/images/github.png" alt="GitHub" class="social-icon">
-                </a>
-                <a href="https://medium.com/@lucasliachi" target="_blank" rel="noopener noreferrer">
-                    <img src="assets/images/medium.png" alt="Medium" class="social-icon">
-                </a>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 Lucas Liachi</p>
+        <div class="header-social-links">
+          <a href="https://www.linkedin.com/in/lucasliachi/" target="_blank" rel="noopener noreferrer" aria-label="Visit Lucas Liachi's LinkedIn profile">
+            <img src="src/images/linkedin.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
+          </a>
+          <a href="https://medium.com/@lucasliachi" target="_blank" rel="noopener noreferrer" aria-label="Visit Lucas Liachi's Medium blog">
+            <img src="src/images/medium.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
+          </a>
+          <a href="https://github.com/LucasLiachi" target="_blank" rel="noopener noreferrer" aria-label="Visit Lucas Liachi's GitHub profile">
+            <img src="src/images/github.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
+          </a>
         </div>
-    </footer>
+      </div>
+      <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <span class="menu-icon">☰</span>
+        <span class="close-icon">✕</span>
+      </button>
+      <nav id="main-nav">
+        <ul id="nav-links" role="menubar">
+          <!-- Home/Início -->
+          <li role="none"><a href="#hero" id="nav-home" data-i18n="navbar.home" role="menuitem">Home</a></li>
+          
+          <!-- Projects -->
+          <li role="none"><a href="#projects" id="nav-projects" data-i18n="navbar.projects" role="menuitem">Projects</a></li>
+          
+          <!-- About -->
+          <li role="none"><a href="#about" id="nav-about" data-i18n="navbar.about" role="menuitem">About</a></li>
+        </ul>
+      </nav>
+      <div class="right-section">
+        <div class="language-selector">
+          <button class="language-option" data-language="en">EN</button>
+          <button class="language-option" data-language="pt">PT</button>
+          <button class="language-option" data-language="es">ES</button>
+        </div>
+        <button id="dark-mode-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+          <span class="sun-icon">☀️</span>
+          <span class="moon-icon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </header>
 
-    <script>
-        // Adicionar variável global no topo do script
-        let currentLang = 'pt';
+  <main id="main-content">
+    <!-- Hero section -->
+    <section id="hero" class="hero-section">
+      <div class="container">
+        <div class="hero-content">
+          <h1 id="hero-title" data-i18n="hero.title">Technology Governance Specialist</h1>
+          <p id="hero-subtitle" data-i18n="hero.subtitle">Strategic alignment of IT initiatives with organizational goals</p>
+          <div class="hero-buttons">
+            <a href="#" class="about-link btn btn-primary" id="hero-about-btn" data-path="about/EN.md" data-i18n="hero.about">About me</a>
+            <a href="#projects" class="btn btn-outline" id="hero-projects-btn" data-i18n="hero.projects">View projects</a>
+          </div>
+        </div>
+        <div class="hero-image">
+          <img src="src/images/perfil.jpeg" alt="Lucas Liachi - Technology Governance Specialist" id="hero-image" width="300" height="300" fetchpriority="high">
+        </div>
+      </div>
+    </section>
+    
+    <!-- Resume section -->
+    <section id="about" class="section">
+      <div class="container">
+        <h2 class="section-title" id="about-title" data-i18n="about.title">Resume</h2>
+        
+        <div class="tabbed-resume-box">
+          <!-- Resume Navigation -->
+          <div class="about-nav">
+            <ul class="category-tabs">
+              <li><a href="#about-career" class="category-tab active" data-category="career" id="tab-career" data-i18n="about.career.title">Professional Career</a></li>
+              <li><a href="#about-academic" class="category-tab" data-category="academic" id="tab-academic" data-i18n="about.academic.title">Academic Profile</a></li>
+              <li><a href="#about-certificate" class="category-tab" data-category="certificate" id="tab-certificate" data-i18n="about.certificate.title">Certificate</a></li>
+            </ul>
+          </div>
 
-        const translations = {
-            en: {
-                tagline: 'Professional Webpage',
-                search: 'Search...',
-                about: {
-                    title: 'About',
-                    description: 'Professional specialized in process management and governance, with experience in implementing agile methodologies and governance frameworks. Currently leading continuous improvement and digital transformation initiatives.',
-                    readMore: 'Read More',
-                    resume: {
-                        title: 'Resume',
-                        description: 'A brief description about my journey and professional experiences'
-                    },
-                    career: {
-                        title: 'Professional Career',
-                        description: 'Timeline with professional experiences and achievements'
-                    },
-                    academic: {
-                        title: 'Academic Profile',
-                        description: 'Academic background and university specializations'
-                    }
-                },
-                back: 'Back',
-                projects: {
-                    title: 'Projects',
-                    governance: {
-                        title: 'Governance',
-                        description: 'Corporate governance and technology governance'
-                    },
-                    agile: {
-                        title: 'Projects and Agility',
-                        description: 'Project management practices and agility'
-                    },
-                    development: {
-                        title: 'Software Development',
-                        description: 'Systems development and DevSecOps practices'
-                    },
-                    processes: {
-                        title: 'Business Processes',
-                        description: 'End-to-end business process management'
-                    },
-                    production: {
-                        title: 'Production Control',
-                        description: 'Tools and resources for production monitoring'
-                    },
-                    statistics: {
-                        title: 'Statistics and Data Analysis',
-                        description: 'Knowledge explored in statistical analysis'
-                    }
-                },
-                contact: {
-                    title: 'Contact'
-                },
-                menu: {
-                    home: 'Home',
-                    about: 'About',
-                    projects: 'Projects',
-                    contact: 'Contact'
-                }
-            },
-            es: {
-                tagline: 'Página Web Profesional',
-                search: 'Buscar...',
-                about: {
-                    title: 'Acerca de',
-                    description: 'Profesional especializado en gestión de procesos y gobernanza, con experiencia en implementación de metodologías ágiles y marcos de gobernanza. Actualmente, lidero iniciativas de mejora continua y transformación digital.',
-                    readMore: 'Leer Más',
-                    resume: {
-                        title: 'Resumen',
-                        description: 'Una breve descripción sobre mi trayectoria y experiencias profesionales'
-                    },
-                    career: {
-                        title: 'Carrera Profesional',
-                        description: 'Línea de tiempo con experiencias y logros profesionales'
-                    },
-                    academic: {
-                        title: 'Perfil Académico',
-                        description: 'Formación académica y especializaciones universitarias'
-                    }
-                },
-                back: 'Volver',
-                projects: {
-                    title: 'Proyectos',
-                    governance: {
-                        title: 'Gobernanza',
-                        description: 'Gobernanza corporativa y gobernanza tecnológica'
-                    },
-                    agile: {
-                        title: 'Proyectos y Agilidad',
-                        description: 'Prácticas en gestión de proyectos y agilidad'
-                    },
-                    development: {
-                        title: 'Desarrollo de Software',
-                        description: 'Desarrollo de sistemas y prácticas de DevSecOps'
-                    },
-                    processes: {
-                        title: 'Procesos Empresariales',
-                        description: 'Gestión de procesos empresariales de extremo a extremo'
-                    },
-                    production: {
-                        title: 'Control de Producción',
-                        description: 'Herramientas y recursos para el seguimiento de la producción'
-                    },
-                    statistics: {
-                        title: 'Estadística y Análisis de Datos',
-                        description: 'Conocimiento explorado en análisis estadísticos'
-                    }
-                },
-                contact: {
-                    title: 'Contacto'
-                },
-                menu: {
-                    home: 'Inicio',
-                    about: 'Acerca de',
-                    projects: 'Proyectos',
-                    contact: 'Contacto'
-                }
-            },
-            pt: {
-                tagline: 'Página Profissional',
-                search: 'Pesquisar...',
-                about: {
-                    title: 'Sobre',
-                    description: 'Profissional especializado em gestão de processos e governança, com experiência em implementação de metodologias ágeis e frameworks de governança. Atualmente, lidero iniciativas de melhoria contínua e transformação digital.',
-                    readMore: 'Leia Mais',
-                    resume: {
-                        title: 'Resumo',
-                        description: 'Uma breve descrição sobre minha trajetória e experiências profissionais'
-                    },
-                    career: {
-                        title: 'Carreira Profissional',
-                        description: 'Linha do tempo com experiências e conquistas profissionais'
-                    },
-                    academic: {
-                        title: 'Perfil Acadêmico',
-                        description: 'Formação acadêmica e especializações universitárias'
-                    }
-                },
-                back: 'Voltar',
-                projects: {
-                    title: 'Projetos',
-                    governance: {
-                        title: 'Governança',
-                        description: 'Governança corporativa e governança de tecnologia'
-                    },
-                    agile: {
-                        title: 'Projetos e Agilidade',
-                        description: 'Práticas em gerenciamento de projetos e agilidade'
-                    },
-                    development: {
-                        title: 'Desenvolvimento de Software',
-                        description: 'Desenvolvimento de sistemas e práticas de DevSecOps'
-                    },
-                    processes: {
-                        title: 'Processos Empresariais',
-                        description: 'Gerenciamento de processos empresariais ponta a ponta'
-                    },
-                    production: {
-                        title: 'Controle de Produção',
-                        description: 'Ferramentas e recursos para acompanhamento da produção'
-                    },
-                    statistics: {
-                        title: 'Estatística e Análise de Dados',
-                        description: 'Conhecimento explorado em análises estatísticas'
-                    }
-                },
-                contact: {
-                    title: 'Contato'
-                },
-                menu: {
-                    home: 'Início',
-                    about: 'Sobre',
-                    projects: 'Projetos',
-                    contact: 'Contato'
-                }
-            }
-        };
-
-        function reattachAboutListener() {
-            const aboutLink = document.querySelector('.about-link');
-            if (aboutLink) {
-                aboutLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const path = this.getAttribute('data-path');
-                    fetch(path)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Content not found');
-                            }
-                            return response.text();
-                        })
-                        .then(text => {
-                            const html = marked.parse(text);
-                            const container = document.querySelector('#sobre');
-                            container.innerHTML = html;
-                            
-                            // Criar botão back
-                            const backButton = document.createElement('button');
-                            backButton.className = 'back-button';
-                            backButton.textContent = translations[currentLang].back;
-                            backButton.addEventListener('click', () => {
-                                refreshHome(); // Changed from resetAboutSection to refreshHome
-                            });
-                            container.appendChild(backButton);
-                        })
-                        .catch(error => {
-                            console.error('Error loading about content:', error);
-                            document.querySelector('#sobre').innerHTML += '<p>Error loading content.</p>';
-                        });
-                });
-            }
-        }
-
-        // Adicionar nova função para resetar a seção about
-        function resetAboutSection(lang) {
-            const aboutSection = document.querySelector('#sobre');
-            if (aboutSection) {
-                aboutSection.innerHTML = `
-                    <h2 data-i18n="about.title">${translations[lang].about.title}</h2>
-                    <p data-i18n="about.description">${translations[lang].about.description}</p>
-                    <div class="grid">
-                        <article class="card">
-                            <h3 data-i18n="about.resume.title">${translations[lang].about.resume.title}</h3>
-                            <p data-i18n="about.resume.description">${translations[lang].about.resume.description}</p>
-                            <div class="read-more">
-                                <a href="#" class="about-link" data-path="content/${lang}/about/resume.md" data-i18n="about.readMore">${translations[lang].about.readMore}</a>
-                            </div>
-                        </article>
-                        <article class="card">
-                            <h3 data-i18n="about.career.title">${translations[lang].about.career.title}</h3>
-                            <p data-i18n="about.career.description">${translations[lang].about.career.description}</p>
-                            <div class="read-more">
-                                <a href="#" class="about-link" data-path="content/${lang}/about/career.md" data-i18n="about.readMore">${translations[lang].about.readMore}</a>
-                            </div>
-                        </article>
-                        <article class="card">
-                            <h3 data-i18n="about.academic.title">${translations[lang].about.academic.title}</h3>
-                            <p data-i18n="about.academic.description">${translations[lang].about.academic.description}</p>
-                            <div class="read-more">
-                                <a href="#" class="about-link" data-path="content/${lang}/about/academic.md" data-i18n="about.readMore">${translations[lang].about.readMore}</a>
-                            </div>
-                        </article>
-                    </div>
-                `;
-                reattachAboutListener();
-            }
-        }
-
-        function switchLanguage(lang) {
-            currentLang = lang;
-            document.documentElement.lang = lang;
-
-            // Update translations for all elements with data-i18n
-            document.querySelectorAll('[data-i18n]').forEach(element => {
-                const key = element.getAttribute('data-i18n');
-                const translation = key.split('.').reduce((obj, i) => obj[i], translations[lang]);
-                if (translation) element.textContent = translation;
-            });
+          <!-- Content Area -->
+          <div class="about-content-area">
+            <!-- Curriculum categories -->
+            <div id="about-career" class="about-category active-content">
+              <div class="timeline-section">
+                <p class="timeline-instructions" data-i18n="about.career.timeline.instructions">Click on any experience item to see detailed information</p>
+                <div class="timeline" id="career-timeline">
+                  <!-- Timeline will be populated by JavaScript -->
+                </div>
+              </div>
+            </div>
             
-            // Update translations for menu items
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                const key = link.getAttribute('data-key');
-                if (translations[lang].menu && translations[lang].menu[key]) {
-                    link.textContent = translations[lang].menu[key];
-                }
-            });
+            <div id="about-academic" class="about-category">
+              <h3 class="category-title" id="academic-title" data-i18n="about.academic.title">Academic Profile</h3>
+              <div class="about-grid" id="academic-container">
+                <article class="card">
+                  <h3 data-i18n="about.academic.title">Academic Profile</h3>
+                  <p data-i18n="about.academic.description">Academic background and university specializations</p>
+                  <div class="read-more">
+                    <a href="#" class="about-link" data-path="academic/EN.md" data-i18n="about.readMore">Read More</a>
+                  </div>
+                </article>
+              </div>
+            </div>
             
-            // Update placeholders
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
-                const key = element.getAttribute('data-i18n-placeholder');
-                const translation = translations[lang][key];
-                if (translation) element.placeholder = translation;
-            });
+            <div id="about-certificate" class="about-category">
+              <h3 class="category-title" id="certificate-title" data-i18n="about.certificate.title">Certificate</h3>
+              <div class="about-grid" id="certificate-container">
+                <article class="card">
+                  <h3 data-i18n="about.certificate.title">Certificate</h3>
+                  <p data-i18n="about.certificate.description">Professional certifications and specialized training</p>
+                  <div class="read-more">
+                    <a href="#" class="about-link" data-path="certificate/EN.md" data-i18n="about.readMore">Read More</a>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            // Update buttons active state
-            document.querySelectorAll('.lang-button').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.lang === lang);
-            });
+    <!-- Projects section -->
+    <section id="projects" class="section">
+      <div class="container">
+        <h2 class="section-title" id="projects-title" data-i18n="projects.title">Projects</h2>
+        
+        <!-- Projects Search Bar -->
+        <div class="projects-search">
+          <div class="search-container">
+            <input 
+              type="search" 
+              id="projects-search" 
+              placeholder="Search projects..." 
+              aria-label="Search projects by title, description or technology"
+              autocomplete="off"
+            >
+            <button id="clear-search" class="clear-search" aria-label="Clear search" style="display: none;">
+              ✕
+            </button>
+          </div>
+          
+          <!-- Category Filter Dropdown -->
+          <div class="filter-container">
+            <select id="category-filter" aria-label="Filter projects by category" data-i18n-placeholder="projects.filter.placeholder">
+              <option value="all" data-i18n="projects.filter.all">All Categories</option>
+              <option value="process" data-i18n="projects.filter.process">Process</option>
+              <option value="governance" data-i18n="projects.filter.governance">Governance</option>
+              <option value="technology" data-i18n="projects.filter.technology">Technology</option>
+              <option value="statistics" data-i18n="projects.filter.statistics">Statistics</option>
+            </select>
+          </div>
+          
+          <div id="search-results-count" class="search-results-count" style="display: none;"></div>
+        </div>
+        
+        <!-- Project categories -->
+        <div class="project-categories">
+          <div id="projects-process" class="project-category active">
+            <div class="projects-grid" id="process-projects-container">
+              <!-- Process projects will be populated by JavaScript -->
+            </div>
+          </div>
+          
+          <div id="projects-technology" class="project-category">
+            <div class="projects-grid" id="technology-projects-container">
+              <!-- Technology projects will be populated by JavaScript -->
+            </div>
+          </div>
+          
+          <div id="projects-statistics" class="project-category">
+            <div class="projects-grid" id="statistics-projects-container">
+              <!-- Statistics projects will be populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+      </div>
+  </main>
 
-            // Reset about section
-            resetAboutSection(lang);
-
-            // Reset URL
-            history.pushState(null, '', window.location.pathname);
-        }
-
-        // Modificar a função refreshHome para carregar o conteúdo inicial corretamente
-        function refreshHome() {
-            // Reseta todas as seções para o estado inicial
-            document.querySelectorAll('section').forEach(section => {
-                section.style.display = 'block';
-            });
-            
-            // Volta para o topo da página
-            window.scrollTo(0, 0);
-            
-            // Reseta o URL
-            history.pushState(null, '', window.location.pathname);
-            
-            // Recarrega as seções com o idioma atual
-            resetAboutSection(currentLang);
-            
-            // Atualiza o menu ativo
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                link.classList.toggle('active', link.getAttribute('data-key') === 'home');
-            });
-        }
-
-        function loadMarkdownContent(path) {
-            fetch(path)
-                .then(response => response.text())
-                .then(text => {
-                    const html = marked.parse(text);
-                    const contentDiv = document.querySelector('#sobre');
-                    
-                    // Hide other sections
-                    document.querySelector('#projetos').style.display = 'none';
-                    document.querySelector('#contato').style.display = 'none';
-                    
-                    // Clear existing content
-                    contentDiv.innerHTML = html;
-                    
-                    // Add back button
-                    const backButton = document.createElement('button');
-                    backButton.className = 'back-button';
-                    backButton.textContent = translations[currentLang].back;
-                    backButton.onclick = () => {
-                        refreshHome(); // Use refreshHome instead of restoreMainPage
-                        return false;
-                    };
-                    contentDiv.appendChild(backButton);
-                })
-                .catch(error => {
-                    console.error('Error loading content:', error);
-                    document.querySelector('#sobre').innerHTML = '<p>Erro ao carregar conteúdo.</p>';
-                });
-        }
-
-        function resetAboutSection(lang) {
-            const aboutSection = document.querySelector('#sobre');
-            if (aboutSection) {
-                aboutSection.innerHTML = `
-                    <h2 data-i18n="about.title">${translations[lang].about.title}</h2>
-                    <p data-i18n="about.description">${translations[lang].about.description}</p>
-                    <div class="grid">
-                        <article class="card">
-                            <h3 data-i18n="about.resume.title">${translations[lang].about.resume.title}</h3>
-                            <p data-i18n="about.resume.description">${translations[lang].about.resume.description}</p>
-                            <div class="read-more">
-                                <a href="#" class="about-link" data-path="content/${lang}/about.md" data-i18n="about.readMore" 
-                                   onclick="loadMarkdownContent('content/${lang}/about.md'); return false;">
-                                    ${translations[lang].about.readMore}
-                                </a>
-                            </div>
-                        </article>
-                        <article class="card">
-                            <h3 data-i18n="about.career.title">${translations[lang].about.career.title}</h3>
-                            <p data-i18n="about.career.description">${translations[lang].about.career.description}</p>
-                            <div class="read-more">
-                                <a href="#" class="about-link" data-path="content/${lang}/about/career.md" data-i18n="about.readMore">${translations[lang].about.readMore}</a>
-                            </div>
-                        </article>
-                        <article class="card">
-                            <h3 data-i18n="about.academic.title">${translations[lang].about.academic.title}</h3>
-                            <p data-i18n="about.academic.description">${translations[lang].about.academic.description}</p>
-                            <div class="read-more">
-                                <a href="#" class="about-link" data-path="content/${lang}/about/academic.md" data-i18n="about.readMore">${translations[lang].about.readMore}</a>
-                            </div>
-                        </article>
-                    </div>
-                `;
-                reattachAboutListener();
-            }
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.lang-button').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const lang = e.target.dataset.lang;
-                    switchLanguage(lang);
-                });
-            });
-
-            reattachAboutListener();
-            switchLanguage('pt'); // Alterado de 'en' para 'pt'
-        });
-    </script>
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <p id="footer-copyright" data-i18n="footer.copyright">© 2025 Lucas Liachi. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Scripts -->
+  <!-- Utils script with utilities and UI components -->
+  <script src="src/scripts/utils.js"></script>
+  <!-- Consolidated modules (curriculum and projects) -->
+  <script src="src/scripts/modules.js"></script>
+  <!-- Main Script with translations, core functionality and initialization -->
+  <script src="src/scripts/main.js"></script>
 </body>
 </html>

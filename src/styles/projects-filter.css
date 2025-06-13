@@ -1,0 +1,67 @@
+/* Styles for the project category filter dropdown */
+.filter-container {
+  position: relative;
+  min-width: 200px; /* Adjust as needed */
+}
+
+#category-filter {
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 1rem; /* Padding for text and arrow */
+  border: 1px solid var(--border-color, #ccc);
+  border-radius: var(--border-radius, 4px);
+  background-color: var(--input-bg, #fff);
+  color: var(--text-color, #333);
+  font-size: 0.9rem;
+  cursor: pointer;
+  appearance: none; /* Remove default system appearance */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); /* Chevron down arrow */
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 1.25em 1.25em;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+#category-filter:hover {
+  border-color: var(--primary-color, #007bff);
+}
+
+#category-filter:focus {
+  outline: none;
+  border-color: var(--primary-color, #007bff);
+  box-shadow: 0 0 0 0.2rem var(--primary-color-shadow, rgba(0, 123, 255, 0.25)); /* Focus ring */
+}
+
+/* Dark mode adjustments (if your site has them and uses these variables) */
+[data-theme="dark"] #category-filter {
+  background-color: var(--input-bg-dark, #2d3748);
+  border-color: var(--border-color-dark, #4a5568);
+  color: var(--text-color-dark, #f7fafc);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); /* Dark mode arrow */
+}
+
+/* Ensure .projects-search in projects.css or main.css handles layout */
+/* For example in projects.css or main.css:
+.projects-search {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  align-items: center; 
+}
+
+.search-container {
+  flex-grow: 1;
+}
+
+@media (max-width: 768px) {
+  .projects-search {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .filter-container {
+    min-width: auto; 
+    width: 100%;
+  }
+}
+*/
