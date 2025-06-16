@@ -15,8 +15,10 @@ const Translations = (() => {
       },
       hero: {
         title: "Technology Governance Specialist",
+        welcome: "Hello! I'm Lucas Liachi and welcome to my professional space. Here, I share my journey through the projects I'm most proud of and the study materials that drive my knowledge. Explore my work to learn about my skills and, if you like what you see, let's connect on <a href='https://www.linkedin.com/in/lucasliachi/' target='_blank' rel='noopener noreferrer' style='color: var(--accent-color); text-decoration: underline;'>LinkedIn</a>!",
         subtitle: "Strategic alignment of IT initiatives with organizational goals",
         about: "About me",
+        resume: "Resume",
         projects: "View projects"
       },
       about: {
@@ -85,8 +87,10 @@ const Translations = (() => {
       },
       hero: {
         title: "Especialista em Governança de Tecnologia",
+        welcome: "Olá! Sou Lucas Liachi e seja bem-vindo(a) ao meu espaço profissional. Aqui, compartilho minha jornada através dos projetos que mais me orgulho e dos materiais de estudo que impulsionam meu conhecimento. Explore meu trabalho para conhecer minhas habilidades e, se gostar do que vir, vamos nos conectar no <a href='https://www.linkedin.com/in/lucasliachi/' target='_blank' rel='noopener noreferrer' style='color: var(--accent-color); text-decoration: underline;'>LinkedIn</a>!",
         subtitle: "Alinhamento estratégico de iniciativas de TI com objetivos organizacionais",
         about: "Sobre mim",
+        resume: "Currículo",
         projects: "Ver projetos"
       },
       about: {
@@ -151,9 +155,11 @@ const Translations = (() => {
         projects: "Proyectos"
       },
       hero: {
-        title: "Especialista en Gobernanza de Tecnología",
+        title: "Especialista en Gobernanza Tecnológica",
+        welcome: "¡Hola! Soy Lucas Liachi y bienvenido(a) a mi espacio profesional. Aquí, comparto mi trayecto a través de los proyectos de los que más me enorgullezco y los materiales de estudio que impulsan mi conocimiento. Explora mi trabajo para conocer mis habilidades y, si te gusta lo que ves, ¡conectemos en <a href='https://www.linkedin.com/in/lucasliachi/' target='_blank' rel='noopener noreferrer' style='color: var(--accent-color); text-decoration: underline;'>LinkedIn</a>!",
         subtitle: "Alineamiento estratégico de iniciativas de TI com objetivos organizacionales",
         about: "Sobre mí",
+        resume: "Currículum",
         projects: "Ver proyectos"
       },
       about: {
@@ -641,4 +647,21 @@ if (!window.updatePageContent) {
 }
 if (!window.initializeSite) {
   window.initializeSite = initializeSite;
+}
+
+// Ensure the translation function handles HTML content properly
+function updateTranslations() {
+  const elements = document.querySelectorAll('[data-i18n]');
+  elements.forEach(element => {
+    const key = element.getAttribute('data-i18n');
+    const translation = getNestedTranslation(translations[currentLanguage], key);
+    if (translation) {
+      // Use innerHTML instead of textContent to render HTML links
+      if (key === 'hero.welcome') {
+        element.innerHTML = translation;
+      } else {
+        element.textContent = translation;
+      }
+    }
+  });
 }
