@@ -19,7 +19,7 @@ const Translations = (() => {
         subtitle: "Strategic alignment of IT initiatives with organizational goals",
         about: "About me",
         resume: "Resume",
-        projects: "View projects"
+        projects: "Projects"
       },
       about: {
         career: {
@@ -91,7 +91,7 @@ const Translations = (() => {
         subtitle: "Alinhamento estratégico de iniciativas de TI com objetivos organizacionais",
         about: "Sobre mim",
         resume: "Currículo",
-        projects: "Ver projetos"
+        projects: "Projetos"
       },
       about: {
         title: "Currículo",
@@ -160,7 +160,7 @@ const Translations = (() => {
         subtitle: "Alineamiento estratégico de iniciativas de TI com objetivos organizacionales",
         about: "Sobre mí",
         resume: "Currículum",
-        projects: "Ver proyectos"
+        projects: "Proyectos"
       },
       about: {
         title: "Currículum",
@@ -664,4 +664,4 @@ function updateTranslations() {
     }
   });
 }
-}
+
