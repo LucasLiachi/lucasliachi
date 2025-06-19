@@ -373,7 +373,11 @@ function updatePageContent() {
     const translation = getTranslation(key);
     
     if (translation && typeof translation === 'string') {
-      element.textContent = translation;
+      if (key === 'hero.welcome') {
+        element.innerHTML = translation;
+      } else {
+        element.textContent = translation;
+      }
     }
   });
   
@@ -648,10 +652,6 @@ if (!window.updatePageContent) {
 if (!window.initializeSite) {
   window.initializeSite = initializeSite;
 }
-
-// Update the translation function to handle HTML content properly
-function updateTranslations() {
-  const elements = document.querySelectorAll('[data-i18n]');
   elements.forEach(element => {
     const key = element.getAttribute('data-i18n');
     const translation = getNestedTranslation(translations[currentLanguage], key);
@@ -663,5 +663,5 @@ function updateTranslations() {
       }
     }
   });
-}
+
 
