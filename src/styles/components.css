@@ -359,7 +359,21 @@
 }
 
 .project-category {
+  display: none; /* Oculta por padrão */
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.project-category.active {
   display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Quando um container específico está sendo mostrado via JavaScript */
+.project-category[style*="display: block"] {
+  display: block !important;
   opacity: 1;
   transform: translateY(0);
 }
@@ -376,6 +390,7 @@
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 2rem;
   margin-top: 2rem;
+  min-height: 200px; /* Garante altura mínima para evitar layout quebrado */
 }
 
 .project-card {

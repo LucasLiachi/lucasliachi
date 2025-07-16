@@ -1,10 +1,3 @@
-// main.js - Main script for Lucas Liachi Portfolio
-// Consolidated version including core functionality and translations
-
-// =============================================================================
-// TRANSLATIONS MODULE (consolidated from translations.js)
-// =============================================================================
-
 const Translations = (() => {
   const translations = {
     en: {
@@ -51,12 +44,13 @@ const Translations = (() => {
           statistics: "Statistics"
         },
         categories: {
-          process: "Business Processes",
+          process: "Process Improvement",
           governance: "Corporate Governance",
           it: "IT Governance & Agile",
           dev: "Software Development",
           stats: "Applied Statistics",
           technology: "Technology Solutions",
+          statistics: "Statistics & Analytics",
           production: "Production Control"
         },
         viewCode: "View Code",
@@ -120,12 +114,13 @@ const Translations = (() => {
           statistics: "Estatística"
         },
         categories: {
-          process: "Processos Empresariais",
+          process: "Melhoria de Processos",
           governance: "Governança Corporativa",
           it: "Governança de TI & Agilidade",
           dev: "Desenvolvimento de Software",
           stats: "Estatística Aplicada",
           technology: "Soluções Tecnológicas",
+          statistics: "Estatística & Analytics",
           production: "Controle de Produção"
         },
         viewCode: "Ver Código",
@@ -193,12 +188,13 @@ const Translations = (() => {
           statistics: "Estadística"
         },
         categories: {
-          process: "Procesos Empresariales",
+          process: "Mejora de Procesos",
           governance: "Gobernanza Corporativa",
           it: "Gobernanza de TI y Agilidad",
           dev: "Desarrollo de Software",
           stats: "Estadística Aplicada",
           technology: "Soluciones Tecnológicas",
+          statistics: "Estadística & Analytics",
           production: "Control de Producción"
         },
         viewCode: "Ver Código",
@@ -268,10 +264,6 @@ const Translations = (() => {
   };
 })();
 
-// =============================================================================
-// DARK MODE MODULE (consolidated from core.js)
-// =============================================================================
-
 const DarkMode = (() => {
   function toggleDarkMode() {
     const isDarkMode = document.body.classList.toggle('dark');
@@ -326,48 +318,35 @@ const DarkMode = (() => {
   };
 })();
 
-// Export modules globally
 window.Translations = Translations;
 window.DarkMode = DarkMode;
 
-// =============================================================================
-// LANGUAGE MANAGEMENT
-// =============================================================================
-
-// Function to change the website language
 function changeLanguage(language) {
-  // Use the consolidated Translations module
   Translations.setLanguage(language);
   window.currentLanguage = language;
   
   updatePageContent();
   
-  // Update active language button
   document.querySelectorAll('.language-option').forEach(option => {
     option.classList.toggle('active', option.dataset.language === language);
   });
   
-  // Update hero about button path specifically
   const heroAboutBtn = document.getElementById('hero-about-btn');
   if (heroAboutBtn) {
     heroAboutBtn.setAttribute('data-path', `about/${language.toUpperCase()}.md`);
     console.log(`Language changed: Updated hero button path to about/${language.toUpperCase()}.md`);
   }
   
-  // Save preference
   localStorage.setItem('language', language);
 }
 
-// Function to get translation value by key path
 function getTranslation(key) {
   return Translations.get(key) || key;
 }
 
-// Function to update all page content based on current language
 function updatePageContent() {
   const currentLang = window.currentLanguage || 'pt';
   
-  // Update elements with data-i18n attribute
   document.querySelectorAll('[data-i18n]').forEach(element => {
     const key = element.getAttribute('data-i18n');
     const translation = getTranslation(key);
@@ -381,7 +360,6 @@ function updatePageContent() {
     }
   });
   
-  // Update placeholders with data-i18n-placeholder attribute
   document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
     const key = element.getAttribute('data-i18n-placeholder');
     const translation = getTranslation(key);
@@ -391,7 +369,6 @@ function updatePageContent() {
     }
   });
   
-  // Update title attributes with data-i18n-title attribute
   document.querySelectorAll('[data-i18n-title]').forEach(element => {
     const key = element.getAttribute('data-i18n-title');
     const translation = getTranslation(key);
@@ -401,7 +378,6 @@ function updatePageContent() {
     }
   });
   
-  // Update data paths for content links based on language
   document.querySelectorAll('[data-path]').forEach(element => {
     const path = element.getAttribute('data-path');
     if (path && path.includes('/')) {
@@ -409,8 +385,6 @@ function updatePageContent() {
       if (parts.length > 1 && (parts[1] === 'EN' || parts[1] === 'PT' || parts[1] === 'ES')) {
         parts[1] = currentLang.toUpperCase();
         element.setAttribute('data-path', parts.join('/'));
-        
-        // Special handling for hero-about-btn to ensure it always has the correct path
         if (element.id === 'hero-about-btn') {
           console.log(`Updated hero button path to: ${parts.join('/')}`);
         }
@@ -418,16 +392,11 @@ function updatePageContent() {
     }
   });
   
-  // Always ensure the hero button has the correct path
   const heroBtn = document.getElementById('hero-about-btn');
   if (heroBtn) {
     heroBtn.setAttribute('data-path', `about/${currentLang.toUpperCase()}.md`);
   }
 }
-
-// =============================================================================
-// MOBILE MENU FUNCTIONALITY
-// =============================================================================
 
 function setupMobileMenu() {
   const toggle = document.getElementById('mobile-menu-toggle');
@@ -441,7 +410,6 @@ function setupMobileMenu() {
     nav.classList.toggle('active');
   });
   
-  // Close menu when clicking outside
   document.addEventListener('click', function(e) {
     if (!e.target.closest('#main-nav') && nav.classList.contains('active')) {
       nav.classList.remove('active');
@@ -450,10 +418,6 @@ function setupMobileMenu() {
   });
 }
 
-// =============================================================================
-// TAB NAVIGATION FUNCTIONALITY
-// =============================================================================
-
 function setupAboutTabs() {
   const tabs = document.querySelectorAll('.about-nav .category-tab');
   const categories = document.querySelectorAll('.about-category');
@@ -461,27 +425,17 @@ function setupAboutTabs() {
   tabs.forEach(tab => {
     tab.addEventListener('click', function(e) {
       e.preventDefault();
-      
-      // Remove active class from all tabs
       tabs.forEach(t => t.classList.remove('active'));
-      
-      // Add active class to clicked tab
       tab.classList.add('active');
-      
-      // Hide all categories
       categories.forEach(category => category.classList.remove('active'));
-      
-      // Show corresponding category
       const categoryId = tab.getAttribute('href').substring(1);
       const category = document.getElementById(categoryId);
-      
       if (category) {
         category.classList.add('active');
       }
     });
   });
   
-  // Set initial active tab and category
   if (tabs.length > 0) {
     tabs[0].classList.add('active');
     const firstCategoryId = tabs[0].getAttribute('href').substring(1);
@@ -492,42 +446,91 @@ function setupAboutTabs() {
   }
 }
 
-// function setupProjectTabs() { // Removed as module-projects.js handles this
-//   const tabs = document.querySelectorAll('.projects-nav .category-tab');
-//   const categories = document.querySelectorAll('.project-category');
-  
-//   tabs.forEach(tab => {
-//     tab.addEventListener('click', function(e) {
-//       e.preventDefault();
-      
-//       // Remove active class from all tabs
-//       tabs.forEach(t => t.classList.remove('active'));
-      
-//       // Add active class to clicked tab
-//       tab.classList.add('active');
-      
-//       // Hide all categories
-//       categories.forEach(category => category.classList.remove('active'));
-      
-//       // Show corresponding category
-//       const categoryId = tab.getAttribute('href').substring(1);
-//       const category = document.getElementById(categoryId);
-      
-//       if (category) {
-//         category.classList.add('active');
-//       }
-//     });
-//   });
-// }
-
-// =============================================================================
-// SMOOTH SCROLLING FOR NAVIGATION
-// =============================================================================
-
 function setupSmoothScrolling() {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       const href = this.getAttribute('href');
+      if (href.startsWith('#about-') || href.startsWith('#projects-')) {
+        return;
+      }
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+        const navLinks = document.getElementById('nav-links');
+        const menuToggle = document.getElementById('mobile-menu-toggle');
+        if (navLinks && navLinks.classList.contains('active')) {
+          navLinks.classList.remove('active');
+          menuToggle.setAttribute('aria-expanded', 'false');
+        }
+      }
+    });
+  });
+}
+
+function loadMarkdownContent(path) {
+  if (!path.startsWith('src/')) {
+    path = 'src/' + path;
+  }
+  fetch(path)
+    .then(response => response.text())
+    .then(text => {
+      console.log('Markdown content loaded:', path);
+    })
+    .catch(error => {
+      console.error('Error loading markdown content:', error);
+    });
+}
+
+function initializeSite() {
+  const savedLanguage = localStorage.getItem('language');
+  const browserLang = navigator.language.split('-')[0];
+  const defaultLang = savedLanguage || (browserLang === 'pt' || browserLang === 'en' || browserLang === 'es' ? browserLang : 'en');
+  changeLanguage(defaultLang);
+  document.querySelectorAll('.language-option').forEach(option => {
+    option.addEventListener('click', () => {
+      const language = option.getAttribute('data-language');
+      changeLanguage(language);
+    });
+  });
+  setupMobileMenu();
+  setupAboutTabs();
+  setupSmoothScrolling();
+  if (window.initializeExperience) {
+    window.initializeExperience();
+  } else {
+    document.addEventListener('moduleExperienceLoaded', function() {
+      if (window.initializeExperience) {
+        window.initializeExperience();
+      }
+    });
+    setTimeout(() => {
+      if (window.initializeExperience) {
+        window.initializeExperience();
+      } else if (window.loadExperienceContent) {
+        window.loadExperienceContent();
+      }
+    }, 500);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  DarkMode.initializeDarkMode();
+  initializeSite();
+});
+
+if (!window.changeLanguage) {
+  window.changeLanguage = changeLanguage;
+}
+if (!window.updatePageContent) {
+  window.updatePageContent = updatePageContent;
+}
+if (!window.initializeSite) {
+  window.initializeSite = initializeSite;
+}
       
       // Skip if it's a tab link
       if (href.startsWith('#about-') || href.startsWith('#projects-')) {

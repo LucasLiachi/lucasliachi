@@ -1,4 +1,5 @@
 # Inventory and Purchasing Manager
+
 **Adrenalina Moto Racing | 03/2007 - 11/2012**
 
 Worked as an inventory and purchasing manager, with the following responsibilities:

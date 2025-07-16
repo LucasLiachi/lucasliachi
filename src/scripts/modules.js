@@ -1,19 +1,8 @@
-// modules.js - Consolidated modules for Lucas Liachi Portfolio
-// Combines module-curriculum.js and module-projects.js into a single file
-
-// ===========================================
-// CURRICULUM MODULE (Experience & Timeline)
-// ===========================================
-
-// ===== TAB FUNCTIONALITY =====
 function initializeTabs() {
-  // Add event listeners to category tabs
   const categoryTabs = document.querySelectorAll('.category-tab');
-  
   categoryTabs.forEach(tab => {
     tab.addEventListener('click', (event) => {
       event.preventDefault();
-      
       const targetCategory = tab.getAttribute('data-category');
       switchToTab(targetCategory);
     });
@@ -21,68 +10,49 @@ function initializeTabs() {
 }
 
 function switchToTab(categoryName) {
-  // Remove active class from all tabs
   document.querySelectorAll('.category-tab').forEach(tab => {
     tab.classList.remove('active');
   });
-  
-  // Hide all category content
   document.querySelectorAll('.about-category').forEach(category => {
     category.classList.remove('active-content');
   });
-  
-  // Activate the clicked tab
   const activeTab = document.querySelector(`.category-tab[data-category="${categoryName}"]`);
   if (activeTab) {
     activeTab.classList.add('active');
   }
-  
-  // Show the corresponding content
   const activeContent = document.getElementById(`about-${categoryName}`);
   if (activeContent) {
     activeContent.classList.add('active-content');
   }
 }
 
-// Function to initialize the timeline and content
 function initializeExperience() {
-  initializeTabs(); // Initialize tab functionality
+  initializeTabs();
   renderExperience(generateCareerData());
   loadExperienceContent();
 }
 
-// Function to load Markdown content for career and academic sections
 function loadExperienceContent() {
   document.querySelectorAll('.about-link').forEach(link => {
     if (link.id === 'hero-about-btn') {
-      // Skip the hero button as it's handled separately in main.js
       return;
     }
-    
     link.addEventListener('click', (event) => {
       event.preventDefault();
       let path = link.getAttribute('data-path');
-      
-      // Get current language and update path if needed
       const currentLang = window.currentLanguage || localStorage.getItem('language') || 'en';
       const langCode = currentLang.toUpperCase();
-      
-      // Check if the path contains a language code we should replace
       if (path && path.includes('/')) {
         const parts = path.split('/');
-        // If the second part is a language code (EN, PT, ES), replace it with current language
         if (parts.length > 1 && (parts[1] === 'EN' || parts[1] === 'PT' || parts[1] === 'ES')) {
           parts[1] = langCode;
           path = parts.join('/');
         }
       }
-      
       if (path) {
-        // First try with the current language
         fetch(path)
           .then(response => {
             if (!response.ok) {
-              // If not found, fall back to English version
               console.log(`File not found in ${langCode}, falling back to EN`);
               const parts = path.split('/');
               if (parts.length > 1) {
@@ -100,34 +70,25 @@ function loadExperienceContent() {
             return response.text();
           })
           .then(text => {
-            // If marked library is available, render markdown
             if (window.marked) {
               const html = window.marked.parse(text);
               const contentEl = document.createElement('div');
               contentEl.classList.add('markdown-content');
               contentEl.innerHTML = html;
-              
-              // Create a modal to display content
               const modal = document.createElement('div');
               modal.classList.add('modal');
-              
               const modalContent = document.createElement('div');
               modalContent.classList.add('modal-content');
-              
               const closeBtn = document.createElement('span');
               closeBtn.classList.add('close-modal');
               closeBtn.innerHTML = '&times;';
               closeBtn.addEventListener('click', () => {
                 document.body.removeChild(modal);
               });
-              
               modalContent.appendChild(closeBtn);
               modalContent.appendChild(contentEl);
               modal.appendChild(modalContent);
-              
               document.body.appendChild(modal);
-              
-              // Close modal when clicking outside
               modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
                   document.body.removeChild(modal);
@@ -145,22 +106,18 @@ function loadExperienceContent() {
   });
 }
 
-// Função para renderizar experiência profissional (timeline)
 function renderExperience(jobs) {
   const timelineContainer = document.getElementById('career-timeline');
   if (!timelineContainer) {
     console.error('Timeline container not found');
     return;
   }
-  
   console.log('Rendering timeline with', jobs.length, 'jobs');
   timelineContainer.innerHTML = '';
-  
   jobs.forEach((job, index) => {
     const jobElement = document.createElement('div');
     jobElement.className = `timeline-item ${job.left ? 'left' : 'right'} fade-in`;
     jobElement.style.animationDelay = `${index * 0.2}s`;
-    
     jobElement.innerHTML = `
       <div class="timeline-content">
         <div class="timeline-date">${job.date}</div>
@@ -169,14 +126,11 @@ function renderExperience(jobs) {
         <p>${job.description}</p>
       </div>
     `;
-    
     timelineContainer.appendChild(jobElement);
   });
 }
 
-// Função para gerar dados de experiência profissional a partir das pastas
 function generateCareerData() {
-  // Real career data based on the folder structure
   const jobs = [
     {
       date: "2022 - Present",
@@ -221,21 +175,16 @@ function generateCareerData() {
       left: true
     }
   ];
-  
   return jobs;
 }
 
-// Função para abrir detalhes da carreira em um modal
 function openCareerDetail(folder) {
   const lang = localStorage.getItem('language') || 'pt';
   const langCode = lang.toUpperCase();
   const path = `carrer/${folder}/${langCode}.md`; 
-  
-  // Tentar primeiro com o idioma atual
   fetch(path)
     .then(response => {
       if (!response.ok) {
-        // Se não encontrar o arquivo no idioma atual, tenta com EN como fallback
         return fetch(`carrer/${folder}/EN.md`);
       }
       return response;
@@ -252,26 +201,20 @@ function openCareerDetail(folder) {
         const contentEl = document.createElement('div');
         contentEl.classList.add('markdown-content');
         contentEl.innerHTML = html;
-        
         const modal = document.createElement('div');
         modal.classList.add('modal');
-        
         const modalContent = document.createElement('div');
         modalContent.classList.add('modal-content');
-        
         const closeBtn = document.createElement('span');
         closeBtn.classList.add('close-modal');
         closeBtn.innerHTML = '&times;';
         closeBtn.addEventListener('click', () => {
           document.body.removeChild(modal);
         });
-        
         modalContent.appendChild(closeBtn);
         modalContent.appendChild(contentEl);
         modal.appendChild(modalContent);
-        
         document.body.appendChild(modal);
-        
         modal.addEventListener('click', (e) => {
           if (e.target === modal) {
             document.body.removeChild(modal);
@@ -284,34 +227,17 @@ function openCareerDetail(folder) {
     });
 }
 
-/**
- * Certificate Showcase Component
- * - Displays certifications in a visually appealing grid
- * - Implements accessibility features
- * - Supports filtering and sorting
- */
 class CertificateShowcase {
   constructor() {
     this.certificates = [];
     this.filteredCertificates = [];
     this.currentFilter = '';
     this.currentSort = 'date-desc';
-    
-    // DOM Elements
     this.container = document.getElementById('certificate-container');
-    
     if (!this.container) return;
-    
-    // Create UI elements
     this.createFilterUI();
-    
-    // Load certificates
     this.loadCertificates();
   }
-  
-  /**
-   * Creates filter and sort UI elements for certificates section
-   */
   createFilterUI() {
     const filterContainer = document.createElement('div');
     filterContainer.className = 'certificate-filters';
@@ -335,61 +261,35 @@ class CertificateShowcase {
         </select>
       </div>
     `;
-    
-    // Insert filter UI before the certificate container
     this.container.parentNode.insertBefore(filterContainer, this.container);
-    
-    // Add event listeners
     document.getElementById('certificate-search').addEventListener('input', (e) => {
       this.filterCertificates(e.target.value);
     });
-    
     document.getElementById('certificate-sort').addEventListener('change', (e) => {
       this.sortCertificates(e.target.value);
     });
   }
-  
-  /**
-   * Loads certificate data from markdown file
-   */
   async loadCertificates() {
     try {
-      // Load certificates from markdown file
       const response = await fetch('certificate/certifications.md');
       if (!response.ok) throw new Error('Failed to load certifications');
-      
       const markdown = await response.text();
-      
-      // Parse markdown content to extract certificate data
       this.certificates = this.parseCertificatesFromMarkdown(markdown);
-      
-      // Initial render
       this.filterCertificates('');
     } catch (error) {
       console.error('Error loading certificates:', error);
       this.showErrorMessage();
     }
   }
-  
-  /**
-   * Parses certificate data from markdown content
-   * This is a simplified parser - adjust based on your actual markdown structure
-   */
   parseCertificatesFromMarkdown(markdown) {
     const certificates = [];
-    
-    // Split by horizontal rule or certificate entry marker
     const entries = markdown.split(/\n---\n|\n##\s+/);
-    
     entries.forEach(entry => {
       if (!entry.trim()) return;
-      
-      // Extract basic info - adjust based on your markdown structure
       const titleMatch = entry.match(/# (.+)/);
       const issuerMatch = entry.match(/\*\*Issuer:\*\* (.+)/);
       const dateMatch = entry.match(/\*\*Date:\*\* (.+)/);
       const descriptionMatch = entry.match(/\*\*Description:\*\* (.+)/);
-      
       if (titleMatch) {
         certificates.push({
           id: this.generateId(titleMatch[1]),
@@ -397,55 +297,32 @@ class CertificateShowcase {
           issuer: issuerMatch ? issuerMatch[1].trim() : 'Unknown Issuer',
           date: dateMatch ? new Date(dateMatch[1].trim()) : new Date(),
           description: descriptionMatch ? descriptionMatch[1].trim() : '',
-          // You can extract more fields based on your markdown structure
         });
       }
     });
-    
     return certificates;
   }
-  
-  /**
-   * Generates a unique ID from a string
-   */
   generateId(str) {
     return str
       .toLowerCase()
       .replace(/[^\w\s]/g, '')
       .replace(/\s+/g, '-');
   }
-  
-  /**
-   * Filters certificates based on search term
-   */
   filterCertificates(searchTerm) {
     this.currentFilter = searchTerm.toLowerCase();
-    
-    // Filter certificates based on search term
     this.filteredCertificates = this.certificates.filter(cert => {
       if (!this.currentFilter) return true;
-      
       return (
         cert.title.toLowerCase().includes(this.currentFilter) ||
         cert.issuer.toLowerCase().includes(this.currentFilter) ||
         (cert.description && cert.description.toLowerCase().includes(this.currentFilter))
       );
     });
-    
-    // Apply current sort
     this.sortCertificates(this.currentSort);
-    
-    // Render filtered certificates
     this.renderCertificates();
   }
-  
-  /**
-   * Sorts certificates based on sort option
-   */
   sortCertificates(sortOption) {
     this.currentSort = sortOption;
-    
-    // Sort the filtered certificates
     this.filteredCertificates.sort((a, b) => {
       switch (sortOption) {
         case 'date-asc':
@@ -460,19 +337,10 @@ class CertificateShowcase {
           return 0;
       }
     });
-    
-    // Render sorted certificates
     this.renderCertificates();
   }
-  
-  /**
-   * Renders filtered and sorted certificates to DOM
-   */
   renderCertificates() {
-    // Clear container
     this.container.innerHTML = '';
-    
-    // Show message if no certificates
     if (this.filteredCertificates.length === 0) {
       const noResults = document.createElement('div');
       noResults.className = 'no-certificates';
@@ -482,100 +350,65 @@ class CertificateShowcase {
       this.container.appendChild(noResults);
       return;
     }
-    
-    // Create certificate grid
     const grid = document.createElement('div');
     grid.className = 'certificate-grid';
-    
-    // Render each certificate
     this.filteredCertificates.forEach(cert => {
       const card = this.createCertificateCard(cert);
       grid.appendChild(card);
     });
-    
     this.container.appendChild(grid);
   }
-  
-  /**
-   * Creates a certificate card element
-   */
   createCertificateCard(cert) {
     const card = document.createElement('article');
     card.className = 'certificate-card';
     card.setAttribute('aria-labelledby', `cert-title-${cert.id}`);
-    
-    // Create image container with placeholder
     const imageContainer = document.createElement('div');
     imageContainer.className = 'certificate-image';
-    
     const image = document.createElement('img');
     image.setAttribute('data-src', 'src/images/placeholder.svg');
     image.alt = '';
     image.setAttribute('aria-hidden', 'true');
     image.loading = 'lazy';
-    
     if ('loading' in HTMLImageElement.prototype) {
       image.src = 'src/images/placeholder.svg';
     } else {
       image.className = 'lazy';
     }
-    
     imageContainer.appendChild(image);
-    
-    // Create content
     const content = document.createElement('div');
     content.className = 'certificate-content';
-    
-    // Title
     const title = document.createElement('h3');
     title.id = `cert-title-${cert.id}`;
     title.textContent = cert.title;
-    
-    // Issuer
     const issuer = document.createElement('p');
     issuer.className = 'certificate-issuer';
     issuer.textContent = cert.issuer;
-    
-    // Description if available
     let description;
     if (cert.description) {
       description = document.createElement('p');
       description.className = 'certificate-description';
       description.textContent = cert.description;
     }
-    
-    // Meta information
     const meta = document.createElement('div');
     meta.className = 'certificate-meta';
-    
     const date = document.createElement('span');
     date.className = 'certificate-date';
     date.textContent = cert.date.toLocaleDateString();
-    
     const viewLink = document.createElement('a');
     viewLink.href = '#';
     viewLink.className = 'certificate-link';
     viewLink.textContent = 'View certificate';
     viewLink.setAttribute('aria-label', `View ${cert.title} certificate details`);
-    
     meta.appendChild(date);
     meta.appendChild(viewLink);
-    
-    // Assemble card
     content.appendChild(title);
     content.appendChild(issuer);
     if (description) content.appendChild(description);
     content.appendChild(meta);
-    
     card.appendChild(imageContainer);
     card.appendChild(content);
-    
     return card;
   }
-  
-  /**
-   * Shows error message when certificates can't be loaded
-   */
   showErrorMessage() {
     this.container.innerHTML = `
       <div class="certificate-error">
@@ -585,11 +418,6 @@ class CertificateShowcase {
   }
 }
 
-// ===========================================
-// PROJECTS MODULE (Project Management & Display)
-// ===========================================
-
-// Project data structure
 const projectData = {
   process: [
     {
@@ -722,13 +550,8 @@ const projectData = {
   ]
 };
 
-/**
- * ProjectManager Class
- * Manages project filtering, search, and display functionality
- */
 class ProjectManager {
   constructor() {
-    // Project arrays and state
     this.projects = [];
     this.filteredProjects = [];
     this.allFilteredProjects = [];
@@ -741,61 +564,48 @@ class ProjectManager {
       'stats': 'statistics',
       'production': 'statistics'
     };
-    this.currentCategory = 'process';
+    this.currentCategory = null;
     this.currentFilter = '';
     this.currentSort = 'date-desc';
     this.isSearching = false;
-
-    // DOM Elements
     this.projectContainers = {
       process: document.getElementById('process-projects-container'),
       technology: document.getElementById('technology-projects-container'),
       statistics: document.getElementById('statistics-projects-container')
     };
-
     this.searchInput = document.getElementById('projects-search');
     this.clearButton = document.getElementById('clear-search');
     this.searchResultsDisplay = document.getElementById('search-results-count');
     this.categoryFilter = document.getElementById('category-filter');
-    
     if (document.getElementById('projects') && !Object.values(this.projectContainers).some(c => c)) {
         console.warn('ProjectManager: No project category containers found, but #projects section exists. Projects may not display.');
     }
-    
     this.setupGlobalSearch();
     this.setupCategoryFilter();
     this.setupCategoryTabs();
-    
     this.loadProjects();
   }
-
   setupGlobalSearch() {
     if (!this.searchInput) return;
-
     this.searchInput.addEventListener('input', (e) => {
       const query = e.target.value.trim();
       this.performGlobalSearch(query);
     });
-
     if (this.clearButton) {
       this.clearButton.addEventListener('click', () => {
         this.clearGlobalSearch();
       });
-      
       this.searchInput.addEventListener('input', (e) => {
         this.clearButton.style.display = e.target.value ? 'block' : 'none';
       });
       this.clearButton.style.display = this.searchInput.value ? 'block' : 'none';
     }
   }
-
   setupCategoryFilter() {
     if (!this.categoryFilter) return;
-
     this.categoryFilter.addEventListener('change', (e) => {
       const selectedCategory = e.target.value;
       const currentSearchTerm = this.searchInput ? this.searchInput.value.trim() : '';
-      
       if (selectedCategory === 'all') {
         this.performGlobalSearch(currentSearchTerm);
         document.querySelectorAll('.projects-nav .project-tab').forEach(t => t.classList.remove('active'));
@@ -804,7 +614,6 @@ class ProjectManager {
       }
     });
   }
-
   setupCategoryTabs() {
     document.querySelectorAll('.projects-nav .project-tab').forEach(tab => {
       tab.addEventListener('click', (e) => {
@@ -816,7 +625,6 @@ class ProjectManager {
       });
     });
   }
-  
   loadProjects() {
     this.projects = Object.entries(projectData).flatMap(([categoryKey, projectsInCategory]) => {
       return projectsInCategory.map(project => ({
@@ -826,11 +634,18 @@ class ProjectManager {
         date: project.date || '1970-01-01'
       }));
     });
-
     this.handleInitialHash();
-    this.changeCategory(this.currentCategory); 
+    if (!this.currentCategory) {
+      this.hideAllProjectContainers();
+    } else {
+      this.changeCategory(this.currentCategory);
+    }
   }
-
+  hideAllProjectContainers() {
+    Object.values(this.projectContainers).forEach(container => {
+      if (container) container.style.display = 'none';
+    });
+  }
   handleInitialHash() {
     const hash = window.location.hash;
     if (hash && hash.startsWith('#projects-')) {
@@ -840,27 +655,24 @@ class ProjectManager {
             document.querySelectorAll('.projects-nav .project-tab').forEach(tab => {
                 tab.classList.toggle('active', tab.dataset.category === categoryFromHash);
             });
+            return;
         }
     }
+    this.currentCategory = null;
   }
-
   performGlobalSearch(query) {
     this.currentFilter = query;
-
     if (!query && this.categoryFilter && this.categoryFilter.value !== 'all') {
         this.isSearching = false;
         this.changeCategory(this.categoryFilter.value);
         if (this.clearButton) this.clearButton.style.display = 'none';
         return;
     }
-
     this.isSearching = true;
-
     if (this.categoryFilter && this.categoryFilter.value !== 'all') {
         this.categoryFilter.value = 'all';
     }
     document.querySelectorAll('.projects-nav .project-tab').forEach(t => t.classList.remove('active'));
-
     if (!query) {
         this.allFilteredProjects = [...this.projects];
     } else {
@@ -874,53 +686,258 @@ class ProjectManager {
           );
         });
     }
-
     this.updateSearchResultsCount(this.allFilteredProjects.length);
     this.displayGlobalSearchResults();
-    
     if (this.clearButton) {
       this.clearButton.style.display = query ? 'block' : 'none';
     }
   }
-
   clearGlobalSearch() {
     if (this.searchInput) this.searchInput.value = '';
     this.performGlobalSearch(''); 
   }
-
   updateSearchResultsCount(count) {
     if (!this.searchResultsDisplay) return;
-
     const queryExists = (this.searchInput && this.searchInput.value.trim() !== '');
     if (!this.isSearching && !queryExists) { 
       this.searchResultsDisplay.textContent = '';
       this.searchResultsDisplay.style.display = 'none';
       return;
     }
-    
     this.searchResultsDisplay.style.display = 'block';
-
     let noResultsText = 'No results found';
     let resultsTextSuffix = 'results found';
-
     if (window.Translations) {
         noResultsText = window.Translations.get('projects.noResults') || noResultsText;
         resultsTextSuffix = window.Translations.get('projects.resultsFound') || resultsTextSuffix;
     }
-
     if (count === 0) {
       this.searchResultsDisplay.textContent = noResultsText;
     } else {
       this.searchResultsDisplay.textContent = `${count} ${resultsTextSuffix}`;
     }
   }
-
   displayGlobalSearchResults() {
     Object.values(this.projectContainers).forEach(container => {
       if (container) container.style.display = 'none';
     });
-
     const categoryTabs = document.querySelectorAll('.projects-nav .project-tab');
+    categoryTabs.forEach(tab => tab.style.opacity = '0.5');
+    let searchResultsContainer = document.getElementById('search-results-container');
+    if (!searchResultsContainer) {
+      searchResultsContainer = document.createElement('div');
+      searchResultsContainer.id = 'search-results-container';
+      searchResultsContainer.className = 'search-results-container';
+      const projectsNav = document.querySelector('.projects-nav');
+      if (projectsNav) {
+        projectsNav.parentNode.insertBefore(searchResultsContainer, projectsNav.nextSibling);
+      } else {
+        const projectsSection = document.getElementById('projects');
+        if (projectsSection) projectsSection.appendChild(searchResultsContainer);
+        else console.error("ProjectManager: Cannot find .projects-nav or #projects to append search results container.");
+      }
+    }
+    searchResultsContainer.style.display = 'block';
+    this.renderProjectsToContainer(this.allFilteredProjects, searchResultsContainer, true);
+  }
+  hideGlobalSearchResults() {
+    const categoryTabs = document.querySelectorAll('.projects-nav .project-tab');
+    categoryTabs.forEach(tab => tab.style.opacity = '1'); 
+    const searchResultsContainer = document.getElementById('search-results-container');
+    if (searchResultsContainer) {
+      searchResultsContainer.style.display = 'none';
+      searchResultsContainer.innerHTML = ''; 
+    }
+  }
+  changeCategory(category) {
+    if (!this.categories.includes(category)) {
+        return;
+    }
+    if (this.isSearching) {
+        this.hideGlobalSearchResults();
+    }
+    this.isSearching = false;
+    this.currentCategory = category;
+    window.location.hash = `projects-${category}`;
+    if (this.categoryFilter && this.categoryFilter.value !== category) {
+        this.categoryFilter.value = category;
+    }
+    document.querySelectorAll('.projects-nav .project-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.category === this.currentCategory);
+    });
+    Object.entries(this.projectContainers).forEach(([catKey, container]) => {
+        if (container) {
+            container.style.display = (catKey === this.currentCategory) ? 'block' : 'none';
+        }
+    });
+    const currentSearchQuery = this.searchInput ? this.searchInput.value.trim() : '';
+    this.filterProjectsByCategory(currentSearchQuery);
+  }
+  filterProjectsByCategory(query) {
+    if (this.isSearching) { 
+      return; 
+    }
+    if (!this.currentCategory || !this.categories.includes(this.currentCategory)) {
+        return;
+    }
+    const localQuery = query ? query.toLowerCase() : '';
+    const container = this.projectContainers[this.currentCategory];
+    if (!container) {
+        return;
+    }
+    this.filteredProjects = this.projects.filter(project => {
+      if (project.category !== this.currentCategory) return false;
+      if (!localQuery) return true;
+      return (
+        project.title.toLowerCase().includes(localQuery) ||
+        project.description.toLowerCase().includes(localQuery) ||
+        (project.technologies && project.technologies.some(tech => tech.toLowerCase().includes(localQuery))) ||
+        (project.keywords && project.keywords.some(keyword => keyword.toLowerCase().includes(localQuery)))
+      );
+    });
+    this.applySortToCategoryProjects(); 
+    this.renderProjectsToContainer(this.filteredProjects, container, false); 
+    this.updateSearchResultsCount(this.filteredProjects.length); 
+  }
+  sortCategoryProjects(sortBy) { 
+    if (sortBy) {
+      this.currentSort = sortBy;
+    }
+    this.applySortToCategoryProjects();
+    const container = this.projectContainers[this.currentCategory];
+    this.renderProjectsToContainer(this.filteredProjects, container, false);
+  }
+  applySortToCategoryProjects() {
+    const [criterion, direction] = this.currentSort.split('-');
+    this.filteredProjects.sort((a, b) => {
+      let comparison = 0;
+      if (criterion === 'date') {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        if (!isNaN(dateA) && !isNaN(dateB)) {
+            comparison = dateB - dateA;
+        }
+      } else if (criterion === 'name') {
+        comparison = a.title.localeCompare(b.title);
+      }
+      return direction === 'asc' ? -comparison : comparison;
+    });
+  }
+  renderProjectsToContainer(projectsToRender, container, isGlobalSearchLayout) {
+    if (!container) {
+      return;
+    }
+    container.innerHTML = '';
+    let noResultsTextKey = isGlobalSearchLayout ? 'projects.noMatch' : 'projects.noMatchInCategory';
+    let noResultsDefaultText = isGlobalSearchLayout ? 'No projects match your search criteria.' : 'No projects match your criteria in this category.';
+    let noResultsText = noResultsDefaultText;
+    if (window.Translations) {
+        noResultsText = window.Translations.get(noResultsTextKey) || noResultsDefaultText;
+    }
+    if (projectsToRender.length === 0) {
+      container.innerHTML = `<div class="no-results"><p>${noResultsText}</p></div>`;
+      return;
+    }
+    if (isGlobalSearchLayout) {
+        const groupedResults = projectsToRender.reduce((acc, project) => {
+            if (!acc[project.category]) acc[project.category] = [];
+            acc[project.category].push(project);
+            return acc;
+        }, {});
+        Object.entries(groupedResults).forEach(([categoryKey, projectsInCategory]) => {
+            const categorySection = document.createElement('div');
+            categorySection.className = 'search-category-section';
+            const categoryTitle = document.createElement('h3');
+            categoryTitle.className = 'search-category-title';
+            categoryTitle.textContent = this.getCategoryDisplayName(categoryKey);
+            categorySection.appendChild(categoryTitle);
+            const projectsGrid = document.createElement('div');
+            projectsGrid.className = `project-category search-projects-grid ${categoryKey}-projects active`; 
+            projectsInCategory.forEach((project, index) => {
+                const projectElement = this.createProjectCardElement(project, index, true);
+                projectsGrid.appendChild(projectElement);
+            });
+            categorySection.appendChild(projectsGrid);
+            container.appendChild(categorySection);
+        });
+    } else {
+        projectsToRender.forEach((project, index) => {
+            const projectElement = this.createProjectCardElement(project, index, false);
+            container.appendChild(projectElement);
+        });
+    }
+    container.querySelectorAll('.project-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const path = link.getAttribute('data-path');
+        if (path) loadProjectContent(path);
+        else console.warn("Project card link clicked, but data-path attribute is missing or empty.");
+      });
+    });
+  }
+  getCategoryDisplayName(categoryKey) {
+    if (window.Translations) {
+        const translationKey = `projects.category.${categoryKey}`;
+        const translatedName = window.Translations.get(translationKey);
+        if (translatedName && translatedName !== translationKey) return translatedName;
+    }
+    const names = {
+      process: 'Process Improvement',
+      governance: 'Governance & Management',
+      it: 'IT & Technology',
+      dev: 'Development',
+      stats: 'Statistics & Analytics',
+      production: 'Production & Manufacturing'
+    };
+    return names[categoryKey] || categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1);
+  }
+  createProjectCardElement(project, index, isGlobalSearchContext) {
+    const projectElement = document.createElement('div');
+    projectElement.className = 'project-card fade-in'; 
+    projectElement.style.animationDelay = `${index * 0.1}s`;
+    const technologiesHtml = (project.technologies || [])
+      .map(tech => `<span class="tech-tag">${tech}</span>`)
+      .join('');
+    let readMoreText = 'Read More';
+    if (window.Translations) {
+        readMoreText = window.Translations.get('projects.readMore') || readMoreText;
+    }
+    projectElement.innerHTML = `
+      <div class="project-header">
+        <h3>${project.title}</h3>
+        ${isGlobalSearchContext ? `<span class="project-category-tag">${this.getCategoryDisplayName(project.category)}</span>` : ''}
+      </div>
+      <p class="project-description">${project.description || 'No description available.'}</p>
+      <div class="project-technologies">
+        ${technologiesHtml}
+      </div>
+      <div class="project-links">
+        <a href="#" class="project-link btn btn-secondary" data-path="${project.path}">${readMoreText}</a>
+      </div>
+    `;
+    return projectElement;
+  }
+}
+
+if (!window.initializeExperience) {
+  window.initializeExperience = initializeExperience;
+}
+if (!window.loadExperienceContent) {
+  window.loadExperienceContent = loadExperienceContent;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.getElementById('certificate-container')) {
+    window.certificateShowcase = new CertificateShowcase();
+  }
+  initializeExperience();
+  if (document.getElementById('projects')) {
+    window.projectManager = new ProjectManager();
+  }
+});
+
+document.dispatchEvent(new CustomEvent('moduleExperienceLoaded'));
+document.dispatchEvent(new CustomEvent('moduleProjectsLoaded'));
     categoryTabs.forEach(tab => tab.style.opacity = '0.5');
 
     let searchResultsContainer = document.getElementById('search-results-container');
@@ -964,7 +981,8 @@ class ProjectManager {
     this.isSearching = false;
 
     this.currentCategory = category;
-    window.location.hash = `projects-${category}`; 
+    // Só atualiza o hash se uma categoria foi explicitamente selecionada
+    window.location.hash = `projects-${category}`;
 
     if (this.categoryFilter && this.categoryFilter.value !== category) {
         this.categoryFilter.value = category;
@@ -993,7 +1011,7 @@ class ProjectManager {
         return;
     }
 
-    const localQuery = query.toLowerCase();
+    const localQuery = query ? query.toLowerCase() : '';
     const container = this.projectContainers[this.currentCategory];
 
     if (!container) {
