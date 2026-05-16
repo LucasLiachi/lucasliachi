@@ -1,112 +1,61 @@
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
 
 const repoRoot = path.resolve(__dirname, '..');
-const outputPath = path.join(repoRoot, 'static', 'projects-index.json');
 const sourcePath = path.join(repoRoot, 'src', 'scripts', 'modules.js');
+const outputPath = path.join(repoRoot, 'static', 'projects-index.json');
 
-function readSource() {
-  return fs.readFileSync(sourcePath, 'utf8');
-}
-
-function extractProjectBlocks(source) {
-  const blocks = [];
-  const categoryRegex = /^(\s*)(process|governance|it|dev|stats|production):\s*\[/gm;
-  let categoryMatch;
-
-  while ((categoryMatch = categoryRegex.exec(source)) !== null) {
-    const category = categoryMatch[2];
-    const startIndex = categoryMatch.index + categoryMatch[0].length;
-    let depth = 1;
-    let i = startIndex;
-    let blockStart = i;
-
-    for (; i < source.length; i++) {
-      const char = source[i];
-      if (char === '[') depth += 1;
-      if (char === ']') {
-        depth -= 1;
-        if (depth === 0) {
-          blocks.push({ category, text: source.slice(blockStart, i) });
-          categoryRegex.lastIndex = i;
-          break;
-        }
-      }
-    }
+function readProjectData() {
+  const source = fs.readFileSync(sourcePath, 'utf8');
+  const start = source.indexOf('const projectData = ');
+  if (start === -1) {
+    throw new Error('projectData declaration not found in modules.js');
   }
 
-  return blocks;
+  const classMarker = '\nclass ProjectManager';
+  const end = source.indexOf(classMarker, start);
+  if (end === -1) {
+    throw new Error('ProjectManager class marker not found after projectData in modules.js');
+  }
+
+  const objectLiteral = source
+    .slice(source.indexOf('{', start), end)
+    .replace(/;\s*$/, '')
+    .trim();
+
+  return vm.runInNewContext(`(${objectLiteral})`, {}, { timeout: 1000 });
 }
 
-function parseProjects() {
-  const source = readSource();
-  const blocks = extractProjectBlocks(source);
+function buildProjectsIndex(projectData) {
   const projects = [];
 
-  for (const block of blocks) {
-    const itemRegex = /\{([\s\S]*?)\}/g;
-    let itemMatch;
-    while ((itemMatch = itemRegex.exec(block.text)) !== null) {
-      const item = itemMatch[1];
-      const getString = (key) => {
-        const m = item.match(new RegExp(`${key}:\\s*\"([^\"]+)\"`));
-        return m ? m[1] : '';
-      };
-      const getBoolean = (key) => {
-        const m = item.match(new RegExp(`${key}:\\s*(true|false)`));
-        return m ? m[1] === 'true' : false;
-      };
-      const getArray = (key) => {
-        const m = item.match(new RegExp(`${key}:\\s*\[(.*?)\]`, 's'));
-        if (!m) return [];
-        return m[1]
-          .split(',')
-          .map(s => s.trim().replace(/^\"|\"$/g, ''))
-          .filter(Boolean);
-      };
-
-      const title = getString('title');
-      const description = getString('description');
-      const pathValue = getString('path');
-      const hero = getBoolean('hero');
-      const technologies = getArray('technologies');
-      const keywords = getArray('keywords');
-      const tags = [...new Set([...technologies, ...keywords])];
-
-      if (title && pathValue) {
-        projects.push({
-          title,
-          category: block.category,
-          path: pathValue,
-          hero,
-          date: null,
-          tags,
-          description
-        });
-      }
+  for (const [category, items] of Object.entries(projectData)) {
+    for (const item of items) {
+      projects.push({
+        title: item.title,
+        category: item.category || category,
+        path: item.path,
+        hero: Boolean(item.hero),
+        date: item.date ?? null,
+        tags: [...new Set([...(item.technologies || []), ...(item.keywords || [])])],
+        description: item.description || ''
+      });
     }
   }
-
-  projects.sort((a, b) => {
-    const heroA = a.hero ? 1 : 0;
-    const heroB = b.hero ? 1 : 0;
-    if (heroA !== heroB) return heroB - heroA;
-    return a.title.localeCompare(b.title);
-  });
 
   return projects;
 }
 
 function main() {
-  const projects = parseProjects();
+  const projectData = readProjectData();
   const output = {
-    generatedAt: new Date().toISOString(),
     source: 'src/scripts/modules.js',
-    projects
+    projects: buildProjectsIndex(projectData)
   };
 
   fs.writeFileSync(outputPath, JSON.stringify(output, null, 2) + '\n', 'utf8');
-  console.log(`Wrote ${projects.length} projects to ${path.relative(repoRoot, outputPath)}`);
+  console.log(`Wrote ${output.projects.length} projects to ${path.relative(repoRoot, outputPath)}`);
 }
 
 main();
