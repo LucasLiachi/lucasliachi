@@ -551,7 +551,7 @@ const projectData = {
       title: "Six Sigma Statistical Control",
       description: "Statistical process control using Six Sigma methodology",
       technologies: ["Six Sigma", "Statistics", "Process Control", "Quality"],
-      path: "Projects/development/sixsigma-para-quality-assurance/",
+      path: "Projects/development/sixsigma-para-quality-assurance/sixsigma-para-quality-assurance.md",
       category: "stats",
       keywords: ["six sigma", "statistical control", "quality control", "process control"]
     }
