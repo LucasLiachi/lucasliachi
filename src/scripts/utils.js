@@ -193,38 +193,62 @@ function loadProjectContent(path) {
     }
   }
 
-  // Try with current language first
-  fetch(finalPath)
-    .then(response => {
-      if (!response.ok) {
-        // Fallback to English
-        Logger.log(`File not found in ${currentLang.toUpperCase()}, falling back to EN`);
-        const parts = finalPath.split('/');
-        if (parts.length > 1) {
-          parts[1] = 'EN';
-          return fetch(parts.join('/'));
-        }
-        throw new Error(`Failed to fetch ${finalPath}`);
+  // Try a sequence of candidate paths and pick the first that responds OK
+  const tryPaths = async (candidates) => {
+    for (const p of candidates) {
+      try {
+        const resp = await fetch(p);
+        if (resp.ok) return resp;
+      } catch (e) {
+        // continue
       }
-      return response;
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Failed to fetch content`);
+    }
+    return null;
+  };
+
+  (async () => {
+    const candidates = [];
+    candidates.push(finalPath);
+
+    // language fallback
+    if (finalPath && finalPath.includes('/')) {
+      const parts = finalPath.split('/');
+      if (parts.length > 1 && (parts[1] === 'EN' || parts[1] === 'PT' || parts[1] === 'ES')) {
+        parts[1] = currentLang.toUpperCase();
+        candidates.unshift(parts.join('/'));
+        parts[1] = 'EN';
+        candidates.push(parts.join('/'));
       }
-      return response.text();
-    })
-    .then(text => {
+    }
+
+    // If path looks like a directory or ends without .md, try index/readme variants
+    if (!finalPath.endsWith('.md')) {
+      const normalized = finalPath.replace(/\/g, '/').replace(/\/$/, '');
+      candidates.push(`${normalized}/index.md`);
+      candidates.push(`${normalized}/README.md`);
+    }
+
+    // Ensure uniqueness
+    const uniq = [...new Set(candidates)];
+    const response = await tryPaths(uniq);
+
+    if (!response) {
+      Logger.error('Error loading project content: no candidate paths succeeded', uniq);
+      return;
+    }
+
+    try {
+      const text = await response.text();
       if (window.marked) {
         const html = window.marked.parse(text);
         showContentModal(html, path);
       } else {
         Logger.error('Marked library not found');
       }
-    })
-    .catch(error => {
-      Logger.error('Error loading project content:', error);
-    });
+    } catch (err) {
+      Logger.error('Error processing project content:', err);
+    }
+  })();
 }
 
 function showContentModal(html, title) {

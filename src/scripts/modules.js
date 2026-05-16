@@ -181,11 +181,11 @@ function generateCareerData() {
 function openCareerDetail(folder) {
   const lang = localStorage.getItem('language') || 'pt';
   const langCode = lang.toUpperCase();
-  const path = `carrer/${folder}/${langCode}.md`; 
+  const path = `career/${folder}/${langCode}.md`;
   fetch(path)
     .then(response => {
       if (!response.ok) {
-        return fetch(`carrer/${folder}/EN.md`);
+        return fetch(`career/${folder}/EN.md`);
       }
       return response;
     })
@@ -271,8 +271,24 @@ class CertificateShowcase {
   }
   async loadCertificates() {
     try {
-      const response = await fetch('certificate/certifications.md');
-      if (!response.ok) throw new Error('Failed to load certifications');
+      const lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toUpperCase();
+      const candidates = [
+        `certificate/${lang}.md`,
+        'certificate/EN.md'
+      ];
+      let response = null;
+      for (const candidate of candidates) {
+        try {
+          const candidateResponse = await fetch(candidate);
+          if (candidateResponse.ok) {
+            response = candidateResponse;
+            break;
+          }
+        } catch (error) {
+          // continue to next candidate
+        }
+      }
+      if (!response) throw new Error('Failed to load certificate markdown files');
       const markdown = await response.text();
       this.certificates = this.parseCertificatesFromMarkdown(markdown);
       this.filterCertificates('');
@@ -283,20 +299,27 @@ class CertificateShowcase {
   }
   parseCertificatesFromMarkdown(markdown) {
     const certificates = [];
-    const entries = markdown.split(/\n---\n|\n##\s+/);
-    entries.forEach(entry => {
-      if (!entry.trim()) return;
-      const titleMatch = entry.match(/# (.+)/);
-      const issuerMatch = entry.match(/\*\*Issuer:\*\* (.+)/);
-      const dateMatch = entry.match(/\*\*Date:\*\* (.+)/);
-      const descriptionMatch = entry.match(/\*\*Description:\*\* (.+)/);
-      if (titleMatch) {
+    let currentGroup = '';
+    const lines = markdown.split(/\r?\n/);
+
+    lines.forEach(line => {
+      const headingMatch = line.match(/^##\s+(.+)$/);
+      if (headingMatch) {
+        currentGroup = headingMatch[1].trim();
+        return;
+      }
+
+      const itemMatch = line.match(/^[-*]\s+\*\*(.+?)\*\*\s+-\s+(.+)$/);
+      if (itemMatch) {
+        const title = itemMatch[1].trim();
+        const issuer = itemMatch[2].trim();
         certificates.push({
-          id: this.generateId(titleMatch[1]),
-          title: titleMatch[1].trim(),
-          issuer: issuerMatch ? issuerMatch[1].trim() : 'Unknown Issuer',
-          date: dateMatch ? new Date(dateMatch[1].trim()) : new Date(),
-          description: descriptionMatch ? descriptionMatch[1].trim() : '',
+          id: this.generateId(`${currentGroup || 'certificate'}-${title}`),
+          title,
+          issuer: currentGroup || issuer,
+          date: new Date('2026-01-01'),
+          description: issuer,
+          category: currentGroup || 'Certification'
         });
       }
     });
@@ -427,6 +450,7 @@ const projectData = {
       technologies: ["BPMN", "Process Mapping", "HR Management", "Workflow"],
       path: "Projects/process/e2e-hire-to-retire.md",
       category: "process",
+      hero: true,
       keywords: ["HR", "recruitment", "retirement", "employee lifecycle", "human resources"]
     },
     {
@@ -436,6 +460,7 @@ const projectData = {
       technologies: ["BPMN", "Process Mapping", "Analysis", "Improvement"],
       path: "Projects/process/process.md",
       category: "process",
+      hero: true,
       keywords: ["process improvement", "BPMN", "business analysis", "efficiency"]
     }
   ],
@@ -447,6 +472,7 @@ const projectData = {
       technologies: ["Corporate Governance", "Risk Management", "Compliance", "ESG"],
       path: "Projects/governance/governance-corp.md",
       category: "governance",
+      hero: true,
       keywords: ["corporate governance", "compliance", "risk management", "transparency"]
     },
     {
@@ -496,6 +522,7 @@ const projectData = {
       technologies: ["Six Sigma", "Quality Assurance", "Python", "Statistics"],
       path: "Projects/development/sixsigma-para-quality-assurance/sixsigma-para-quality-assurance.md",
       category: "dev",
+      hero: true,
       keywords: ["six sigma", "quality assurance", "statistics", "process improvement"]
     },
     {
@@ -516,6 +543,7 @@ const projectData = {
       technologies: ["Statistics", "Data Analysis", "Python", "R"],
       path: "Projects/estats/estats.md",
       category: "stats",
+      hero: true,
       keywords: ["statistics", "data analysis", "data science", "analytics"]
     },
     {
@@ -536,6 +564,7 @@ const projectData = {
       technologies: ["OEE", "Production", "Manufacturing", "KPIs"],
       path: "Projects/production/oee-overall-equipment-effectiveness/",
       category: "production",
+      hero: true,
       keywords: ["OEE", "equipment effectiveness", "manufacturing", "production efficiency"]
     },
     {
@@ -564,6 +593,7 @@ class ProjectManager {
       'stats': 'statistics',
       'production': 'statistics'
     };
+    this.DEFAULT_CATEGORY = 'process';
     this.currentCategory = null;
     this.currentFilter = '';
     this.currentSort = 'date-desc';
@@ -608,21 +638,35 @@ class ProjectManager {
       const currentSearchTerm = this.searchInput ? this.searchInput.value.trim() : '';
       if (selectedCategory === 'all') {
         this.performGlobalSearch(currentSearchTerm);
-        document.querySelectorAll('.projects-nav .project-tab').forEach(t => t.classList.remove('active'));
+        this.updateTabsActiveState(null);
       } else {
         this.changeCategory(selectedCategory); 
       }
     });
   }
   setupCategoryTabs() {
-    document.querySelectorAll('.projects-nav .project-tab').forEach(tab => {
+    const tabs = document.querySelectorAll('.projects-nav .project-tab');
+    if (!tabs || tabs.length === 0) return; // fallback: no visual tabs in template
+    tabs.forEach(tab => {
       tab.addEventListener('click', (e) => {
-        e.preventDefault(); 
-        const category = e.target.dataset.category;
+        e.preventDefault();
+        const category = tab.dataset.category || (e.target && e.target.dataset && e.target.dataset.category);
         if (category && this.categories.includes(category)) {
           this.changeCategory(category);
         }
       });
+    });
+  }
+
+  updateTabsActiveState(activeCategory) {
+    const tabs = document.querySelectorAll('.projects-nav .project-tab');
+    if (!tabs || tabs.length === 0) return;
+    tabs.forEach(tab => {
+      if (activeCategory === null) {
+        tab.classList.remove('active');
+      } else {
+        tab.classList.toggle('active', tab.dataset.category === activeCategory);
+      }
     });
   }
   loadProjects() {
@@ -633,6 +677,13 @@ class ProjectManager {
         category: this.categoryMapping[project.category || categoryKey] || 'technology',
         date: project.date || '1970-01-01'
       }));
+    }).sort((a, b) => {
+      const heroA = a.hero ? 1 : 0;
+      const heroB = b.hero ? 1 : 0;
+      if (heroA !== heroB) {
+        return heroB - heroA;
+      }
+      return a.title.localeCompare(b.title);
     });
     this.handleInitialHash();
     if (!this.currentCategory) {
@@ -652,13 +703,12 @@ class ProjectManager {
         const categoryFromHash = hash.substring('#projects-'.length);
         if (this.categories.includes(categoryFromHash)) {
             this.currentCategory = categoryFromHash;
-            document.querySelectorAll('.projects-nav .project-tab').forEach(tab => {
-                tab.classList.toggle('active', tab.dataset.category === categoryFromHash);
-            });
+        this.updateTabsActiveState(categoryFromHash);
             return;
         }
     }
-    this.currentCategory = null;
+    // If no valid hash, set default category to ensure projects render on load
+    this.currentCategory = this.DEFAULT_CATEGORY || null;
   }
   performGlobalSearch(query) {
     this.currentFilter = query;
@@ -672,7 +722,7 @@ class ProjectManager {
     if (this.categoryFilter && this.categoryFilter.value !== 'all') {
         this.categoryFilter.value = 'all';
     }
-    document.querySelectorAll('.projects-nav .project-tab').forEach(t => t.classList.remove('active'));
+    this.updateTabsActiveState(null);
     if (!query) {
         this.allFilteredProjects = [...this.projects];
     } else {
@@ -720,9 +770,9 @@ class ProjectManager {
   displayGlobalSearchResults() {
     Object.values(this.projectContainers).forEach(container => {
       if (container) container.style.display = 'none';
-    });
+    }
     const categoryTabs = document.querySelectorAll('.projects-nav .project-tab');
-    categoryTabs.forEach(tab => tab.style.opacity = '0.5');
+    if (categoryTabs && categoryTabs.length) categoryTabs.forEach(tab => tab.style.opacity = '0.5');
     let searchResultsContainer = document.getElementById('search-results-container');
     if (!searchResultsContainer) {
       searchResultsContainer = document.createElement('div');
@@ -742,7 +792,7 @@ class ProjectManager {
   }
   hideGlobalSearchResults() {
     const categoryTabs = document.querySelectorAll('.projects-nav .project-tab');
-    categoryTabs.forEach(tab => tab.style.opacity = '1'); 
+    if (categoryTabs && categoryTabs.length) categoryTabs.forEach(tab => tab.style.opacity = '1');
     const searchResultsContainer = document.getElementById('search-results-container');
     if (searchResultsContainer) {
       searchResultsContainer.style.display = 'none';
@@ -762,9 +812,7 @@ class ProjectManager {
     if (this.categoryFilter && this.categoryFilter.value !== category) {
         this.categoryFilter.value = category;
     }
-    document.querySelectorAll('.projects-nav .project-tab').forEach(tab => {
-        tab.classList.toggle('active', tab.dataset.category === this.currentCategory);
-    });
+    this.updateTabsActiveState(this.currentCategory);
     Object.entries(this.projectContainers).forEach(([catKey, container]) => {
         if (container) {
             container.style.display = (catKey === this.currentCategory) ? 'block' : 'none';
@@ -905,6 +953,7 @@ class ProjectManager {
     projectElement.innerHTML = `
       <div class="project-header">
         <h3>${project.title}</h3>
+        ${project.hero ? '<span class="project-badge project-badge-hero">Hero</span>' : ''}
         ${isGlobalSearchContext ? `<span class="project-category-tag">${this.getCategoryDisplayName(project.category)}</span>` : ''}
       </div>
       <p class="project-description">${project.description || 'No description available.'}</p>
@@ -936,268 +985,5 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-document.dispatchEvent(new CustomEvent('moduleExperienceLoaded'));
-document.dispatchEvent(new CustomEvent('moduleProjectsLoaded'));
-    categoryTabs.forEach(tab => tab.style.opacity = '0.5');
-
-    let searchResultsContainer = document.getElementById('search-results-container');
-    if (!searchResultsContainer) {
-      searchResultsContainer = document.createElement('div');
-      searchResultsContainer.id = 'search-results-container';
-      searchResultsContainer.className = 'search-results-container';
-      
-      const projectsNav = document.querySelector('.projects-nav');
-      if (projectsNav) {
-        projectsNav.parentNode.insertBefore(searchResultsContainer, projectsNav.nextSibling);
-      } else {
-        const projectsSection = document.getElementById('projects');
-        if (projectsSection) projectsSection.appendChild(searchResultsContainer);
-        else console.error("ProjectManager: Cannot find .projects-nav or #projects to append search results container.");
-      }
-    }
-    searchResultsContainer.style.display = 'block';
-    this.renderProjectsToContainer(this.allFilteredProjects, searchResultsContainer, true);
-  }
-
-  hideGlobalSearchResults() {
-    const categoryTabs = document.querySelectorAll('.projects-nav .project-tab');
-    categoryTabs.forEach(tab => tab.style.opacity = '1'); 
-
-    const searchResultsContainer = document.getElementById('search-results-container');
-    if (searchResultsContainer) {
-      searchResultsContainer.style.display = 'none';
-      searchResultsContainer.innerHTML = ''; 
-    }
-  }
-  
-  changeCategory(category) {
-    if (!this.categories.includes(category)) {
-        return;
-    }
-    
-    if (this.isSearching) {
-        this.hideGlobalSearchResults();
-    }
-    this.isSearching = false;
-
-    this.currentCategory = category;
-    // Só atualiza o hash se uma categoria foi explicitamente selecionada
-    window.location.hash = `projects-${category}`;
-
-    if (this.categoryFilter && this.categoryFilter.value !== category) {
-        this.categoryFilter.value = category;
-    }
-
-    document.querySelectorAll('.projects-nav .project-tab').forEach(tab => {
-        tab.classList.toggle('active', tab.dataset.category === this.currentCategory);
-    });
-
-    Object.entries(this.projectContainers).forEach(([catKey, container]) => {
-        if (container) {
-            container.style.display = (catKey === this.currentCategory) ? 'block' : 'none';
-        }
-    });
-    
-    const currentSearchQuery = this.searchInput ? this.searchInput.value.trim() : '';
-    this.filterProjectsByCategory(currentSearchQuery);
-  }
-
-  filterProjectsByCategory(query) {
-    if (this.isSearching) { 
-      return; 
-    }
-
-    if (!this.currentCategory || !this.categories.includes(this.currentCategory)) {
-        return;
-    }
-
-    const localQuery = query ? query.toLowerCase() : '';
-    const container = this.projectContainers[this.currentCategory];
-
-    if (!container) {
-        return;
-    }
-    
-    this.filteredProjects = this.projects.filter(project => {
-      if (project.category !== this.currentCategory) return false;
-      if (!localQuery) return true;
-      return (
-        project.title.toLowerCase().includes(localQuery) ||
-        project.description.toLowerCase().includes(localQuery) ||
-        (project.technologies && project.technologies.some(tech => tech.toLowerCase().includes(localQuery))) ||
-        (project.keywords && project.keywords.some(keyword => keyword.toLowerCase().includes(localQuery)))
-      );
-    });
-    
-    this.applySortToCategoryProjects(); 
-    this.renderProjectsToContainer(this.filteredProjects, container, false); 
-    this.updateSearchResultsCount(this.filteredProjects.length); 
-  }
-
-  sortCategoryProjects(sortBy) { 
-    if (sortBy) {
-      this.currentSort = sortBy;
-    }
-    this.applySortToCategoryProjects();
-    const container = this.projectContainers[this.currentCategory];
-    this.renderProjectsToContainer(this.filteredProjects, container, false);
-  }
-
-  applySortToCategoryProjects() {
-    const [criterion, direction] = this.currentSort.split('-');
-    this.filteredProjects.sort((a, b) => {
-      let comparison = 0;
-      if (criterion === 'date') {
-        const dateA = new Date(a.date);
-        const dateB = new Date(b.date);
-        if (!isNaN(dateA) && !isNaN(dateB)) {
-            comparison = dateB - dateA;
-        }
-      } else if (criterion === 'name') {
-        comparison = a.title.localeCompare(b.title);
-      }
-      return direction === 'asc' ? -comparison : comparison;
-    });
-  }
-
-  renderProjectsToContainer(projectsToRender, container, isGlobalSearchLayout) {
-    if (!container) {
-      return;
-    }
-    container.innerHTML = '';
-
-    let noResultsTextKey = isGlobalSearchLayout ? 'projects.noMatch' : 'projects.noMatchInCategory';
-    let noResultsDefaultText = isGlobalSearchLayout ? 'No projects match your search criteria.' : 'No projects match your criteria in this category.';
-    let noResultsText = noResultsDefaultText;
-
-    if (window.Translations) {
-        noResultsText = window.Translations.get(noResultsTextKey) || noResultsDefaultText;
-    }
-
-    if (projectsToRender.length === 0) {
-      container.innerHTML = `<div class="no-results"><p>${noResultsText}</p></div>`;
-      return;
-    }
-
-    if (isGlobalSearchLayout) {
-        const groupedResults = projectsToRender.reduce((acc, project) => {
-            if (!acc[project.category]) acc[project.category] = [];
-            acc[project.category].push(project);
-            return acc;
-        }, {});
-
-        Object.entries(groupedResults).forEach(([categoryKey, projectsInCategory]) => {
-            const categorySection = document.createElement('div');
-            categorySection.className = 'search-category-section';
-            
-            const categoryTitle = document.createElement('h3');
-            categoryTitle.className = 'search-category-title';
-            categoryTitle.textContent = this.getCategoryDisplayName(categoryKey);
-            categorySection.appendChild(categoryTitle);
-            
-            const projectsGrid = document.createElement('div');
-            projectsGrid.className = `project-category search-projects-grid ${categoryKey}-projects active`; 
-            
-            projectsInCategory.forEach((project, index) => {
-                const projectElement = this.createProjectCardElement(project, index, true);
-                projectsGrid.appendChild(projectElement);
-            });
-            categorySection.appendChild(projectsGrid);
-            container.appendChild(categorySection);
-        });
-    } else {
-        projectsToRender.forEach((project, index) => {
-            const projectElement = this.createProjectCardElement(project, index, false);
-            container.appendChild(projectElement);
-        });
-    }
-
-    container.querySelectorAll('.project-link').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const path = link.getAttribute('data-path');
-        if (path) loadProjectContent(path);
-        else console.warn("Project card link clicked, but data-path attribute is missing or empty.");
-      });
-    });
-  }
-
-  getCategoryDisplayName(categoryKey) {
-    if (window.Translations) {
-        const translationKey = `projects.category.${categoryKey}`;
-        const translatedName = window.Translations.get(translationKey);
-        if (translatedName && translatedName !== translationKey) return translatedName;
-    }
-    const names = {
-      process: 'Process Improvement',
-      governance: 'Governance & Management',
-      it: 'IT & Technology',
-      dev: 'Development',
-      stats: 'Statistics & Analytics',
-      production: 'Production & Manufacturing'
-    };
-    return names[categoryKey] || categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1);
-  }
-
-  createProjectCardElement(project, index, isGlobalSearchContext) {
-    const projectElement = document.createElement('div');
-    projectElement.className = 'project-card fade-in'; 
-    projectElement.style.animationDelay = `${index * 0.1}s`;
-
-    const technologiesHtml = (project.technologies || [])
-      .map(tech => `<span class="tech-tag">${tech}</span>`)
-      .join('');
-    
-    let readMoreText = 'Read More';
-    if (window.Translations) {
-        readMoreText = window.Translations.get('projects.readMore') || readMoreText;
-    }
-
-    projectElement.innerHTML = `
-      <div class="project-header">
-        <h3>${project.title}</h3>
-        ${isGlobalSearchContext ? `<span class="project-category-tag">${this.getCategoryDisplayName(project.category)}</span>` : ''}
-      </div>
-      <p class="project-description">${project.description || 'No description available.'}</p>
-      <div class="project-technologies">
-        ${technologiesHtml}
-      </div>
-      <div class="project-links">
-        <a href="#" class="project-link btn btn-secondary" data-path="${project.path}">${readMoreText}</a>
-      </div>
-    `;
-    return projectElement;
-  }
-}
-
-// ===========================================
-// MODULE INITIALIZATION AND EXPORTS
-// ===========================================
-
-// Export functions for external use
-if (!window.initializeExperience) {
-  window.initializeExperience = initializeExperience;
-}
-if (!window.loadExperienceContent) {
-  window.loadExperienceContent = loadExperienceContent;
-}
-
-// Initialize modules when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-  // Initialize certificate showcase
-  if (document.getElementById('certificate-container')) {
-    window.certificateShowcase = new CertificateShowcase();
-  }
-  
-  // Initialize experience content handlers
-  initializeExperience();
-  
-  // Initialize project manager
-  if (document.getElementById('projects')) {
-    window.projectManager = new ProjectManager();
-  }
-});
-
-// Notify that the modules are loaded
 document.dispatchEvent(new CustomEvent('moduleExperienceLoaded'));
 document.dispatchEvent(new CustomEvent('moduleProjectsLoaded'));

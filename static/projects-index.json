@@ -1,0 +1,123 @@
+{
+  "generatedAt": "2026-05-15T00:00:00.000Z",
+  "source": "src/scripts/modules.js",
+  "projects": [
+    {
+      "title": "End-to-End Hire to Retire Process",
+      "category": "process",
+      "path": "Projects/process/e2e-hire-to-retire.md",
+      "hero": true,
+      "date": null,
+      "tags": ["BPMN", "Process Mapping", "HR Management", "Workflow", "HR", "recruitment", "retirement", "employee lifecycle", "human resources"],
+      "description": "Complete HR process from recruitment to employee retirement"
+    },
+    {
+      "title": "Business Process Analysis",
+      "category": "process",
+      "path": "Projects/process/process.md",
+      "hero": true,
+      "date": null,
+      "tags": ["BPMN", "Process Mapping", "Analysis", "Improvement", "process improvement", "business analysis", "efficiency"],
+      "description": "Process analysis and continuous improvement methodologies"
+    },
+    {
+      "title": "Corporate Governance Framework",
+      "category": "governance",
+      "path": "Projects/governance/governance-corp.md",
+      "hero": true,
+      "date": null,
+      "tags": ["Corporate Governance", "Risk Management", "Compliance", "ESG", "corporate governance", "risk management", "transparency"],
+      "description": "Implementation of corporate governance structure and policies"
+    },
+    {
+      "title": "IT Governance Framework",
+      "category": "governance",
+      "path": "Projects/governance/governance-it.md",
+      "hero": false,
+      "date": null,
+      "tags": ["COBIT", "ITIL", "IT Management", "Governance", "IT governance", "technology management"],
+      "description": "COBIT and ITIL implementation for IT governance"
+    },
+    {
+      "title": "Performance and Competency Evaluation",
+      "category": "governance",
+      "path": "Projects/governance/avaliacao-por-competencia/Avaliação-de-desempenho-e-ompetências.md",
+      "hero": true,
+      "date": null,
+      "tags": ["Performance Management", "HR", "Evaluation", "Excel", "performance evaluation", "competency", "assessment"],
+      "description": "Competency-based performance evaluation framework"
+    },
+    {
+      "title": "Agile Metrics Framework",
+      "category": "governance",
+      "path": "Projects/governance/metrica-agil/",
+      "hero": false,
+      "date": null,
+      "tags": ["Agile", "Metrics", "KPIs", "Performance", "agile metrics", "performance measurement", "scrum"],
+      "description": "Comprehensive agile metrics and measurement system"
+    },
+    {
+      "title": "IT Governance Best Practices",
+      "category": "it",
+      "path": "Projects/governance/governance-it.md",
+      "hero": false,
+      "date": null,
+      "tags": ["COBIT", "ITIL", "IT Strategy", "Governance", "IT governance", "best practices", "framework", "methodology"],
+      "description": "Implementation of IT governance frameworks and methodologies"
+    },
+    {
+      "title": "Six Sigma for Quality Assurance",
+      "category": "dev",
+      "path": "Projects/development/sixsigma-para-quality-assurance/sixsigma-para-quality-assurance.md",
+      "hero": true,
+      "date": null,
+      "tags": ["Six Sigma", "Quality Assurance", "Python", "Statistics", "six sigma", "quality assurance", "process improvement"],
+      "description": "Application of Six Sigma methodology in quality assurance processes"
+    },
+    {
+      "title": "Software Development Portfolio",
+      "category": "dev",
+      "path": "Projects/development/development.md",
+      "hero": false,
+      "date": null,
+      "tags": ["Software Development", "Programming", "Methodologies", "software development", "programming", "coding", "applications"],
+      "description": "Collection of software development projects and methodologies"
+    },
+    {
+      "title": "Applied Statistics Projects",
+      "category": "stats",
+      "path": "Projects/estats/estats.md",
+      "hero": true,
+      "date": null,
+      "tags": ["Statistics", "Data Analysis", "Python", "R", "statistics", "data analysis", "data science", "analytics"],
+      "description": "Statistical analysis and data science projects"
+    },
+    {
+      "title": "Six Sigma Statistical Control",
+      "category": "stats",
+      "path": "Projects/development/sixsigma-para-quality-assurance/",
+      "hero": false,
+      "date": null,
+      "tags": ["Six Sigma", "Statistics", "Process Control", "Quality", "six sigma", "statistical control", "quality control", "process control"],
+      "description": "Statistical process control using Six Sigma methodology"
+    },
+    {
+      "title": "Overall Equipment Effectiveness (OEE)",
+      "category": "production",
+      "path": "Projects/production/oee-overall-equipment-effectiveness/",
+      "hero": true,
+      "date": null,
+      "tags": ["OEE", "Production", "Manufacturing", "KPIs", "equipment effectiveness", "production efficiency"],
+      "description": "OEE implementation and monitoring system"
+    },
+    {
+      "title": "Production Process Management",
+      "category": "production",
+      "path": "Projects/production/production.md",
+      "hero": false,
+      "date": null,
+      "tags": ["Production", "Process Management", "Manufacturing", "production", "process optimization", "efficiency"],
+      "description": "End-to-end production process optimization"
+    }
+  ]
+}

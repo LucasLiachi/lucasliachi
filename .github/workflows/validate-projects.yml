@@ -1,0 +1,43 @@
+name: Validate Projects Index
+
+on:
+  pull_request:
+    paths:
+      - 'src/scripts/**'
+      - 'Projects/**'
+      - 'scripts/**'
+      - 'static/projects-index.json'
+      - '.github/workflows/validate-projects.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/scripts/**'
+      - 'Projects/**'
+      - 'scripts/**'
+      - 'static/projects-index.json'
+      - '.github/workflows/validate-projects.yml'
+
+jobs:
+  validate-projects:
+    name: Validate paths and regenerate index
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Validate project paths
+        run: node scripts/validate-projects.js
+
+      - name: Regenerate projects index
+        run: node scripts/generate-index.js
+
+      - name: Check generated index is committed
+        run: git diff --exit-code -- static/projects-index.json
