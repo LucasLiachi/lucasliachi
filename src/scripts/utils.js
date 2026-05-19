@@ -174,12 +174,29 @@ class AboutModal {
       }
     });
     
-    // Escape key to close
-    document.addEventListener('keydown', (e) => {
+    // Escape key to close and Tab trapping
+    this._boundHandleKeyDown = (e) => {
       if (e.key === 'Escape' && this.modal.classList.contains('active')) {
+        e.preventDefault();
         this.close();
+        return;
       }
-    });
+
+      if (e.key === 'Tab' && this.modal.classList.contains('active')) {
+        this.maintainFocus(e);
+      }
+    };
+
+    document.addEventListener('keydown', this._boundHandleKeyDown);
+
+    // Ensure focus doesn't leave modal via focusin events (for screen readers)
+    this._boundFocusIn = (e) => {
+      if (!this.modal.contains(e.target) && this.modal.classList.contains('active')) {
+        e.stopPropagation();
+        this.focusFirstElement();
+      }
+    };
+    document.addEventListener('focusin', this._boundFocusIn);
   }
   
   async loadContent() {
@@ -223,6 +240,39 @@ class AboutModal {
       this.isLoading = false;
     }
   }
+
+  getFocusableElements() {
+    if (!this.modal) return [];
+    const selectors = 'a[href], area[href], input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex]:not([tabindex="-1"]), [contenteditable]';
+    return Array.from(this.modal.querySelectorAll(selectors)).filter(el => el.offsetWidth || el.offsetHeight || el === document.activeElement);
+  }
+
+  focusFirstElement() {
+    const elems = this.getFocusableElements();
+    if (elems.length) {
+      elems[0].focus();
+      return true;
+    }
+    this.modalContent?.focus();
+    return false;
+  }
+
+  maintainFocus(e) {
+    const focusable = this.getFocusableElements();
+    if (focusable.length === 0) {
+      e.preventDefault();
+      return;
+    }
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
   
   simpleMarkdownParse(markdown) {
     return markdown
@@ -255,26 +305,78 @@ class AboutModal {
 
   open() {
     const heroBtn = document.getElementById('hero-about-btn');
-    if (heroBtn && heroBtn.classList.contains('about-link') && heroBtn.getAttribute('data-path')) {
-      Logger.log('Hero button is using about-link handler, not opening AboutModal');
+    const path = heroBtn?.getAttribute('data-path');
+
+    // If the hero button is wired as an about-link with a data-path, prefer
+    // delegating to the project/content loader so we reuse the existing modal
+    // implementation that displays arbitrary markdown files.
+    if (heroBtn && heroBtn.classList.contains('about-link') && path && window.loadProjectContent) {
+      Logger.log('Hero button has data-path — delegating to loadProjectContent');
+      window.loadProjectContent(path);
       return;
     }
-    
+
     if (!this.modalContent.innerHTML.trim()) {
       this.loadContent();
     }
-    
+
+    // Save currently focused element to restore focus later
+    this._previouslyFocused = document.activeElement;
+
+    // Mark main content as inert/hidden to assist assistive tech
+    const mainNodes = document.querySelectorAll('body > header, body > main, body > footer');
+    mainNodes.forEach(node => {
+      try {
+        if ('inert' in HTMLElement.prototype) node.inert = true;
+        node.setAttribute('aria-hidden', 'true');
+      } catch (e) {
+        node.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    this.modal.setAttribute('aria-hidden', 'false');
     this.modal.classList.add('active');
     document.body.style.overflow = 'hidden';
-    this.closeBtn?.focus();
+
+    // Move focus into modal
+    setTimeout(() => this.focusFirstElement(), 50);
   }
   
   close() {
-    this.modal.classList.remove('active');
-    document.body.style.overflow = '';
-    
-    const aboutBtn = document.getElementById('hero-about-btn');
-    aboutBtn?.focus();
+    // Play closing animation if available, then remove active
+    const handleAnimationEnd = () => {
+      this.modal.classList.remove('active');
+      this.modal.classList.remove('closing');
+      this.modal.removeEventListener('animationend', handleAnimationEnd);
+
+      // Restore main nodes
+      const mainNodes = document.querySelectorAll('body > header, body > main, body > footer');
+      mainNodes.forEach(node => {
+        try {
+          if ('inert' in HTMLElement.prototype) node.inert = false;
+          node.removeAttribute('aria-hidden');
+        } catch (e) {
+          node.removeAttribute('aria-hidden');
+        }
+      });
+
+      this.modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+
+      // Remove focus handlers
+      if (this._boundHandleKeyDown) document.removeEventListener('keydown', this._boundHandleKeyDown);
+      if (this._boundFocusIn) document.removeEventListener('focusin', this._boundFocusIn);
+
+      // Restore focus
+      try {
+        (this._previouslyFocused || document.getElementById('hero-about-btn'))?.focus();
+      } catch (e) {
+        // ignore
+      }
+    };
+
+    this.modal.classList.add('closing');
+    this.modal.addEventListener('animationend', handleAnimationEnd);
   }
   
   updateLanguage() {
@@ -413,7 +515,19 @@ window.AboutModal = {
   open() {
     if (this.instance) {
       this.instance.open();
+      return;
     }
+
+    // No AboutModal instance found in the DOM — try delegating to
+    // `loadProjectContent` using the hero about button `data-path` if available.
+    const heroBtn = document.getElementById('hero-about-btn');
+    const path = heroBtn?.getAttribute('data-path');
+    if (path && window.loadProjectContent) {
+      Logger.log('AboutModal instance not present — delegating to loadProjectContent');
+      window.loadProjectContent(path);
+      return;
+    }
+    Logger.log('AboutModal.open called but no instance or fallback available');
   },
   
   close() {
