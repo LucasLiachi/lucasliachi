@@ -307,11 +307,12 @@ class AboutModal {
     const heroBtn = document.getElementById('hero-about-btn');
     const path = heroBtn?.getAttribute('data-path');
 
-    // If the hero button is wired as an about-link with a data-path, prefer
-    // delegating to the project/content loader so we reuse the existing modal
-    // implementation that displays arbitrary markdown files.
-    if (heroBtn && heroBtn.classList.contains('about-link') && path && window.loadProjectContent) {
-      Logger.log('Hero button has data-path — delegating to loadProjectContent');
+    // If modal markup is NOT present, fall back to the generic loader which
+    // creates its own modal element. Otherwise prefer using the existing
+    // `#about-modal` so we keep consistent styling, animations and focus
+    // management.
+    if ((!this.modal || !this.modalContent) && heroBtn && heroBtn.classList.contains('about-link') && path && window.loadProjectContent) {
+      Logger.log('AboutModal markup not found — delegating to loadProjectContent');
       window.loadProjectContent(path);
       return;
     }
