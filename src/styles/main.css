@@ -583,8 +583,19 @@ footer {
     overflow-y: auto;
   }
 
-  nav.active {
+  nav.active,
+  nav.mobile-open {
     transform: translateX(0);
+  }
+
+  nav[aria-hidden='true'] {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  nav[aria-hidden='false'] {
+    visibility: visible;
+    pointer-events: auto;
   }
 
   nav ul {
