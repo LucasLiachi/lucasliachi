@@ -2,116 +2,546 @@ const Translations = (() => {
   const translations = {
     en: {
       navbar: {
-        home: "Home",
-        about: "Resume",
-        projects: "Projects"
+        home: 'Home',
+        about: 'Resume',
+        projects: 'Projects'
       },
       hero: {
-        title: "Technology Governance Specialist",
+        title: 'Technology Governance Specialist',
         welcome: "Hello! I'm Lucas Liachi and welcome to my professional space. Here, I share my journey through the projects I'm most proud of and the study materials that drive my knowledge. Explore my work to learn about my skills and, if you like what you see, let's connect on <a href='https://www.linkedin.com/in/lucasliachi/' target='_blank' rel='noopener noreferrer'>LinkedIn</a>!",
-        subtitle: "Strategic alignment of IT initiatives with organizational goals",
-        about: "About me",
-        resume: "Resume",
-        projects: "Projects"
+        subtitle: 'Strategic alignment of IT initiatives with organizational goals',
+        about: 'About me',
+        resume: 'Resume',
+        projects: 'Projects'
       },
       about: {
+        title: 'Resume',
         career: {
-          title: "Professional Career",
-          description: "Timeline with professional experiences and achievements",
+          title: 'Professional Career',
+          description: 'Timeline with professional experiences and achievements',
           timeline: {
-            title: "Career Timeline",
-            instructions: "Click on any experience item to see detailed information"
+            title: 'Career Timeline',
+            instructions: 'Click on any experience item to see detailed information'
           }
         },
         academic: {
-          title: "Academic Profile",
-          description: "Academic background and university specializations"
+          title: 'Academic Profile',
+          description: 'Academic background and university specializations'
         },
         certificate: {
-          title: "Certificate",
-          description: "Professional certifications and specialized training"
+          title: 'Certificate',
+          description: 'Professional certifications and specialized training'
         },
-        readMore: "Read More"
+        readMore: 'Read More'
       },
       projects: {
-        title: "Projects",
+        title: 'Projects',
         filter: {
-          placeholder: "Filter by category",
-          all: "All Categories",
-          process: "Process",
-          governance: "Governance", 
-          technology: "Technology",
-          statistics: "Statistics"
+          placeholder: 'Filter by category',
+          all: 'All Categories',
+          process: 'Process',
+          governance: 'Governance',
+          technology: 'Technology',
+          statistics: 'Statistics'
+        },
+        category: {
+          process: 'Process Improvement',
+          governance: 'Corporate Governance',
+          it: 'IT Governance & Agile',
+          dev: 'Software Development',
+          stats: 'Applied Statistics',
+          technology: 'Technology Solutions',
+          statistics: 'Statistics & Analytics',
+          production: 'Production Control'
         },
         categories: {
-          process: "Process Improvement",
-          governance: "Corporate Governance",
-          it: "IT Governance & Agile",
-          dev: "Software Development",
-          stats: "Applied Statistics",
-          technology: "Technology Solutions",
-          statistics: "Statistics & Analytics",
-          production: "Production Control"
+          process: 'Process Improvement',
+          governance: 'Corporate Governance',
+          it: 'IT Governance & Agile',
+          dev: 'Software Development',
+          stats: 'Applied Statistics',
+          technology: 'Technology Solutions',
+          statistics: 'Statistics & Analytics',
+          production: 'Production Control'
         },
-        viewCode: "View Code",
-        liveDemo: "Live Demo",
-        noResults: "No results found",
-        resultsFound: "results found",
-        noMatch: "No projects match your search criteria.",
-        noMatchInCategory: "No projects match your criteria in this category.",
-        readMore: "Read More"
+        viewCode: 'View Code',
+        liveDemo: 'Live Demo',
+        noResults: 'No results found',
+        resultsFound: 'results found',
+        noMatch: 'No projects match your search criteria.',
+        noMatchInCategory: 'No projects match your criteria in this category.',
+        readMore: 'Read More'
       },
       modal: {
         about: {
-          title: "About me",
-          close: "Close",
-          loading: "Loading...",
-          error: "Error loading content"
+          title: 'About me',
+          close: 'Close',
+          loading: 'Loading...',
+          error: 'Error loading content'
         }
       },
       footer: {
-        copyright: "© 2025 Lucas Liachi."
+        copyright: '© 2025 Lucas Liachi.'
       }
     },
     pt: {
       navbar: {
-        home: "Início",
-        about: "Currículo",
-        projects: "Projetos"
+        home: 'Início',
+        about: 'Currículo',
+        projects: 'Projetos'
       },
       hero: {
-        title: "Especialista em Governança de Tecnologia",
+        title: 'Especialista em Governança de Tecnologia',
         welcome: "Olá! Sou Lucas Liachi e seja bem-vindo(a) ao meu espaço profissional. Aqui, compartilho minha jornada através dos projetos que mais me orgulho e dos materiais de estudo que impulsionam meu conhecimento. Explore meu trabalho para conhecer minhas habilidades e, se gostar do que vir, vamos nos conectar no <a href='https://www.linkedin.com/in/lucasliachi/' target='_blank' rel='noopener noreferrer'>LinkedIn</a>!",
-        subtitle: "Alinhamento estratégico de iniciativas de TI com objetivos organizacionais",
-        *** End Patch
+        subtitle: 'Alinhamento estratégico de iniciativas de TI com objetivos organizacionais',
+        about: 'Sobre mim',
+        resume: 'Currículo',
+        projects: 'Projetos'
+      },
+      about: {
+        title: 'Currículo',
+        career: {
+          title: 'Carreira Profissional',
+          description: 'Linha do tempo com experiências profissionais e conquistas',
+          timeline: {
+            title: 'Linha do Tempo da Carreira',
+            instructions: 'Clique em qualquer experiência para ver mais detalhes'
+          }
+        },
+        academic: {
+          title: 'Formação Acadêmica',
+          description: 'Formação acadêmica e especializações universitárias'
+        },
+        certificate: {
+          title: 'Certificados',
+          description: 'Certificações profissionais e treinamentos especializados'
+        },
+        readMore: 'Ler mais'
+      },
+      projects: {
+        title: 'Projetos',
+        filter: {
+          placeholder: 'Filtrar por categoria',
+          all: 'Todas as categorias',
+          process: 'Processo',
+          governance: 'Governança',
+          technology: 'Tecnologia',
+          statistics: 'Estatística'
+        },
+        category: {
+          process: 'Melhoria de Processos',
+          governance: 'Governança Corporativa',
+          it: 'Governança de TI e Ágil',
+          dev: 'Desenvolvimento de Software',
+          stats: 'Estatística Aplicada',
+          technology: 'Soluções em Tecnologia',
+          statistics: 'Estatística e Análise',
+          production: 'Controle de Produção'
+        },
+        categories: {
+          process: 'Melhoria de Processos',
+          governance: 'Governança Corporativa',
+          it: 'Governança de TI e Ágil',
+          dev: 'Desenvolvimento de Software',
+          stats: 'Estatística Aplicada',
+          technology: 'Soluções em Tecnologia',
+          statistics: 'Estatística e Análise',
+          production: 'Controle de Produção'
+        },
+        viewCode: 'Ver código',
+        liveDemo: 'Demo ao vivo',
+        noResults: 'Nenhum resultado encontrado',
+        resultsFound: 'resultados encontrados',
+        noMatch: 'Nenhum projeto corresponde aos critérios de busca.',
+        noMatchInCategory: 'Nenhum projeto corresponde aos critérios nesta categoria.',
+        readMore: 'Ler mais'
+      },
+      modal: {
+        about: {
+          title: 'Sobre mim',
+          close: 'Fechar',
+          loading: 'Carregando...',
+          error: 'Erro ao carregar o conteúdo'
+        }
+      },
+      footer: {
+        copyright: '© 2025 Lucas Liachi.'
+      }
+    },
+    es: {
+      navbar: {
+        home: 'Inicio',
+        about: 'Currículum',
+        projects: 'Proyectos'
+      },
+      hero: {
+        title: 'Especialista en Gobernanza de Tecnología',
+        welcome: "¡Hola! Soy Lucas Liachi y bienvenido(a) a mi espacio profesional. Aquí comparto mi trayectoria a través de los proyectos de los que más me enorgullezco y del material de estudio que impulsa mi conocimiento. Explora mi trabajo para conocer mis habilidades y, si te gusta lo que ves, conéctate conmigo en <a href='https://www.linkedin.com/in/lucasliachi/' target='_blank' rel='noopener noreferrer'>LinkedIn</a>!",
+        subtitle: 'Alineación estratégica de iniciativas de TI con objetivos organizacionales',
+        about: 'Sobre mí',
+        resume: 'Currículum',
+        projects: 'Proyectos'
+      },
+      about: {
+        title: 'Currículum',
+        career: {
+          title: 'Carrera Profesional',
+          description: 'Línea de tiempo con experiencias profesionales y logros',
+          timeline: {
+            title: 'Línea de Tiempo Profesional',
+            instructions: 'Haz clic en cualquier experiencia para ver información detallada'
+          }
+        },
+        academic: {
+          title: 'Formación Académica',
+          description: 'Formación académica y especializaciones universitarias'
+        },
+        certificate: {
+          title: 'Certificados',
+          description: 'Certificaciones profesionales y formación especializada'
+        },
+        readMore: 'Leer más'
+      },
+      projects: {
+        title: 'Proyectos',
+        filter: {
+          placeholder: 'Filtrar por categoría',
+          all: 'Todas las categorías',
+          process: 'Proceso',
+          governance: 'Gobernanza',
+          technology: 'Tecnología',
+          statistics: 'Estadística'
+        },
+        category: {
+          process: 'Mejora de Procesos',
+          governance: 'Gobernanza Corporativa',
+          it: 'Gobernanza de TI y Ágil',
+          dev: 'Desarrollo de Software',
+          stats: 'Estadística Aplicada',
+          technology: 'Soluciones Tecnológicas',
+          statistics: 'Estadística y Análisis',
+          production: 'Control de Producción'
+        },
+        categories: {
+          process: 'Mejora de Procesos',
+          governance: 'Gobernanza Corporativa',
+          it: 'Gobernanza de TI y Ágil',
+          dev: 'Desarrollo de Software',
+          stats: 'Estadística Aplicada',
+          technology: 'Soluciones Tecnológicas',
+          statistics: 'Estadística y Análisis',
+          production: 'Control de Producción'
+        },
+        viewCode: 'Ver código',
+        liveDemo: 'Demo en vivo',
+        noResults: 'No se encontraron resultados',
+        resultsFound: 'resultados encontrados',
+        noMatch: 'Ningún proyecto coincide con los criterios de búsqueda.',
+        noMatchInCategory: 'Ningún proyecto coincide con los criterios de esta categoría.',
+        readMore: 'Leer más'
+      },
+      modal: {
+        about: {
+          title: 'Sobre mí',
+          close: 'Cerrar',
+          loading: 'Cargando...',
+          error: 'Error al cargar el contenido'
+        }
+      },
+      footer: {
+        copyright: '© 2025 Lucas Liachi.'
+      }
+    }
+  };
+
+  function normalizeLanguage(language) {
+    const normalized = String(language || 'en').toLowerCase();
+    return Object.prototype.hasOwnProperty.call(translations, normalized) ? normalized : 'en';
+  }
+
+  function getNestedTranslation(source, key) {
+    if (!source || !key) {
+      return null;
+    }
+
+    const value = key.split('.').reduce((accumulator, segment) => {
+      if (accumulator && Object.prototype.hasOwnProperty.call(accumulator, segment)) {
+        return accumulator[segment];
+      }
+      return undefined;
+    }, source);
+
+    if (value !== undefined) {
+      return value;
+    }
+
+    if (key.startsWith('projects.category.')) {
+      const categoryKey = key.replace('projects.category.', '');
+      return source.projects?.categories?.[categoryKey] ?? source.projects?.category?.[categoryKey] ?? null;
+    }
+
+    return null;
+  }
+
+  return {
+    all: translations,
+    get(key, language = getCurrentLanguage()) {
+      const normalizedLanguage = normalizeLanguage(language);
+      const localizedValue = getNestedTranslation(translations[normalizedLanguage], key);
+      if (localizedValue !== null && localizedValue !== undefined) {
+        return localizedValue;
+      }
+      return getNestedTranslation(translations.en, key) ?? key;
+    }
+  };
+})();
+
+window.Translations = Translations;
+
+const SUPPORTED_LANGUAGES = new Set(['en', 'pt', 'es']);
+
+function normalizeLanguage(language) {
+  const normalized = String(language || 'en').toLowerCase();
+  return SUPPORTED_LANGUAGES.has(normalized) ? normalized : 'en';
+}
+
+function getCurrentLanguage() {
+  return normalizeLanguage(window.currentLanguage || localStorage.getItem('language') || 'en');
+}
+
+window.currentLanguage = getCurrentLanguage();
+
+function resolveLocalizedPath(path, language = getCurrentLanguage()) {
+  if (!path) {
+    return path;
+  }
+
+  const normalizedLanguage = normalizeLanguage(language).toUpperCase();
+  return path.replace(/(^|\/)(EN|PT|ES)(?=\/|\.md|$)/gi, `$1${normalizedLanguage}`);
+}
+
+function updateLocalizedLinks(language) {
+  const localizedLanguage = normalizeLanguage(language);
+  document.querySelectorAll('.about-link[data-path]').forEach(link => {
+    const basePath = link.dataset.basePath || link.getAttribute('data-path');
+    if (!link.dataset.basePath && basePath) {
+      link.dataset.basePath = basePath;
+    }
+
+    if (basePath) {
+      link.setAttribute('data-path', resolveLocalizedPath(link.dataset.basePath || basePath, localizedLanguage));
+    }
+  });
+}
+
+function applyLanguageToDocument(language) {
+  const normalizedLanguage = normalizeLanguage(language);
+  const locale = normalizedLanguage === 'pt' ? 'pt-BR' : normalizedLanguage === 'es' ? 'es-ES' : 'en';
+  document.documentElement.lang = locale;
+
+  document.querySelectorAll('[data-i18n]').forEach(element => {
+    const key = element.getAttribute('data-i18n');
+    const translation = Translations.get(key, normalizedLanguage);
+    if (translation !== null && translation !== undefined) {
+      element.innerHTML = translation;
+    }
+  });
+
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+    const key = element.getAttribute('data-i18n-placeholder');
+    const translation = Translations.get(key, normalizedLanguage);
+    if (translation !== null && translation !== undefined) {
+      element.setAttribute('placeholder', translation);
+      element.setAttribute('aria-label', translation);
+      element.setAttribute('title', translation);
+    }
+  });
+
+  document.querySelectorAll('.language-option').forEach(option => {
+    const isActive = option.dataset.language === normalizedLanguage;
+    option.classList.toggle('active', isActive);
+    option.setAttribute('aria-pressed', String(isActive));
+  });
+
+  updateLocalizedLinks(normalizedLanguage);
+}
+
+function openAboutModal() {
+  if (window.AboutModal?.init && !window.AboutModal.instance) {
+    window.AboutModal.init();
+  }
+
+  if (window.AboutModal?.open) {
+    window.AboutModal.open();
+    return;
+  }
+
+  const heroAboutBtn = document.getElementById('hero-about-btn');
+  const path = heroAboutBtn?.getAttribute('data-path');
+  if (window.loadProjectContent && path) {
+    window.loadProjectContent(path);
+  }
+}
+
+function setupLanguageButtons() {
+  document.querySelectorAll('.language-option').forEach(option => {
+    if (option.dataset.bound === 'true') {
+      return;
+    }
+
+    option.dataset.bound = 'true';
     option.addEventListener('click', () => {
-      const language = option.getAttribute('data-language');
-      changeLanguage(language);
+      changeLanguage(option.getAttribute('data-language'));
     });
   });
-  
-  // Set up mobile menu
+}
+
+function setupMobileMenu() {
+  const toggleButton = document.getElementById('mobile-menu-toggle');
+  const nav = document.getElementById('main-nav');
+  if (!toggleButton || !nav || toggleButton.dataset.bound === 'true') {
+    return;
+  }
+
+  toggleButton.dataset.bound = 'true';
+  const closeMenu = () => {
+    nav.classList.remove('mobile-open');
+    toggleButton.setAttribute('aria-expanded', 'false');
+  };
+
+  const openMenu = () => {
+    nav.classList.add('mobile-open');
+    toggleButton.setAttribute('aria-expanded', 'true');
+  };
+
+  toggleButton.addEventListener('click', () => {
+    if (nav.classList.contains('mobile-open')) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  nav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      closeMenu();
+    });
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      closeMenu();
+    }
+  });
+}
+
+function setupAboutTabs() {
+  document.querySelectorAll('.category-tab').forEach(tab => {
+    if (tab.dataset.bound === 'true') {
+      return;
+    }
+
+    tab.dataset.bound = 'true';
+    tab.addEventListener('click', event => {
+      event.preventDefault();
+      const targetCategory = tab.getAttribute('data-category');
+
+      document.querySelectorAll('.category-tab').forEach(otherTab => {
+        otherTab.classList.remove('active');
+      });
+
+      document.querySelectorAll('.about-category').forEach(category => {
+        category.classList.remove('active-content');
+      });
+
+      tab.classList.add('active');
+      const activeContent = document.getElementById(`about-${targetCategory}`);
+      if (activeContent) {
+        activeContent.classList.add('active-content');
+      }
+    });
+  });
+}
+
+function setupSmoothScrolling() {
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    if (link.dataset.bound === 'true') {
+      return;
+    }
+
+    link.dataset.bound = 'true';
+    link.addEventListener('click', event => {
+      const targetId = link.getAttribute('href');
+      if (!targetId || targetId === '#') {
+        return;
+      }
+
+      const targetElement = document.querySelector(targetId);
+      if (!targetElement) {
+        return;
+      }
+
+      event.preventDefault();
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const nav = document.getElementById('main-nav');
+      const toggleButton = document.getElementById('mobile-menu-toggle');
+      nav?.classList.remove('mobile-open');
+      toggleButton?.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
+
+function bindHeroAboutButton() {
+  const heroAboutBtn = document.getElementById('hero-about-btn');
+  if (!heroAboutBtn || heroAboutBtn.dataset.bound === 'true') {
+    return;
+  }
+
+  heroAboutBtn.dataset.bound = 'true';
+  heroAboutBtn.addEventListener('click', event => {
+    event.preventDefault();
+    openAboutModal();
+  });
+}
+
+function changeLanguage(language) {
+  const normalizedLanguage = normalizeLanguage(language);
+  window.currentLanguage = normalizedLanguage;
+  localStorage.setItem('language', normalizedLanguage);
+
+  applyLanguageToDocument(normalizedLanguage);
+  bindHeroAboutButton();
+
+  document.dispatchEvent(new CustomEvent('languageChanged', {
+    detail: { language: normalizedLanguage }
+  }));
+}
+
+function updatePageContent(language = getCurrentLanguage()) {
+  window.currentLanguage = normalizeLanguage(language);
+  applyLanguageToDocument(window.currentLanguage);
+}
+
+function initializeSite() {
+  const savedLanguage = getCurrentLanguage();
+  window.currentLanguage = savedLanguage;
+
+  setupLanguageButtons();
   setupMobileMenu();
-  
-  // Set up tabs navigation
   setupAboutTabs();
-  // setupProjectTabs(); // Removed as module-projects.js handles this
-  
-  // Set up smooth scrolling
   setupSmoothScrolling();
-  
-  // Make sure the modal handlers are attached to all about-link elements
+  bindHeroAboutButton();
+  updatePageContent(savedLanguage);
+
   if (window.initializeExperience) {
     window.initializeExperience();
   } else {
-    // If module-curriculum.js hasn't loaded yet, wait for it
-    document.addEventListener('moduleExperienceLoaded', function() {
+    document.addEventListener('moduleExperienceLoaded', () => {
       if (window.initializeExperience) {
         window.initializeExperience();
       }
     });
-    
-    // Try again after a delay as a fallback
+
     setTimeout(() => {
       if (window.initializeExperience) {
         window.initializeExperience();
@@ -122,19 +552,14 @@ const Translations = (() => {
   }
 }
 
-// =============================================================================
-// DOM CONTENT LOADED EVENT
-// =============================================================================
+document.addEventListener('DOMContentLoaded', () => {
+  if (window.DarkMode?.initializeDarkMode) {
+    window.DarkMode.initializeDarkMode();
+  }
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialize dark mode first
-  DarkMode.initializeDarkMode();
-  
-  // Initialize the main site
   initializeSite();
 });
 
-// Export functions for external use
 if (!window.changeLanguage) {
   window.changeLanguage = changeLanguage;
 }
@@ -144,7 +569,9 @@ if (!window.updatePageContent) {
 if (!window.initializeSite) {
   window.initializeSite = initializeSite;
 }
-    const key = element.getAttribute('data-i18n');
-
-    const translation = getNestedTranslation(translations[currentLanguage], key);
-
+if (!window.resolveLocalizedPath) {
+  window.resolveLocalizedPath = resolveLocalizedPath;
+}
+if (!window.getCurrentLanguage) {
+  window.getCurrentLanguage = getCurrentLanguage;
+}
