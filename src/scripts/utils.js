@@ -33,6 +33,113 @@ const Logger = {
 };
 
 // =============================================================================
+// DARK MODE CONTROLLER
+// =============================================================================
+
+const DarkMode = (() => {
+  const STORAGE_KEY = 'theme';
+  const DARK_CLASS = 'dark';
+  let mediaQuery = null;
+  let bound = false;
+
+  function getStoredTheme() {
+    const value = localStorage.getItem(STORAGE_KEY);
+    return value === 'dark' || value === 'light' ? value : null;
+  }
+
+  function getSystemTheme() {
+    if (!window.matchMedia) {
+      return 'light';
+    }
+
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  function getPreferredTheme() {
+    return getStoredTheme() || getSystemTheme();
+  }
+
+  function updateThemeButtons(theme) {
+    document.querySelectorAll('.theme-toggle').forEach(button => {
+      button.setAttribute('aria-pressed', String(theme === 'dark'));
+      button.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+      button.setAttribute('title', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    });
+  }
+
+  function applyTheme(theme, persist = true) {
+    const normalizedTheme = theme === 'dark' ? 'dark' : 'light';
+    document.documentElement.classList.toggle(DARK_CLASS, normalizedTheme === 'dark');
+    document.documentElement.style.colorScheme = normalizedTheme;
+
+    if (persist) {
+      localStorage.setItem(STORAGE_KEY, normalizedTheme);
+    }
+
+    updateThemeButtons(normalizedTheme);
+    document.dispatchEvent(new CustomEvent('themeChanged', {
+      detail: { theme: normalizedTheme }
+    }));
+  }
+
+  function toggleTheme() {
+    const nextTheme = document.documentElement.classList.contains(DARK_CLASS) ? 'light' : 'dark';
+    applyTheme(nextTheme, true);
+  }
+
+  function bindToggleButton() {
+    const button = document.getElementById('dark-mode-toggle');
+    if (!button || button.dataset.bound === 'true') {
+      return;
+    }
+
+    button.dataset.bound = 'true';
+    button.addEventListener('click', toggleTheme);
+    button.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleTheme();
+      }
+    });
+  }
+
+  function watchSystemPreference() {
+    if (!window.matchMedia) {
+      return;
+    }
+
+    mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = event => {
+      if (getStoredTheme()) {
+        return;
+      }
+
+      applyTheme(event.matches ? 'dark' : 'light', false);
+    };
+
+    if (typeof mediaQuery.addEventListener === 'function') {
+      mediaQuery.addEventListener('change', handleChange);
+    } else if (typeof mediaQuery.addListener === 'function') {
+      mediaQuery.addListener(handleChange);
+    }
+  }
+
+  function initializeDarkMode() {
+    applyTheme(getPreferredTheme(), false);
+    bindToggleButton();
+    watchSystemPreference();
+  }
+
+  return {
+    initializeDarkMode,
+    applyTheme,
+    toggleTheme
+  };
+})();
+
+window.DarkMode = DarkMode;
+
+// =============================================================================
 // ABOUT ME MODAL FUNCTIONALITY (consolidated from ui-components.js)
 // =============================================================================
 
@@ -223,7 +330,7 @@ function loadProjectContent(path) {
 
     // If path looks like a directory or ends without .md, try index/readme variants
     if (!finalPath.endsWith('.md')) {
-      const normalized = finalPath.replace(/\/g, '/').replace(/\/$/, '');
+      const normalized = finalPath.replace(/\\/g, '/').replace(/\/$/, '');
       candidates.push(`${normalized}/index.md`);
       candidates.push(`${normalized}/README.md`);
     }

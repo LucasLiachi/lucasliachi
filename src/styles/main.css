@@ -359,15 +359,37 @@ nav ul li a.active::after {
   padding: 0.5rem;
   border-radius: var(--radius);
   background-color: var(--secondary);
+  color: var(--foreground);
+  transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.dark .sun-icon,
+.theme-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.theme-toggle:focus-visible,
+.language-option:focus-visible,
+.category-tab:focus-visible,
+.btn:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.sun-icon {
+  display: block;
+}
+
 .moon-icon {
   display: none;
 }
 
-.dark .moon-icon,
-.sun-icon {
+.dark .sun-icon {
+  display: none;
+}
+
+.dark .moon-icon {
   display: block;
 }
 
