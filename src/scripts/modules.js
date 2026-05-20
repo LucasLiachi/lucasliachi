@@ -243,6 +243,7 @@ class CertificateShowcase {
     this.filteredCertificates = [];
     this.currentFilter = '';
     this.currentSort = 'date-desc';
+    this.isLoading = false;
     this.container = document.getElementById('certificate-container');
     if (!this.container) return;
     this.createFilterUI();
@@ -259,7 +260,11 @@ class CertificateShowcase {
           id="certificate-search" 
           placeholder="Search certificates..." 
           aria-label="Search certificates by name or issuer"
+          autocomplete="off"
         >
+        <button id="certificate-clear-search" class="clear-search" aria-label="Clear certificate search" style="display: none;">
+          ✕
+        </button>
       </div>
       <div class="filter-sort">
         <label for="certificate-sort" class="sr-only">Sort certificates</label>
@@ -270,70 +275,258 @@ class CertificateShowcase {
           <option value="name-desc">Name (Z-A)</option>
         </select>
       </div>
+      <div id="certificate-search-results-count" class="search-results-count" style="display: none;"></div>
     `;
     this.container.parentNode.insertBefore(filterContainer, this.container);
-    document.getElementById('certificate-search').addEventListener('input', (e) => {
-      this.filterCertificates(e.target.value);
-    });
-    document.getElementById('certificate-sort').addEventListener('change', (e) => {
-      this.sortCertificates(e.target.value);
-    });
+    this.searchInput = document.getElementById('certificate-search');
+    this.clearButton = document.getElementById('certificate-clear-search');
+    this.searchResultsDisplay = document.getElementById('certificate-search-results-count');
+    this.sortSelect = document.getElementById('certificate-sort');
+
+    if (this.searchInput) {
+      this.searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.trim();
+        this.filterCertificates(query);
+        if (this.clearButton) {
+          this.clearButton.style.display = query ? 'block' : 'none';
+        }
+      });
+    }
+
+    if (this.clearButton) {
+      this.clearButton.addEventListener('click', () => {
+        if (this.searchInput) {
+          this.searchInput.value = '';
+          this.searchInput.focus();
+        }
+        this.filterCertificates('');
+        this.clearButton.style.display = 'none';
+      });
+      this.clearButton.style.display = this.searchInput && this.searchInput.value ? 'block' : 'none';
+    }
+
+    if (this.sortSelect) {
+      this.sortSelect.addEventListener('change', (e) => {
+        this.sortCertificates(e.target.value);
+      });
+    }
   }
   async loadCertificates() {
+    this.isLoading = true;
+    this.container.setAttribute('aria-busy', 'true');
+    this.container.innerHTML = `
+      <div class="no-certificates">
+        <p>Loading certificates...</p>
+      </div>
+    `;
+
     try {
       const lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toUpperCase();
-      const candidates = [
+      const indexMarkdown = await this.fetchMarkdownFromCandidates([
         `certificate/${lang}.md`,
         'certificate/EN.md'
-      ];
-      let response = null;
-      for (const candidate of candidates) {
-        try {
-          const candidateResponse = await fetch(candidate);
-          if (candidateResponse.ok) {
-            response = candidateResponse;
-            break;
-          }
-        } catch (error) {
-          // continue to next candidate
-        }
-      }
-      if (!response) throw new Error('Failed to load certificate markdown files');
-      const markdown = await response.text();
-      this.certificates = this.parseCertificatesFromMarkdown(markdown);
-      this.filterCertificates('');
+      ]);
+      const entries = this.parseCertificateIndex(indexMarkdown);
+      const certificates = await Promise.all(entries.map(entry => this.loadCertificateEntry(entry, lang)));
+      this.certificates = certificates.filter(Boolean);
+      this.isLoading = false;
+      this.filterCertificates(this.searchInput ? this.searchInput.value.trim() : '');
     } catch (error) {
       console.error('Error loading certificates:', error);
       this.showErrorMessage();
+    } finally {
+      this.container.removeAttribute('aria-busy');
     }
   }
-  parseCertificatesFromMarkdown(markdown) {
-    const certificates = [];
-    let currentGroup = '';
-    const lines = markdown.split(/\r?\n/);
+  async fetchMarkdownFromCandidates(candidates) {
+    for (const candidate of candidates) {
+      try {
+        const response = await fetch(candidate);
+        if (response.ok) {
+          return await response.text();
+        }
+      } catch (error) {
+        // Try the next fallback path
+      }
+    }
 
-    lines.forEach(line => {
-      const headingMatch = line.match(/^##\s+(.+)$/);
-      if (headingMatch) {
-        currentGroup = headingMatch[1].trim();
-        return;
+    throw new Error('Failed to load certificate markdown files');
+  }
+  parseCertificateIndex(markdown) {
+    const normalizedMarkdown = markdown.replace(/\]\s*\n\s*\(/g, '](');
+    const entries = [];
+    const linkPattern = /^\s*[-*]\s+\[([^\]]+)\]\(([^)]+)\)/gm;
+    let match;
+
+    while ((match = linkPattern.exec(normalizedMarkdown)) !== null) {
+      const title = match[1].trim();
+      const path = match[2].trim();
+      if (!path.startsWith('certificate/')) {
+        continue;
       }
 
-      const itemMatch = line.match(/^[-*]\s+\*\*(.+?)\*\*\s+-\s+(.+)$/);
-      if (itemMatch) {
-        const title = itemMatch[1].trim();
-        const issuer = itemMatch[2].trim();
-        certificates.push({
-          id: this.generateId(`${currentGroup || 'certificate'}-${title}`),
-          title,
-          issuer: currentGroup || issuer,
-          date: new Date('2026-01-01'),
-          description: issuer,
-          category: currentGroup || 'Certification'
-        });
+      const parts = path.split('/').filter(Boolean);
+      const folder = parts.length >= 2 ? parts[1] : '';
+      if (!folder) {
+        continue;
+      }
+
+      entries.push({
+        id: this.generateId(`${folder}-${title}`),
+        title,
+        folder,
+        indexPath: path
+      });
+    }
+
+    return entries;
+  }
+  async loadCertificateEntry(entry, lang) {
+    const detailPathCandidates = this.buildCertificatePathCandidates(entry.indexPath, lang);
+    let markdown = null;
+    let resolvedPath = entry.indexPath;
+
+    for (const candidate of detailPathCandidates) {
+      try {
+        const response = await fetch(candidate);
+        if (response.ok) {
+          markdown = await response.text();
+          resolvedPath = candidate;
+          break;
+        }
+      } catch (error) {
+        // Try next candidate
+      }
+    }
+
+    if (!markdown) {
+      return {
+        id: entry.id,
+        title: entry.title,
+        issuer: this.getCertificateFolderLabel(entry.folder),
+        category: this.getCertificateFolderLabel(entry.folder),
+        folder: entry.folder,
+        indexPath: entry.indexPath,
+        path: entry.indexPath,
+        date: new Date(0),
+        dateText: '',
+        expiresText: '',
+        credentialId: '',
+        competencies: '',
+        description: '',
+        searchBlob: `${entry.title} ${entry.folder} ${entry.indexPath}`.toLowerCase()
+      };
+    }
+
+    return this.parseCertificateMarkdown(markdown, entry, resolvedPath);
+  }
+  buildCertificatePathCandidates(indexPath, lang) {
+    const normalizedPath = String(indexPath || '').replace(/\\/g, '/');
+    const parts = normalizedPath.split('/').filter(Boolean);
+    if (parts.length < 3) {
+      return [normalizedPath];
+    }
+
+    const folder = parts[1];
+    const candidates = [
+      `certificate/${folder}/${lang}.md`,
+      normalizedPath
+    ];
+
+    ['EN', 'PT', 'ES'].forEach(code => {
+      const candidatePath = `certificate/${folder}/${code}.md`;
+      if (!candidates.includes(candidatePath)) {
+        candidates.push(candidatePath);
       }
     });
-    return certificates;
+
+    return [...new Set(candidates)];
+  }
+  parseCertificateMarkdown(markdown, entry, resolvedPath) {
+    const titleMatch = markdown.match(/^#\s+(.+)$/m);
+    const lines = markdown.split(/\r?\n/);
+    const metadata = {};
+
+    lines.forEach(line => {
+      const match = line.match(/^[-*]\s+([^:]+):\s+(.+)$/);
+      if (match) {
+        metadata[match[1].trim().toLowerCase()] = match[2].trim();
+      }
+    });
+
+    const title = titleMatch ? titleMatch[1].trim() : entry.title;
+    const issuer = metadata.issuer || this.getCertificateFolderLabel(entry.folder);
+    const dateText = metadata.issued || '';
+    const expiresText = metadata.expires || '';
+    const credentialId = metadata['credential id'] || '';
+    const competencies = metadata.competencies || '';
+    const descriptionParts = [];
+
+    if (dateText) {
+      descriptionParts.push(`Issued: ${dateText}`);
+    }
+    if (expiresText) {
+      descriptionParts.push(`Expires: ${expiresText}`);
+    }
+    if (credentialId) {
+      descriptionParts.push(`Credential ID: ${credentialId}`);
+    }
+
+    return {
+      id: this.generateId(`${entry.folder}-${title}`),
+      title,
+      issuer,
+      category: this.getCertificateFolderLabel(entry.folder),
+      folder: entry.folder,
+      indexPath: entry.indexPath,
+      path: resolvedPath || entry.indexPath,
+      date: this.parseCertificateDate(dateText),
+      dateText,
+      expiresText,
+      credentialId,
+      competencies,
+      description: descriptionParts.join(' • '),
+      searchBlob: [
+        title,
+        issuer,
+        entry.folder,
+        dateText,
+        expiresText,
+        credentialId,
+        competencies,
+        entry.indexPath,
+        descriptionParts.join(' ')
+      ].filter(Boolean).join(' ').toLowerCase()
+    };
+  }
+  parseCertificateDate(dateText) {
+    if (!dateText) {
+      return new Date(0);
+    }
+
+    const parsedDate = new Date(dateText);
+    if (!Number.isNaN(parsedDate.getTime())) {
+      return parsedDate;
+    }
+
+    const parts = dateText.match(/^([A-Za-z]{3,9})\s+(\d{4})$/);
+    if (parts) {
+      const monthIndex = new Date(`${parts[1]} 1, 2000`).getMonth();
+      if (monthIndex >= 0) {
+        return new Date(Number(parts[2]), monthIndex, 1);
+      }
+    }
+
+    return new Date(0);
+  }
+  getCertificateFolderLabel(folder) {
+    if (!folder) {
+      return 'Certificate';
+    }
+
+    return folder
+      .replace(/_/g, ' ')
+      .replace(/\b\w/g, char => char.toUpperCase());
   }
   generateId(str) {
     return str
@@ -342,19 +535,19 @@ class CertificateShowcase {
       .replace(/\s+/g, '-');
   }
   filterCertificates(searchTerm) {
-    this.currentFilter = searchTerm.toLowerCase();
+    this.currentFilter = searchTerm.trim();
+    const normalizedSearch = this.currentFilter.toLowerCase();
     this.filteredCertificates = this.certificates.filter(cert => {
-      if (!this.currentFilter) return true;
-      return (
-        cert.title.toLowerCase().includes(this.currentFilter) ||
-        cert.issuer.toLowerCase().includes(this.currentFilter) ||
-        (cert.description && cert.description.toLowerCase().includes(this.currentFilter))
-      );
+      if (!normalizedSearch) {
+        return true;
+      }
+
+      return (cert.searchBlob || '').includes(normalizedSearch);
     });
-    this.sortCertificates(this.currentSort);
+    this.sortCertificates(this.currentSort, false);
     this.renderCertificates();
   }
-  sortCertificates(sortOption) {
+  sortCertificates(sortOption, shouldRender = true) {
     this.currentSort = sortOption;
     this.filteredCertificates.sort((a, b) => {
       switch (sortOption) {
@@ -370,9 +563,16 @@ class CertificateShowcase {
           return 0;
       }
     });
-    this.renderCertificates();
+    if (shouldRender) {
+      this.renderCertificates();
+    }
   }
   renderCertificates() {
+    if (!this.searchResultsDisplay) {
+      this.searchResultsDisplay = document.getElementById('certificate-search-results-count');
+    }
+
+    this.updateSearchResultsCount(this.filteredCertificates.length);
     this.container.innerHTML = '';
     if (this.filteredCertificates.length === 0) {
       const noResults = document.createElement('div');
@@ -384,63 +584,81 @@ class CertificateShowcase {
       return;
     }
     const grid = document.createElement('div');
-    grid.className = 'certificate-grid';
-    this.filteredCertificates.forEach(cert => {
-      const card = this.createCertificateCard(cert);
+    grid.className = 'projects-grid certificate-grid';
+    this.filteredCertificates.forEach((cert, index) => {
+      const card = this.createCertificateCard(cert, index);
       grid.appendChild(card);
     });
     this.container.appendChild(grid);
+    this.bindCertificateLinks();
   }
-  createCertificateCard(cert) {
+  updateSearchResultsCount(count) {
+    if (!this.searchResultsDisplay) {
+      return;
+    }
+
+    if (!this.currentFilter && !this.isLoading) {
+      this.searchResultsDisplay.textContent = '';
+      this.searchResultsDisplay.style.display = 'none';
+      return;
+    }
+
+    this.searchResultsDisplay.style.display = 'block';
+    this.searchResultsDisplay.textContent = count === 0
+      ? 'No certificates found'
+      : `${count} certificates found`;
+  }
+  createCertificateCard(cert, index) {
     const card = document.createElement('article');
-    card.className = 'certificate-card';
+    card.className = 'project-card certificate-card fade-in';
+    card.style.animationDelay = `${index * 0.1}s`;
     card.setAttribute('aria-labelledby', `cert-title-${cert.id}`);
-    const imageContainer = document.createElement('div');
-    imageContainer.className = 'certificate-image';
-    const image = document.createElement('img');
-    image.setAttribute('data-src', 'src/images/placeholder.svg');
-    image.alt = '';
-    image.setAttribute('aria-hidden', 'true');
-    image.loading = 'lazy';
-    if ('loading' in HTMLImageElement.prototype) {
-      image.src = 'src/images/placeholder.svg';
-    } else {
-      image.className = 'lazy';
+    const competencies = cert.competencies
+      ? cert.competencies.split(',').map(item => item.trim()).filter(Boolean)
+      : [];
+    const metaTags = [];
+
+    if (cert.dateText) {
+      metaTags.push(cert.dateText);
     }
-    imageContainer.appendChild(image);
-    const content = document.createElement('div');
-    content.className = 'certificate-content';
-    const title = document.createElement('h3');
-    title.id = `cert-title-${cert.id}`;
-    title.textContent = cert.title;
-    const issuer = document.createElement('p');
-    issuer.className = 'certificate-issuer';
-    issuer.textContent = cert.issuer;
-    let description;
-    if (cert.description) {
-      description = document.createElement('p');
-      description.className = 'certificate-description';
-      description.textContent = cert.description;
+    if (cert.expiresText) {
+      metaTags.push(`Expires: ${cert.expiresText}`);
     }
-    const meta = document.createElement('div');
-    meta.className = 'certificate-meta';
-    const date = document.createElement('span');
-    date.className = 'certificate-date';
-    date.textContent = cert.date.toLocaleDateString();
-    const viewLink = document.createElement('a');
-    viewLink.href = '#';
-    viewLink.className = 'certificate-link';
-    viewLink.textContent = 'View certificate';
-    viewLink.setAttribute('aria-label', `View ${cert.title} certificate details`);
-    meta.appendChild(date);
-    meta.appendChild(viewLink);
-    content.appendChild(title);
-    content.appendChild(issuer);
-    if (description) content.appendChild(description);
-    content.appendChild(meta);
-    card.appendChild(imageContainer);
-    card.appendChild(content);
+    if (cert.credentialId) {
+      metaTags.push(`ID: ${cert.credentialId}`);
+    }
+
+    card.innerHTML = `
+      <div class="project-header">
+        <h3 id="cert-title-${cert.id}">${cert.title}</h3>
+        ${cert.issuer ? `<span class="project-category-tag">${cert.issuer}</span>` : ''}
+      </div>
+      <p class="project-description">${cert.description || 'Professional certificate details available in the markdown file.'}</p>
+      <div class="project-technologies">
+        ${competencies.map(competency => `<span class="tech-tag">${competency}</span>`).join('')}
+        ${metaTags.map(tag => `<span class="tech-tag">${tag}</span>`).join('')}
+      </div>
+      <div class="project-links">
+        <a href="#" class="project-link certificate-link btn btn-secondary" data-path="${cert.path}">View certificate</a>
+      </div>
+    `;
     return card;
+  }
+  bindCertificateLinks() {
+    this.container.querySelectorAll('.certificate-link').forEach(link => {
+      if (link.dataset.bound === 'true') {
+        return;
+      }
+
+      link.dataset.bound = 'true';
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        const path = link.getAttribute('data-path');
+        if (path && window.loadProjectContent) {
+          window.loadProjectContent(path);
+        }
+      });
+    });
   }
   showErrorMessage() {
     this.container.innerHTML = `
@@ -448,6 +666,10 @@ class CertificateShowcase {
         <p>Unable to load certificates. Please try again later.</p>
       </div>
     `;
+    if (this.searchResultsDisplay) {
+      this.searchResultsDisplay.textContent = '';
+      this.searchResultsDisplay.style.display = 'none';
+    }
   }
 }
 
@@ -998,6 +1220,9 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('languageChanged', () => {
   if (document.getElementById('career-timeline')) {
     loadCareerContent();
+  }
+  if (window.certificateShowcase) {
+    window.certificateShowcase.loadCertificates();
   }
 });
 
