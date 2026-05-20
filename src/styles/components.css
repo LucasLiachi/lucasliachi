@@ -219,6 +219,33 @@
   margin-bottom: 1rem;
 }
 
+.timeline.career-markdown-mode {
+  max-width: 900px;
+  padding: 0;
+}
+
+.timeline.career-markdown-mode::after {
+  display: none;
+}
+
+.timeline.career-markdown-mode .career-markdown-content {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+}
+
+.career-loading {
+  padding: 1.5rem;
+  color: var(--muted-foreground);
+  text-align: center;
+}
+
+.career-loading.error {
+  color: var(--danger, #d9534f);
+}
+
 .timeline-instructions {
   text-align: center;
   color: var(--muted-foreground);
@@ -532,6 +559,7 @@
   border-radius: var(--radius);
   padding: 2rem;
   max-width: 800px;
+  max-width: 520px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
@@ -551,16 +579,16 @@
 
 .close-modal {
   position: absolute;
-  top: 1rem;
-  right: 1.5rem;
-  font-size: 1.5rem;
+  top: 0.75rem;
+  right: 0.75rem;
+  font-size: 1.25rem;
   cursor: pointer;
   color: var(--muted-foreground);
-  transition: color 0.2s ease;
-  background: none;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  background: transparent;
   border: none;
-  padding: 0.5rem;
-  border-radius: var(--radius);
+  padding: 0.4rem;
+  border-radius: 6px;
 }
 
 .close-modal:hover {
@@ -650,6 +678,35 @@
 .markdown-content pre code {
   padding: 0;
   background-color: transparent;
+}
+
+/* Modal header */
+.modal-content .modal-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.modal-content .modal-title {
+  margin: 0;
+  font-size: 1.125rem;
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
 
 /* ============================================

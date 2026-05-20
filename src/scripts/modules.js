@@ -28,8 +28,62 @@ function switchToTab(categoryName) {
 
 function initializeExperience() {
   initializeTabs();
-  renderExperience(generateCareerData());
+  loadCareerContent();
   loadExperienceContent();
+}
+
+async function loadCareerContent() {
+  const timelineContainer = document.getElementById('career-timeline');
+  if (!timelineContainer) {
+    console.error('Timeline container not found');
+    return;
+  }
+
+  timelineContainer.classList.add('career-markdown-mode');
+
+  const currentLang = (window.currentLanguage || localStorage.getItem('language') || 'en').toUpperCase();
+  const candidates = [`career/${currentLang}.md`, 'career/EN.md'];
+
+  timelineContainer.setAttribute('aria-busy', 'true');
+  timelineContainer.innerHTML = `<div class="career-loading">Loading career timeline...</div>`;
+
+  try {
+    let response = null;
+
+    for (const candidate of candidates) {
+      try {
+        const candidateResponse = await fetch(candidate);
+        if (candidateResponse.ok) {
+          response = candidateResponse;
+          break;
+        }
+      } catch (error) {
+        // Continue to the next fallback
+      }
+    }
+
+    if (!response) {
+      throw new Error('Failed to load career markdown');
+    }
+
+    const markdown = await response.text();
+    const html = window.marked ? window.marked.parse(markdown) : markdown;
+
+    timelineContainer.innerHTML = `
+      <div class="career-markdown-content markdown-content" data-language="${currentLang.toLowerCase()}">
+        ${html}
+      </div>
+    `;
+  } catch (error) {
+    console.error('Error loading career timeline:', error);
+    timelineContainer.innerHTML = `
+      <div class="career-loading error">
+        <p>Unable to load career timeline.</p>
+      </div>
+    `;
+  } finally {
+    timelineContainer.removeAttribute('aria-busy');
+  }
 }
 
 function loadExperienceContent() {
@@ -131,51 +185,7 @@ function renderExperience(jobs) {
 }
 
 function generateCareerData() {
-  const jobs = [
-    {
-      date: "2022 - Present",
-      title: "Process Specialist & Governance",
-      company: "GFT Group",
-      description: "Leading process improvement initiatives and ensuring governance standards.",
-      left: false
-    },
-    {
-      date: "2021 - 2022",
-      title: "Business Analyst Industries",
-      company: "The Donald L. Resnick Endowed Chair of Agriculture",
-      description: "Analyzed business requirements and implemented process improvements.",
-      left: true
-    },
-    {
-      date: "2018 - 2021",
-      title: "Business Analyst IT Governance",
-      company: "Kuhn do Brasil Implementos Agrícolas Ltda",
-      description: "Led IT governance initiatives and process documentation.",
-      left: false
-    },
-    {
-      date: "2017 - 2018",
-      title: "Business Process Analyst Consultant",
-      company: "Consulting Firm",
-      description: "Provided consulting services for business process optimization.",
-      left: true
-    },
-    {
-      date: "2016 - 2017",
-      title: "ISO 9001 Scholar",
-      company: "Educational Institution",
-      description: "Specialized in ISO 9001 quality management systems.",
-      left: false
-    },
-    {
-      date: "2016",
-      title: "Project Quality Analyst",
-      company: "Project Management Office",
-      description: "Ensured quality standards in project delivery.",
-      left: true
-    }
-  ];
-  return jobs;
+  return [];
 }
 
 function openCareerDetail(folder) {
@@ -770,7 +780,7 @@ class ProjectManager {
   displayGlobalSearchResults() {
     Object.values(this.projectContainers).forEach(container => {
       if (container) container.style.display = 'none';
-    }
+    });
     const categoryTabs = document.querySelectorAll('.projects-nav .project-tab');
     if (categoryTabs && categoryTabs.length) categoryTabs.forEach(tab => tab.style.opacity = '0.5');
     let searchResultsContainer = document.getElementById('search-results-container');
@@ -982,6 +992,12 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeExperience();
   if (document.getElementById('projects')) {
     window.projectManager = new ProjectManager();
+  }
+});
+
+document.addEventListener('languageChanged', () => {
+  if (document.getElementById('career-timeline')) {
+    loadCareerContent();
   }
 });
 

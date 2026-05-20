@@ -221,6 +221,13 @@ class AboutModal {
         this.modalContent.innerHTML = this.simpleMarkdownParse(markdownContent);
       }
       
+      // Update modal title and close label for accessibility
+      const titleEl = this.modal.querySelector('#about-modal-title');
+      const translatedTitle = this.getTranslation('modal.about.title') || titleEl?.textContent || 'About';
+      if (titleEl) titleEl.textContent = translatedTitle;
+      const closeLabel = this.getTranslation('modal.about.close') || 'Close';
+      this.closeBtn?.setAttribute('aria-label', closeLabel + ' about dialog');
+
       this.processLinks();
       
     } catch (error) {

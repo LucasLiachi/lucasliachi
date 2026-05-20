@@ -9,5 +9,3 @@ Especialista en Procesos con 8 años de experiencia en Tecnología, enfocado en 
 🎓 Con una sólida formación académica y certificaciones en Lean Six Sigma, Kanban y COBIT, he implementado soluciones estratégicas de Gestión de Procesos y Gobernanza de TI, resultando en mejoras medibles, como la reducción de costos operativos y el aumento de la productividad.
 
 💼 Actualmente, lidero el mapeo de procesos E2E (End-to-End) y Cadena de Valor en Softplan, además de desarrollar nuevos procesos estratégicos para Gobernanza. Utilizo indicadores clave de desempeño (KPIs) para monitorear la eficacia de los procesos y garantizar la entrega de resultados alineados con los objetivos organizacionales. Anteriormente, proporcioné consultoría especializada en minería de procesos, implementaciones de ERP y sistemas para la gestión del ciclo de vida del desarrollo (ALM), ayudando a empresas a obtener mayor control y precisión sobre sus operaciones a través del análisis de datos, auditoría de procesos y mejora continua.
-
-### [Resumen Profesional y Experiencia](/content/about/carrerPT.md)
