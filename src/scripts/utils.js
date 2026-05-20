@@ -458,7 +458,30 @@ function loadProjectContent(path) {
       const text = await response.text();
       if (window.marked) {
         const html = window.marked.parse(text);
-        showContentModal(html, path);
+
+        // If AboutModal is available, reuse its markup, focus management and accessibility
+        if (window.AboutModal && window.AboutModal.instance && window.AboutModal.instance.modal && window.AboutModal.instance.modalContent) {
+          try {
+            // set modal content
+            window.AboutModal.instance.modalContent.innerHTML = html;
+
+            // attempt to extract a title from the markdown and set the modal title element if present
+            const titleMatch = String(text || '').match(/^#\s+(.+)$/m);
+            const modalTitle = titleMatch ? titleMatch[1].trim() : null;
+            const titleEl = window.AboutModal.instance.modal.querySelector('#about-modal-title');
+            if (titleEl) {
+              titleEl.textContent = modalTitle || (window.Translations ? window.Translations.get('modal.about.title') : titleEl.textContent);
+            }
+
+            // open AboutModal using its established methods
+            window.AboutModal.instance.open();
+          } catch (e) {
+            Logger.error('Failed to open AboutModal with project content, falling back to generic modal', e);
+            showContentModal(html, path);
+          }
+        } else {
+          showContentModal(html, path);
+        }
       } else {
         Logger.error('Marked library not found');
       }

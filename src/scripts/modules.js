@@ -51,6 +51,130 @@ function extractMarkdownTitle(markdown, fallbackTitle) {
   return titleMatch ? titleMatch[1].trim() : fallbackTitle;
 }
 
+function parseCareerSections(markdown) {
+  const text = String(markdown || '');
+  // Split by section headers '## '
+  const rawSections = text.split(/\r?\n##\s+/).map(s => s.trim()).filter(Boolean);
+  // first chunk may contain the main title; skip if it doesn't start with '##'
+  if (rawSections.length === 0) return [];
+  // If the first chunk starts with a top-level title, keep remaining sections
+  const sections = rawSections.slice(rawSections[0].startsWith('#') ? 1 : 0);
+
+  return sections.map(raw => {
+    const lines = raw.split(/\r?\n/);
+    const title = (lines.shift() || '').trim();
+    const remainder = lines.join('\n').trim();
+
+    // Try to extract the bold company | period line e.g. **Softplan | 08/2022 ...**
+    const boldMatch = remainder.match(/\*\*(.+?)\*\*/m);
+    let company = '';
+    let period = '';
+    let body = remainder;
+    if (boldMatch) {
+      const bold = boldMatch[1].trim();
+      const parts = bold.split('|').map(p => p.trim());
+      company = parts[0] || '';
+      period = parts[1] || '';
+      body = remainder.replace(boldMatch[0], '').trim();
+    }
+
+    // Extract trailing tag line like *#tag1 #tag2*
+    let tags = [];
+    const tagMatch = body.match(/\*#([^*]+)\*/m);
+    if (tagMatch) {
+      tags = tagMatch[1].split(/\s+/).map(t => t.replace(/^#/, '').trim()).filter(Boolean);
+      body = body.replace(tagMatch[0], '').trim();
+    }
+
+    const descriptionMarkdown = body.split(/\r?\n/).slice(0, 6).join('\n').trim();
+    const description = (window.marked ? window.marked.parse(descriptionMarkdown) : descriptionMarkdown).replace(/(^<p>|<\/p>$)/g, '').trim();
+
+    const metaItems = [];
+    if (period) metaItems.push(`Period: ${period}`);
+
+    const id = String(title || company || Math.random()).toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, '-');
+
+    return {
+      id,
+      title: title || company,
+      secondaryLabel: company,
+      description: description || '',
+      metaItems,
+      tags,
+      sectionMarkdown: `## ${title}\n\n${boldMatch ? boldMatch[0] + '\n' : ''}${body}`
+    };
+  });
+}
+
+let _cachedCareerFolders = null;
+
+async function fetchCareerFoldersIndex() {
+  if (_cachedCareerFolders) return _cachedCareerFolders;
+  try {
+    const resp = await fetch('career/index.json');
+    if (resp && resp.ok) {
+      const arr = await resp.json();
+      if (Array.isArray(arr)) {
+        _cachedCareerFolders = arr;
+        return arr;
+      }
+    }
+  } catch (e) {
+    // fallthrough to other discovery methods
+  }
+
+  // Fallback: attempt to parse links from career/<LANG>.md to discover folders
+  try {
+    const lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toUpperCase();
+    const resp = await fetch(`career/${lang}.md`);
+    if (resp && resp.ok) {
+      const text = await resp.text();
+      const linkPattern = /\(career\/([^\/)]+)\//g;
+      const folders = new Set();
+      let m;
+      while ((m = linkPattern.exec(text)) !== null) {
+        folders.add(m[1]);
+      }
+      const list = Array.from(folders);
+      if (list.length) {
+        _cachedCareerFolders = list;
+        return list;
+      }
+    }
+  } catch (e) {
+    // ignore
+  }
+
+  // Final fallback: empty list
+  _cachedCareerFolders = [];
+  return _cachedCareerFolders;
+}
+
+async function resolveCareerFolderPath(title, lang) {
+  const normalizedTitle = String(title || '').toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, ' ').trim();
+  const codes = [String(lang || 'en').toUpperCase(), 'EN', 'PT', 'ES'];
+  const folders = await fetchCareerFoldersIndex();
+
+  for (const folder of folders) {
+    for (const code of codes) {
+      const candidate = `career/${folder}/${code}.md`;
+      try {
+        const resp = await fetch(candidate);
+        if (!resp || !resp.ok) continue;
+        const text = await resp.text();
+        const fileTitle = extractMarkdownTitle(text, '');
+        const normFileTitle = String(fileTitle || '').toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, ' ').trim();
+        if (normFileTitle && normFileTitle === normalizedTitle) {
+          return candidate;
+        }
+      } catch (e) {
+        // ignore and continue
+      }
+    }
+  }
+  return null;
+}
+
 function splitCommaValues(value) {
   return String(value || '')
     .split(',')
@@ -133,13 +257,98 @@ async function loadCareerContent() {
     }
 
     const markdown = await response.text();
-    const html = window.marked ? window.marked.parse(markdown) : markdown;
+    const markdownText = String(markdown || '');
 
-    timelineContainer.innerHTML = `
-      <div class="career-markdown-content markdown-content" data-language="${currentLang.toLowerCase()}">
-        ${html}
-      </div>
-    `;
+    // Try to parse into sections and render as profile cards. If parsing fails, fall back to full markdown HTML.
+    const sections = parseCareerSections(markdownText);
+    if (sections && sections.length) {
+      timelineContainer.innerHTML = '';
+      const grid = document.createElement('div');
+      grid.className = 'projects-grid profile-grid';
+      for (let idx = 0; idx < sections.length; idx++) {
+        const entry = sections[idx];
+        const card = document.createElement('article');
+        card.className = 'project-card career-card profile-card fade-in';
+        card.style.animationDelay = `${idx * 0.08}s`;
+        card.setAttribute('aria-labelledby', `career-title-${entry.id}`);
+
+        // try to resolve a folder path that matches this section title
+        let resolvedPath = null;
+        try {
+          resolvedPath = await resolveCareerFolderPath(entry.title, currentLang);
+        } catch (e) {
+          resolvedPath = null;
+        }
+
+        card.innerHTML = buildProfileCardMarkup({
+          id: entry.id,
+          title: entry.title,
+          secondaryLabel: entry.secondaryLabel,
+          description: entry.description,
+          metaItems: entry.metaItems || [],
+          tags: entry.tags || [],
+          linkPath: resolvedPath || '#',
+          linkLabel: window.Translations?.get('about.readMore') || 'Read More',
+          linkClass: 'career-link btn btn-secondary',
+          titleIdPrefix: 'career-title'
+        });
+
+        const anchor = card.querySelector('.career-link');
+        if (anchor) {
+          if (resolvedPath) {
+            anchor.dataset.path = resolvedPath;
+          } else {
+            delete anchor.dataset.path;
+            anchor.dataset.section = encodeURIComponent(entry.sectionMarkdown || '');
+          }
+        }
+
+        grid.appendChild(card);
+      }
+      timelineContainer.appendChild(grid);
+      // bind career link handlers to open modal with section markdown
+      timelineContainer.querySelectorAll('.career-link').forEach(link => {
+        if (link.dataset.bound === 'true') return;
+        link.dataset.bound = 'true';
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetPath = link.dataset.path;
+          if (targetPath && window.loadProjectContent) {
+            window.loadProjectContent(targetPath);
+            return;
+          }
+
+          // fallback: use stored section markdown
+          const section = link.dataset.section ? decodeURIComponent(link.dataset.section) : '';
+          if (window.marked) {
+            const html = window.marked.parse(section || markdownText);
+            const contentEl = document.createElement('div');
+            contentEl.classList.add('markdown-content');
+            contentEl.innerHTML = html;
+            const modal = document.createElement('div');
+            modal.classList.add('modal');
+            const modalContent = document.createElement('div');
+            modalContent.classList.add('modal-content');
+            const closeBtn = document.createElement('span');
+            closeBtn.classList.add('close-modal');
+            closeBtn.innerHTML = '&times;';
+            closeBtn.addEventListener('click', () => { document.body.removeChild(modal); });
+            modalContent.appendChild(closeBtn);
+            modalContent.appendChild(contentEl);
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+            modal.addEventListener('click', (ev) => { if (ev.target === modal) document.body.removeChild(modal); });
+          }
+        });
+      });
+    } else {
+      const html = window.marked ? window.marked.parse(markdownText) : markdownText;
+      timelineContainer.innerHTML = `
+        <div class="career-markdown-content markdown-content" data-language="${currentLang.toLowerCase()}">
+          ${html}
+        </div>
+      `;
+    }
   } catch (error) {
     console.error('Error loading career timeline:', error);
     timelineContainer.innerHTML = `

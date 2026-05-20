@@ -38,14 +38,16 @@ jobs:
       - name: Validate project paths
         run: node scripts/validate-projects.js
 
-      - name: Regenerate projects index
+      - name: Regenerate indexes
         run: node scripts/generate-index.js
 
       - name: Commit generated projects index
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: 'chore: update generated projects index [skip ci]'
-          file_pattern: static/projects-index.json
+          commit_message: 'chore: update generated indexes [skip ci]'
+          file_pattern: |
+            static/projects-index.json
+            career/index.json
           commit_user_name: github-actions[bot]
           commit_user_email: github-actions[bot]@users.noreply.github.com

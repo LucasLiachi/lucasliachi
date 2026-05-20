@@ -1,12 +1,31 @@
 const fs = require('fs');
+const fsp = require('fs').promises;
 const path = require('path');
 const vm = require('vm');
 
 const repoRoot = path.resolve(__dirname, '..');
-const sourcePath = path.join(repoRoot, 'src', 'scripts', 'modules.js');
-const outputPath = path.join(repoRoot, 'static', 'projects-index.json');
+
+async function generateCareerIndex() {
+  const careerDir = path.join(repoRoot, 'career');
+  const outFile = path.join(careerDir, 'index.json');
+  try {
+    const entries = await fsp.readdir(careerDir, { withFileTypes: true });
+    const folders = entries
+      .filter(e => e.isDirectory())
+      .map(d => d.name)
+      .filter(n => n !== '.' && n !== '..')
+      .sort();
+    await fsp.writeFile(outFile, JSON.stringify(folders, null, 2) + '\n', 'utf8');
+    console.log(`Wrote ${folders.length} folders to ${path.relative(repoRoot, outFile)}`);
+    return true;
+  } catch (err) {
+    console.error('Failed to generate career/index.json', err);
+    return false;
+  }
+}
 
 function readProjectData() {
+  const sourcePath = path.join(repoRoot, 'src', 'scripts', 'modules.js');
   const source = fs.readFileSync(sourcePath, 'utf8');
   const start = source.indexOf('const projectData = ');
   if (start === -1) {
@@ -47,15 +66,28 @@ function buildProjectsIndex(projectData) {
   return projects;
 }
 
-function main() {
-  const projectData = readProjectData();
-  const output = {
-    source: 'src/scripts/modules.js',
-    projects: buildProjectsIndex(projectData)
-  };
+async function generateProjectsIndex() {
+  try {
+    const projectData = readProjectData();
+    const outputPath = path.join(repoRoot, 'static', 'projects-index.json');
+    const output = {
+      source: 'src/scripts/modules.js',
+      projects: buildProjectsIndex(projectData)
+    };
+    await fsp.mkdir(path.dirname(outputPath), { recursive: true });
+    await fsp.writeFile(outputPath, JSON.stringify(output, null, 2) + '\n', 'utf8');
+    console.log(`Wrote ${output.projects.length} projects to ${path.relative(repoRoot, outputPath)}`);
+    return true;
+  } catch (err) {
+    console.error('Failed to generate projects index', err);
+    return false;
+  }
+}
 
-  fs.writeFileSync(outputPath, JSON.stringify(output, null, 2) + '\n', 'utf8');
-  console.log(`Wrote ${output.projects.length} projects to ${path.relative(repoRoot, outputPath)}`);
+async function main() {
+  const careerOk = await generateCareerIndex();
+  const projectsOk = await generateProjectsIndex();
+  if (!careerOk || !projectsOk) process.exitCode = 1;
 }
 
 main();
