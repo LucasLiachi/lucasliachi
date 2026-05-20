@@ -32,6 +32,68 @@ function initializeExperience() {
   loadExperienceContent();
 }
 
+function parseMarkdownMetadata(markdown) {
+  const lines = String(markdown || '').split(/\r?\n/);
+  const metadata = {};
+
+  lines.forEach(line => {
+    const match = line.match(/^[-*]\s+([^:]+):\s+(.+)$/);
+    if (match) {
+      metadata[match[1].trim().toLowerCase()] = match[2].trim();
+    }
+  });
+
+  return metadata;
+}
+
+function extractMarkdownTitle(markdown, fallbackTitle) {
+  const titleMatch = String(markdown || '').match(/^#\s+(.+)$/m);
+  return titleMatch ? titleMatch[1].trim() : fallbackTitle;
+}
+
+function splitCommaValues(value) {
+  return String(value || '')
+    .split(',')
+    .map(item => item.trim())
+    .filter(Boolean);
+}
+
+function buildProfileCardMarkup({
+  id,
+  title,
+  secondaryLabel,
+  description,
+  metaItems = [],
+  tags = [],
+  linkPath,
+  linkLabel,
+  linkClass,
+  titleIdPrefix
+}) {
+  const metaMarkup = metaItems.length
+    ? `<div class="project-technologies project-meta-tags">${metaItems.map(item => `<span class="tech-tag">${item}</span>`).join('')}</div>`
+    : '';
+  const tagsMarkup = tags.length
+    ? `<div class="project-technologies">${tags.map(tag => `<span class="tech-tag">${tag}</span>`).join('')}</div>`
+    : '';
+  const summaryMarkup = description
+    ? `<p class="project-description">${description}</p>`
+    : '';
+
+  return `
+    <div class="project-header">
+      <h3 id="${titleIdPrefix}-${id}">${title}</h3>
+      ${secondaryLabel ? `<span class="project-category-tag">${secondaryLabel}</span>` : ''}
+    </div>
+    ${summaryMarkup}
+    ${metaMarkup}
+    ${tagsMarkup}
+    <div class="project-links">
+      <a href="#" class="project-link ${linkClass}" data-path="${linkPath}">${linkLabel}</a>
+    </div>
+  `;
+}
+
 async function loadCareerContent() {
   const timelineContainer = document.getElementById('career-timeline');
   if (!timelineContainer) {
@@ -443,18 +505,8 @@ class CertificateShowcase {
     return [...new Set(candidates)];
   }
   parseCertificateMarkdown(markdown, entry, resolvedPath) {
-    const titleMatch = markdown.match(/^#\s+(.+)$/m);
-    const lines = markdown.split(/\r?\n/);
-    const metadata = {};
-
-    lines.forEach(line => {
-      const match = line.match(/^[-*]\s+([^:]+):\s+(.+)$/);
-      if (match) {
-        metadata[match[1].trim().toLowerCase()] = match[2].trim();
-      }
-    });
-
-    const title = titleMatch ? titleMatch[1].trim() : entry.title;
+    const metadata = parseMarkdownMetadata(markdown);
+    const title = extractMarkdownTitle(markdown, entry.title);
     const issuer = metadata.issuer || this.getCertificateFolderLabel(entry.folder);
     const dateText = metadata.issued || '';
     const expiresText = metadata.expires || '';
@@ -475,7 +527,7 @@ class CertificateShowcase {
     return {
       id: this.generateId(`${entry.folder}-${title}`),
       title,
-      issuer,
+      secondaryLabel: issuer,
       category: this.getCertificateFolderLabel(entry.folder),
       folder: entry.folder,
       indexPath: entry.indexPath,
@@ -485,7 +537,9 @@ class CertificateShowcase {
       expiresText,
       credentialId,
       competencies,
-      description: descriptionParts.join(' • '),
+      description: '',
+      metaItems: descriptionParts,
+      tags: splitCommaValues(competencies),
       searchBlob: [
         title,
         issuer,
@@ -610,38 +664,21 @@ class CertificateShowcase {
   }
   createCertificateCard(cert, index) {
     const card = document.createElement('article');
-    card.className = 'project-card certificate-card fade-in';
+    card.className = 'project-card certificate-card profile-card fade-in';
     card.style.animationDelay = `${index * 0.1}s`;
     card.setAttribute('aria-labelledby', `cert-title-${cert.id}`);
-    const competencies = cert.competencies
-      ? cert.competencies.split(',').map(item => item.trim()).filter(Boolean)
-      : [];
-    const metaTags = [];
-
-    if (cert.dateText) {
-      metaTags.push(cert.dateText);
-    }
-    if (cert.expiresText) {
-      metaTags.push(`Expires: ${cert.expiresText}`);
-    }
-    if (cert.credentialId) {
-      metaTags.push(`ID: ${cert.credentialId}`);
-    }
-
-    card.innerHTML = `
-      <div class="project-header">
-        <h3 id="cert-title-${cert.id}">${cert.title}</h3>
-        ${cert.issuer ? `<span class="project-category-tag">${cert.issuer}</span>` : ''}
-      </div>
-      <p class="project-description">${cert.description || 'Professional certificate details available in the markdown file.'}</p>
-      <div class="project-technologies">
-        ${competencies.map(competency => `<span class="tech-tag">${competency}</span>`).join('')}
-        ${metaTags.map(tag => `<span class="tech-tag">${tag}</span>`).join('')}
-      </div>
-      <div class="project-links">
-        <a href="#" class="project-link certificate-link btn btn-secondary" data-path="${cert.path}">View certificate</a>
-      </div>
-    `;
+    card.innerHTML = buildProfileCardMarkup({
+      id: cert.id,
+      title: cert.title,
+      secondaryLabel: cert.secondaryLabel || cert.issuer || '',
+      description: cert.description || 'Professional certificate details available in the markdown file.',
+      metaItems: cert.metaItems || [],
+      tags: cert.tags || [],
+      linkPath: cert.path,
+      linkLabel: window.Translations?.get('projects.viewCertificate') || 'View certificate',
+      linkClass: 'certificate-link btn btn-secondary',
+      titleIdPrefix: 'cert-title'
+    });
     return card;
   }
   bindCertificateLinks() {
@@ -670,6 +707,263 @@ class CertificateShowcase {
       this.searchResultsDisplay.textContent = '';
       this.searchResultsDisplay.style.display = 'none';
     }
+  }
+}
+
+class AcademicShowcase {
+  constructor() {
+    this.academics = [];
+    this.container = document.getElementById('academic-container');
+    if (!this.container) return;
+    this.loadAcademics();
+  }
+
+  async fetchMarkdownFromCandidates(candidates) {
+    for (const candidate of candidates) {
+      try {
+        const response = await fetch(candidate);
+        if (response.ok) {
+          return await response.text();
+        }
+      } catch (error) {
+        // Try the next fallback path
+      }
+    }
+
+    throw new Error('Failed to load academic markdown files');
+  }
+
+  parseAcademicIndex(markdown) {
+    const normalizedMarkdown = String(markdown || '').replace(/\]\s*\n\s*\(/g, '](');
+    const entries = [];
+    const linkPattern = /^\s*[-*]\s+\[([^\]]+)\]\(([^)]+)\)/gm;
+    let match;
+
+    while ((match = linkPattern.exec(normalizedMarkdown)) !== null) {
+      const title = match[1].trim();
+      const path = match[2].trim();
+      if (!path.startsWith('academic/')) {
+        continue;
+      }
+
+      const parts = path.split('/').filter(Boolean);
+      const folder = parts.length >= 2 ? parts[1] : '';
+      if (!folder) {
+        continue;
+      }
+
+      entries.push({
+        id: this.generateId(`${folder}-${title}`),
+        title,
+        folder,
+        indexPath: path
+      });
+    }
+
+    return entries;
+  }
+
+  buildAcademicPathCandidates(indexPath, lang) {
+    const normalizedPath = String(indexPath || '').replace(/\\/g, '/');
+    const parts = normalizedPath.split('/').filter(Boolean);
+    if (parts.length < 3) {
+      return [normalizedPath];
+    }
+
+    const folder = parts[1];
+    const candidates = [
+      `academic/${folder}/${lang}.md`,
+      normalizedPath
+    ];
+
+    ['EN', 'PT', 'ES'].forEach(code => {
+      const candidatePath = `academic/${folder}/${code}.md`;
+      if (!candidates.includes(candidatePath)) {
+        candidates.push(candidatePath);
+      }
+    });
+
+    return [...new Set(candidates)];
+  }
+
+  generateId(str) {
+    return String(str || '')
+      .toLowerCase()
+      .replace(/[^\w\s]/g, '')
+      .replace(/\s+/g, '-');
+  }
+
+  getAcademicFolderLabel(folder) {
+    if (!folder) {
+      return 'Academic';
+    }
+
+    return folder
+      .replace(/_/g, ' ')
+      .replace(/\b\w/g, char => char.toUpperCase());
+  }
+
+  async loadAcademicEntry(entry, lang) {
+    const detailPathCandidates = this.buildAcademicPathCandidates(entry.indexPath, lang);
+    let markdown = null;
+    let resolvedPath = entry.indexPath;
+
+    for (const candidate of detailPathCandidates) {
+      try {
+        const response = await fetch(candidate);
+        if (response.ok) {
+          markdown = await response.text();
+          resolvedPath = candidate;
+          break;
+        }
+      } catch (error) {
+        // Try next candidate
+      }
+    }
+
+    if (!markdown) {
+      return {
+        id: entry.id,
+        title: entry.title,
+        secondaryLabel: this.getAcademicFolderLabel(entry.folder),
+        description: '',
+        metaItems: [],
+        tags: [],
+        folder: entry.folder,
+        indexPath: entry.indexPath,
+        path: entry.indexPath,
+        searchBlob: `${entry.title} ${entry.folder} ${entry.indexPath}`.toLowerCase()
+      };
+    }
+
+    const metadata = parseMarkdownMetadata(markdown);
+    const title = extractMarkdownTitle(markdown, entry.title);
+    const institution = metadata.institution || this.getAcademicFolderLabel(entry.folder);
+    const degree = metadata.degree || '';
+    const period = metadata.period || '';
+    const competencies = metadata.competencies || '';
+    const highlights = metadata.highlights || '';
+    const descriptionParts = [];
+
+    if (degree) {
+      descriptionParts.push(degree);
+    }
+    if (highlights) {
+      descriptionParts.push(highlights);
+    }
+
+    return {
+      id: this.generateId(`${entry.folder}-${title}`),
+      title,
+      secondaryLabel: institution,
+      description: descriptionParts.join(' • '),
+      metaItems: period ? [`Period: ${period}`] : [],
+      tags: splitCommaValues(competencies),
+      folder: entry.folder,
+      indexPath: entry.indexPath,
+      path: resolvedPath || entry.indexPath,
+      searchBlob: [
+        title,
+        institution,
+        degree,
+        period,
+        competencies,
+        highlights,
+        entry.indexPath,
+        descriptionParts.join(' ')
+      ].filter(Boolean).join(' ').toLowerCase()
+    };
+  }
+
+  async loadAcademics() {
+    this.container.setAttribute('aria-busy', 'true');
+    this.container.innerHTML = `
+      <div class="no-certificates">
+        <p>Loading academic profiles...</p>
+      </div>
+    `;
+
+    try {
+      const lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toUpperCase();
+      const indexMarkdown = await this.fetchMarkdownFromCandidates([
+        `academic/${lang}.md`,
+        'academic/EN.md'
+      ]);
+      const entries = this.parseAcademicIndex(indexMarkdown);
+      const academics = await Promise.all(entries.map(entry => this.loadAcademicEntry(entry, lang)));
+      this.academics = academics.filter(Boolean);
+      this.renderAcademics();
+    } catch (error) {
+      console.error('Error loading academic profiles:', error);
+      this.showErrorMessage();
+    } finally {
+      this.container.removeAttribute('aria-busy');
+    }
+  }
+
+  renderAcademics() {
+    this.container.innerHTML = '';
+
+    if (this.academics.length === 0) {
+      const noResults = document.createElement('div');
+      noResults.className = 'no-certificates';
+      noResults.textContent = 'No academic profiles available';
+      this.container.appendChild(noResults);
+      return;
+    }
+
+    const grid = document.createElement('div');
+    grid.className = 'projects-grid profile-grid';
+    this.academics.forEach((academic, index) => {
+      grid.appendChild(this.createAcademicCard(academic, index));
+    });
+    this.container.appendChild(grid);
+    this.bindAcademicLinks();
+  }
+
+  createAcademicCard(academic, index) {
+    const card = document.createElement('article');
+    card.className = 'project-card academic-card profile-card fade-in';
+    card.style.animationDelay = `${index * 0.1}s`;
+    card.setAttribute('aria-labelledby', `academic-title-${academic.id}`);
+    card.innerHTML = buildProfileCardMarkup({
+      id: academic.id,
+      title: academic.title,
+      secondaryLabel: academic.secondaryLabel,
+      description: academic.description,
+      metaItems: academic.metaItems || [],
+      tags: academic.tags || [],
+      linkPath: academic.path,
+      linkLabel: window.Translations?.get('about.readMore') || 'Read More',
+      linkClass: 'academic-link btn btn-secondary',
+      titleIdPrefix: 'academic-title'
+    });
+    return card;
+  }
+
+  bindAcademicLinks() {
+    this.container.querySelectorAll('.academic-link').forEach(link => {
+      if (link.dataset.bound === 'true') {
+        return;
+      }
+
+      link.dataset.bound = 'true';
+      link.addEventListener('click', event => {
+        event.preventDefault();
+        const path = link.getAttribute('data-path');
+        if (path && window.loadProjectContent) {
+          window.loadProjectContent(path);
+        }
+      });
+    });
+  }
+
+  showErrorMessage() {
+    this.container.innerHTML = `
+      <div class="certificate-error">
+        <p>Unable to load academic profiles. Please try again later.</p>
+      </div>
+    `;
   }
 }
 
@@ -1208,6 +1502,9 @@ if (!window.loadExperienceContent) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  if (document.getElementById('academic-container')) {
+    window.academicShowcase = new AcademicShowcase();
+  }
   if (document.getElementById('certificate-container')) {
     window.certificateShowcase = new CertificateShowcase();
   }
@@ -1218,6 +1515,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('languageChanged', () => {
+  if (window.academicShowcase) {
+    window.academicShowcase.loadAcademics();
+  }
   if (document.getElementById('career-timeline')) {
     loadCareerContent();
   }

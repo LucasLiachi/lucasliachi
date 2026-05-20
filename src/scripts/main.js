@@ -65,6 +65,7 @@ const Translations = (() => {
           production: 'Production Control'
         },
         viewCode: 'View Code',
+        viewCertificate: 'View certificate',
         liveDemo: 'Live Demo',
         noResults: 'No results found',
         resultsFound: 'results found',
@@ -149,6 +150,7 @@ const Translations = (() => {
           production: 'Controle de Produção'
         },
         viewCode: 'Ver código',
+        viewCertificate: 'Ver certificado',
         liveDemo: 'Demo ao vivo',
         noResults: 'Nenhum resultado encontrado',
         resultsFound: 'resultados encontrados',
@@ -233,6 +235,7 @@ const Translations = (() => {
           production: 'Control de Producción'
         },
         viewCode: 'Ver código',
+        viewCertificate: 'Ver certificado',
         liveDemo: 'Demo en vivo',
         noResults: 'No se encontraron resultados',
         resultsFound: 'resultados encontrados',
