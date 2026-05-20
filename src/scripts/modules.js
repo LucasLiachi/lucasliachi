@@ -70,8 +70,10 @@ function buildProfileCardMarkup({
   linkClass,
   titleIdPrefix
 }) {
-  const metaMarkup = metaItems.length
-    ? `<div class="project-technologies project-meta-tags">${metaItems.map(item => `<span class="tech-tag">${item}</span>`).join('')}</div>`
+  const headerMetaItems = metaItems.slice(0, 3);
+  const bodyMetaItems = metaItems.length > 3 ? metaItems.slice(3) : [];
+  const metaMarkup = bodyMetaItems.length
+    ? `<div class="project-technologies project-meta-tags">${bodyMetaItems.map(item => `<span class="tech-tag">${item}</span>`).join('')}</div>`
     : '';
   const tagsMarkup = tags.length
     ? `<div class="project-technologies">${tags.map(tag => `<span class="tech-tag">${tag}</span>`).join('')}</div>`
@@ -82,8 +84,10 @@ function buildProfileCardMarkup({
 
   return `
     <div class="project-header">
-      <h3 id="${titleIdPrefix}-${id}">${title}</h3>
-      ${secondaryLabel ? `<span class="project-category-tag">${secondaryLabel}</span>` : ''}
+      <div class="project-header-title-group">
+        <h3 id="${titleIdPrefix}-${id}">${title}</h3>
+        ${(secondaryLabel || headerMetaItems.length) ? `<div class="project-header-inline-meta">${secondaryLabel ? `<span class="project-category-tag">${secondaryLabel}</span>` : ''}${headerMetaItems.map(item => `<span class="project-inline-meta">${item}</span>`).join('')}</div>` : ''}
+      </div>
     </div>
     ${summaryMarkup}
     ${metaMarkup}
@@ -638,7 +642,7 @@ class CertificateShowcase {
       return;
     }
     const grid = document.createElement('div');
-    grid.className = 'projects-grid certificate-grid';
+    grid.className = 'projects-grid certificate-grid profile-grid';
     this.filteredCertificates.forEach((cert, index) => {
       const card = this.createCertificateCard(cert, index);
       grid.appendChild(card);
