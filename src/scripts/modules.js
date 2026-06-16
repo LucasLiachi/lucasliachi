@@ -284,9 +284,9 @@ async function loadCareerContent() {
           id: entry.id,
           title: entry.title,
           secondaryLabel: entry.secondaryLabel,
-          description: entry.description,
-          metaItems: entry.metaItems || [],
-          tags: entry.tags || [],
+          description: '', // Removed from card to make it lighter
+          metaItems: [], // Removed from card
+          tags: [], // Removed from card
           linkPath: resolvedPath || '#',
           linkLabel: window.Translations?.get('about.readMore') || 'Read More',
           linkClass: 'career-link btn btn-secondary',
@@ -298,7 +298,7 @@ async function loadCareerContent() {
           if (resolvedPath) {
             anchor.dataset.path = resolvedPath;
           } else {
-            delete anchor.dataset.path;
+            anchor.removeAttribute('data-path');
             anchor.dataset.section = encodeURIComponent(entry.sectionMarkdown || '');
           }
         }
@@ -312,8 +312,8 @@ async function loadCareerContent() {
         link.dataset.bound = 'true';
         link.addEventListener('click', (e) => {
           e.preventDefault();
-          const targetPath = link.dataset.path;
-          if (targetPath && window.loadProjectContent) {
+          const targetPath = link.dataset.path || link.getAttribute('data-path');
+          if (targetPath && targetPath !== '#' && window.loadProjectContent) {
             window.loadProjectContent(targetPath);
             return;
           }
@@ -322,22 +322,38 @@ async function loadCareerContent() {
           const section = link.dataset.section ? decodeURIComponent(link.dataset.section) : '';
           if (window.marked) {
             const html = window.marked.parse(section || markdownText);
-            const contentEl = document.createElement('div');
-            contentEl.classList.add('markdown-content');
-            contentEl.innerHTML = html;
-            const modal = document.createElement('div');
-            modal.classList.add('modal');
-            const modalContent = document.createElement('div');
-            modalContent.classList.add('modal-content');
-            const closeBtn = document.createElement('span');
-            closeBtn.classList.add('close-modal');
-            closeBtn.innerHTML = '&times;';
-            closeBtn.addEventListener('click', () => { document.body.removeChild(modal); });
-            modalContent.appendChild(closeBtn);
-            modalContent.appendChild(contentEl);
-            modal.appendChild(modalContent);
-            document.body.appendChild(modal);
-            modal.addEventListener('click', (ev) => { if (ev.target === modal) document.body.removeChild(modal); });
+            if (typeof window.showContentModal === 'function') {
+              window.showContentModal(html, entry.title);
+            } else {
+              // Create a quick modal if everything else fails
+              const contentEl = document.createElement('div');
+              contentEl.classList.add('markdown-content');
+              contentEl.innerHTML = html;
+              const modal = document.createElement('div');
+              modal.classList.add('modal');
+              const modalContent = document.createElement('div');
+              modalContent.classList.add('modal-content');
+              const closeBtn = document.createElement('span');
+              closeBtn.classList.add('close-modal');
+              closeBtn.innerHTML = '&times;';
+              const closeModal = () => {
+                modal.classList.remove('active');
+                setTimeout(() => {
+                  if (document.body.contains(modal)) document.body.removeChild(modal);
+                }, 300);
+              };
+              closeBtn.addEventListener('click', closeModal);
+              modalContent.appendChild(closeBtn);
+              modalContent.appendChild(contentEl);
+              modal.appendChild(modalContent);
+              document.body.appendChild(modal);
+              requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                  modal.classList.add('active');
+                });
+              });
+              modal.addEventListener('click', (ev) => { if (ev.target === modal) closeModal(); });
+            }
           }
         });
       });
@@ -534,6 +550,7 @@ class CertificateShowcase {
           type="search" 
           id="certificate-search" 
           placeholder="Search certificates..." 
+          data-i18n-placeholder="about.certificate.search.placeholder"
           aria-label="Search certificates by name or issuer"
           autocomplete="off"
         >
@@ -544,10 +561,10 @@ class CertificateShowcase {
       <div class="filter-sort">
         <label for="certificate-sort" class="sr-only">Sort certificates</label>
         <select id="certificate-sort" aria-label="Sort certificates by">
-          <option value="date-desc">Newest first</option>
-          <option value="date-asc">Oldest first</option>
-          <option value="name-asc">Name (A-Z)</option>
-          <option value="name-desc">Name (Z-A)</option>
+          <option value="date-desc" data-i18n="about.certificate.sort.newest">Newest first</option>
+          <option value="date-asc" data-i18n="about.certificate.sort.oldest">Oldest first</option>
+          <option value="name-asc" data-i18n="about.certificate.sort.nameAsc">Name (A-Z)</option>
+          <option value="name-desc" data-i18n="about.certificate.sort.nameDesc">Name (Z-A)</option>
         </select>
       </div>
       <div id="certificate-search-results-count" class="search-results-count" style="display: none;"></div>

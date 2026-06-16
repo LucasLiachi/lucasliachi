@@ -30,12 +30,24 @@ const Translations = (() => {
         },
         certificate: {
           title: 'Certificate',
-          description: 'Professional certifications and specialized training'
+          description: 'Professional certifications and specialized training',
+          search: {
+            placeholder: 'Search certificates...'
+          },
+          sort: {
+            newest: 'Newest first',
+            oldest: 'Oldest first',
+            nameAsc: 'Name (A-Z)',
+            nameDesc: 'Name (Z-A)'
+          }
         },
         readMore: 'Read More'
       },
       projects: {
         title: 'Projects',
+        search: {
+          placeholder: 'Search projects...'
+        },
         filter: {
           placeholder: 'Filter by category',
           all: 'All Categories',
@@ -115,12 +127,24 @@ const Translations = (() => {
         },
         certificate: {
           title: 'Certificados',
-          description: 'Certificações profissionais e treinamentos especializados'
+          description: 'Certificações profissionais e treinamentos especializados',
+          search: {
+            placeholder: 'Pesquisar certificados...'
+          },
+          sort: {
+            newest: 'Mais recentes',
+            oldest: 'Mais antigos',
+            nameAsc: 'Nome (A-Z)',
+            nameDesc: 'Nome (Z-A)'
+          }
         },
         readMore: 'Ler mais'
       },
       projects: {
         title: 'Projetos',
+        search: {
+          placeholder: 'Pesquisar projetos...'
+        },
         filter: {
           placeholder: 'Filtrar por categoria',
           all: 'Todas as categorias',
@@ -200,12 +224,24 @@ const Translations = (() => {
         },
         certificate: {
           title: 'Certificados',
-          description: 'Certificaciones profesionales y formación especializada'
+          description: 'Certificaciones profesionales y formación especializada',
+          search: {
+            placeholder: 'Buscar certificados...'
+          },
+          sort: {
+            newest: 'Más recientes',
+            oldest: 'Más antiguos',
+            nameAsc: 'Nombre (A-Z)',
+            nameDesc: 'Nombre (Z-A)'
+          }
         },
         readMore: 'Leer más'
       },
       projects: {
         title: 'Proyectos',
+        search: {
+          placeholder: 'Buscar proyectos...'
+        },
         filter: {
           placeholder: 'Filtrar por categoría',
           all: 'Todas las categorías',

@@ -459,28 +459,13 @@ function loadProjectContent(path) {
       if (window.marked) {
         const html = window.marked.parse(text);
 
-        // If AboutModal is available, reuse its markup, focus management and accessibility
-        if (window.AboutModal && window.AboutModal.instance && window.AboutModal.instance.modal && window.AboutModal.instance.modalContent) {
-          try {
-            // set modal content
-            window.AboutModal.instance.modalContent.innerHTML = html;
-
-            // attempt to extract a title from the markdown and set the modal title element if present
-            const titleMatch = String(text || '').match(/^#\s+(.+)$/m);
-            const modalTitle = titleMatch ? titleMatch[1].trim() : null;
-            const titleEl = window.AboutModal.instance.modal.querySelector('#about-modal-title');
-            if (titleEl) {
-              titleEl.textContent = modalTitle || (window.Translations ? window.Translations.get('modal.about.title') : titleEl.textContent);
-            }
-
-            // open AboutModal using its established methods
-            window.AboutModal.instance.open();
-          } catch (e) {
-            Logger.error('Failed to open AboutModal with project content, falling back to generic modal', e);
-            showContentModal(html, path);
-          }
-        } else {
-          showContentModal(html, path);
+        // Do not hijack AboutModal to prevent replacing the "About Me" content
+        try {
+          const titleMatch = String(text || '').match(/^#\s+(.+)$/m);
+          const modalTitle = titleMatch ? titleMatch[1].trim() : null;
+          showContentModal(html, modalTitle || path);
+        } catch (e) {
+          Logger.error('Failed to open generic modal with project content', e);
         }
       } else {
         Logger.error('Marked library not found');
@@ -502,9 +487,15 @@ function showContentModal(html, title) {
   const closeBtn = document.createElement('span');
   closeBtn.classList.add('close-modal');
   closeBtn.innerHTML = '&times;';
-  closeBtn.addEventListener('click', () => {
-    document.body.removeChild(modal);
-  });
+  
+  const closeModal = () => {
+    modal.classList.remove('active');
+    setTimeout(() => {
+      if (document.body.contains(modal)) document.body.removeChild(modal);
+    }, 300);
+  };
+  
+  closeBtn.addEventListener('click', closeModal);
   
   const contentEl = document.createElement('div');
   contentEl.classList.add('markdown-content');
@@ -516,10 +507,17 @@ function showContentModal(html, title) {
   
   document.body.appendChild(modal);
   
+  // Show with transition
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      modal.classList.add('active');
+    });
+  });
+  
   // Close modal when clicking outside
   modal.addEventListener('click', (e) => {
     if (e.target === modal) {
-      document.body.removeChild(modal);
+      closeModal();
     }
   });
 }
@@ -570,6 +568,9 @@ window.AboutModal = {
 
 // Export loadProjectContent globally
 window.loadProjectContent = loadProjectContent;
+
+// Export showContentModal globally
+window.showContentModal = showContentModal;
 
 // =============================================================================
 // INITIALIZATION
