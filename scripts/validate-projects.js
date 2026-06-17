@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const repoRoot = path.resolve(__dirname, '..');
-const modulesPath = path.join(repoRoot, 'src', 'scripts', 'modules.js');
+const modulesPath = path.join(repoRoot, 'js', 'modules.js');
 
 if (!fs.existsSync(modulesPath)) {
   console.error('modules.js not found at', modulesPath);

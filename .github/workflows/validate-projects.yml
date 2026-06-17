@@ -3,8 +3,8 @@ name: Validate Projects Index
 on:
   pull_request:
     paths:
-      - 'src/scripts/**'
-      - 'Projects/**'
+      - 'js/**'
+      - 'pages/Projects/**'
       - 'scripts/**'
       - 'static/projects-index.json'
       - '.github/workflows/validate-projects.yml'
@@ -12,8 +12,8 @@ on:
     branches:
       - main
     paths:
-      - 'src/scripts/**'
-      - 'Projects/**'
+      - 'js/**'
+      - 'pages/Projects/**'
       - 'scripts/**'
       - 'static/projects-index.json'
       - '.github/workflows/validate-projects.yml'
@@ -48,6 +48,6 @@ jobs:
           commit_message: 'chore: update generated indexes [skip ci]'
           file_pattern: |
             static/projects-index.json
-            career/index.json
+            pages/career/index.json
           commit_user_name: github-actions[bot]
           commit_user_email: github-actions[bot]@users.noreply.github.com

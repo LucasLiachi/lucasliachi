@@ -111,7 +111,7 @@ let _cachedCareerFolders = null;
 async function fetchCareerFoldersIndex() {
   if (_cachedCareerFolders) return _cachedCareerFolders;
   try {
-    const resp = await fetch('career/index.json');
+    const resp = await fetch('pages/career/index.json');
     if (resp && resp.ok) {
       const arr = await resp.json();
       if (Array.isArray(arr)) {
@@ -126,7 +126,7 @@ async function fetchCareerFoldersIndex() {
   // Fallback: attempt to parse links from career/<LANG>.md to discover folders
   try {
     const lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toUpperCase();
-    const resp = await fetch(`career/${lang}.md`);
+    const resp = await fetch(`pages/career/${lang}.md`);
     if (resp && resp.ok) {
       const text = await resp.text();
       const linkPattern = /\(career\/([^\/)]+)\//g;
@@ -157,7 +157,7 @@ async function resolveCareerFolderPath(title, lang) {
 
   for (const folder of folders) {
     for (const code of codes) {
-      const candidate = `career/${folder}/${code}.md`;
+      const candidate = `pages/career/${folder}/${code}.md`;
       try {
         const resp = await fetch(candidate);
         if (!resp || !resp.ok) continue;
@@ -232,7 +232,7 @@ async function loadCareerContent() {
   timelineContainer.classList.add('career-markdown-mode');
 
   const currentLang = (window.currentLanguage || localStorage.getItem('language') || 'en').toUpperCase();
-  const candidates = [`career/${currentLang}.md`, 'career/EN.md'];
+  const candidates = [`pages/career/${currentLang}.md`, 'pages/career/EN.md'];
 
   timelineContainer.setAttribute('aria-busy', 'true');
   timelineContainer.innerHTML = `<div class="career-loading">Loading career timeline...</div>`;
@@ -482,11 +482,11 @@ function generateCareerData() {
 function openCareerDetail(folder) {
   const lang = localStorage.getItem('language') || 'pt';
   const langCode = lang.toUpperCase();
-  const path = `career/${folder}/${langCode}.md`;
+  const path = `pages/career/${folder}/${langCode}.md`;
   fetch(path)
     .then(response => {
       if (!response.ok) {
-        return fetch(`career/${folder}/EN.md`);
+        return fetch(`pages/career/${folder}/EN.md`);
       }
       return response;
     })
@@ -615,8 +615,8 @@ class CertificateShowcase {
     try {
       const lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toUpperCase();
       const indexMarkdown = await this.fetchMarkdownFromCandidates([
-        `certificate/${lang}.md`,
-        'certificate/EN.md'
+        `pages/certificate/${lang}.md`,
+        'pages/certificate/EN.md'
       ]);
       const entries = this.parseCertificateIndex(indexMarkdown);
       const certificates = await Promise.all(entries.map(entry => this.loadCertificateEntry(entry, lang)));
@@ -653,7 +653,7 @@ class CertificateShowcase {
     while ((match = linkPattern.exec(normalizedMarkdown)) !== null) {
       const title = match[1].trim();
       const path = match[2].trim();
-      if (!path.startsWith('certificate/')) {
+      if (!path.startsWith('pages/certificate/')) {
         continue;
       }
 
@@ -721,12 +721,12 @@ class CertificateShowcase {
 
     const folder = parts[1];
     const candidates = [
-      `certificate/${folder}/${lang}.md`,
+      `pages/certificate/${folder}/${lang}.md`,
       normalizedPath
     ];
 
     ['EN', 'PT', 'ES'].forEach(code => {
-      const candidatePath = `certificate/${folder}/${code}.md`;
+      const candidatePath = `pages/certificate/${folder}/${code}.md`;
       if (!candidates.includes(candidatePath)) {
         candidates.push(candidatePath);
       }
@@ -972,7 +972,7 @@ class AcademicShowcase {
     while ((match = linkPattern.exec(normalizedMarkdown)) !== null) {
       const title = match[1].trim();
       const path = match[2].trim();
-      if (!path.startsWith('academic/')) {
+      if (!path.startsWith('pages/academic/')) {
         continue;
       }
 
@@ -1002,12 +1002,12 @@ class AcademicShowcase {
 
     const folder = parts[1];
     const candidates = [
-      `academic/${folder}/${lang}.md`,
+      `pages/academic/${folder}/${lang}.md`,
       normalizedPath
     ];
 
     ['EN', 'PT', 'ES'].forEach(code => {
-      const candidatePath = `academic/${folder}/${code}.md`;
+      const candidatePath = `pages/academic/${folder}/${code}.md`;
       if (!candidates.includes(candidatePath)) {
         candidates.push(candidatePath);
       }
@@ -1116,8 +1116,8 @@ class AcademicShowcase {
     try {
       const lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toUpperCase();
       const indexMarkdown = await this.fetchMarkdownFromCandidates([
-        `academic/${lang}.md`,
-        'academic/EN.md'
+        `pages/academic/${lang}.md`,
+        'pages/academic/EN.md'
       ]);
       const entries = this.parseAcademicIndex(indexMarkdown);
       const academics = await Promise.all(entries.map(entry => this.loadAcademicEntry(entry, lang)));
@@ -1204,7 +1204,7 @@ const projectData = {
       title: "End-to-End Hire to Retire Process",
       description: "Complete HR process from recruitment to employee retirement",
       technologies: ["BPMN", "Process Mapping", "HR Management", "Workflow"],
-      path: "Projects/process/e2e-hire-to-retire.md",
+      path: "pages/Projects/process/e2e-hire-to-retire.md",
       category: "process",
       hero: true,
       keywords: ["HR", "recruitment", "retirement", "employee lifecycle", "human resources"]
@@ -1214,7 +1214,7 @@ const projectData = {
       title: "Business Process Analysis",
       description: "Process analysis and continuous improvement methodologies",
       technologies: ["BPMN", "Process Mapping", "Analysis", "Improvement"],
-      path: "Projects/process/process.md",
+      path: "pages/Projects/process/process.md",
       category: "process",
       hero: true,
       keywords: ["process improvement", "BPMN", "business analysis", "efficiency"]
@@ -1226,7 +1226,7 @@ const projectData = {
       title: "Corporate Governance Framework",
       description: "Implementation of corporate governance structure and policies",
       technologies: ["Corporate Governance", "Risk Management", "Compliance", "ESG"],
-      path: "Projects/governance/governance-corp.md",
+      path: "pages/Projects/governance/governance-corp.md",
       category: "governance",
       hero: true,
       keywords: ["corporate governance", "compliance", "risk management", "transparency"]
@@ -1236,7 +1236,7 @@ const projectData = {
       title: "IT Governance Framework",
       description: "COBIT and ITIL implementation for IT governance",
       technologies: ["COBIT", "ITIL", "IT Management", "Governance"],
-      path: "Projects/governance/governance-it.md",
+      path: "pages/Projects/governance/governance-it.md",
       category: "governance",
       keywords: ["IT governance", "COBIT", "ITIL", "technology management"]
     },
@@ -1245,7 +1245,7 @@ const projectData = {
       title: "Performance and Competency Evaluation",
       description: "Competency-based performance evaluation framework",
       technologies: ["Performance Management", "HR", "Evaluation", "Excel"],
-      path: "Projects/governance/avaliacao-por-competencia/Avaliação-de-desempenho-e-ompetências.md",
+      path: "pages/Projects/governance/avaliacao-por-competencia/Avaliação-de-desempenho-e-ompetências.md",
       category: "governance",
       keywords: ["performance evaluation", "competency", "HR", "assessment"]
     },
@@ -1254,7 +1254,7 @@ const projectData = {
       title: "Agile Metrics Framework",
       description: "Comprehensive agile metrics and measurement system",
       technologies: ["Agile", "Metrics", "KPIs", "Performance"],
-      path: "Projects/governance/metrica-agil/",
+      path: "pages/Projects/governance/metrica-agil/",
       category: "governance",
       keywords: ["agile metrics", "KPIs", "performance measurement", "scrum"]
     }
@@ -1265,7 +1265,7 @@ const projectData = {
       title: "IT Governance Best Practices",
       description: "Implementation of IT governance frameworks and methodologies",
       technologies: ["COBIT", "ITIL", "IT Strategy", "Governance"],
-      path: "Projects/governance/governance-it.md",
+      path: "pages/Projects/governance/governance-it.md",
       category: "it",
       keywords: ["IT governance", "best practices", "framework", "methodology"]
     }
@@ -1276,7 +1276,7 @@ const projectData = {
       title: "Six Sigma for Quality Assurance",
       description: "Application of Six Sigma methodology in quality assurance processes",
       technologies: ["Six Sigma", "Quality Assurance", "Python", "Statistics"],
-      path: "Projects/development/sixsigma-para-quality-assurance/sixsigma-para-quality-assurance.md",
+      path: "pages/Projects/development/sixsigma-para-quality-assurance/sixsigma-para-quality-assurance.md",
       category: "dev",
       hero: true,
       keywords: ["six sigma", "quality assurance", "statistics", "process improvement"]
@@ -1286,7 +1286,7 @@ const projectData = {
       title: "Software Development Portfolio",
       description: "Collection of software development projects and methodologies",
       technologies: ["Software Development", "Programming", "Methodologies"],
-      path: "Projects/development/development.md",
+      path: "pages/Projects/development/development.md",
       category: "dev",
       keywords: ["software development", "programming", "coding", "applications"]
     }
@@ -1297,7 +1297,7 @@ const projectData = {
       title: "Applied Statistics Projects",
       description: "Statistical analysis and data science projects",
       technologies: ["Statistics", "Data Analysis", "Python", "R"],
-      path: "Projects/estats/estats.md",
+      path: "pages/Projects/estats/estats.md",
       category: "stats",
       hero: true,
       keywords: ["statistics", "data analysis", "data science", "analytics"]
@@ -1307,7 +1307,7 @@ const projectData = {
       title: "Six Sigma Statistical Control",
       description: "Statistical process control using Six Sigma methodology",
       technologies: ["Six Sigma", "Statistics", "Process Control", "Quality"],
-      path: "Projects/development/sixsigma-para-quality-assurance/sixsigma-para-quality-assurance.md",
+      path: "pages/Projects/development/sixsigma-para-quality-assurance/sixsigma-para-quality-assurance.md",
       category: "stats",
       keywords: ["six sigma", "statistical control", "quality control", "process control"]
     }
@@ -1318,7 +1318,7 @@ const projectData = {
       title: "Overall Equipment Effectiveness (OEE)",
       description: "OEE implementation and monitoring system",
       technologies: ["OEE", "Production", "Manufacturing", "KPIs"],
-      path: "Projects/production/oee-overall-equipment-effectiveness/",
+      path: "pages/Projects/production/oee-overall-equipment-effectiveness/",
       category: "production",
       hero: true,
       keywords: ["OEE", "equipment effectiveness", "manufacturing", "production efficiency"]
@@ -1328,7 +1328,7 @@ const projectData = {
       title: "Production Process Management",
       description: "End-to-end production process optimization",
       technologies: ["Production", "Process Management", "Manufacturing"],
-      path: "Projects/production/production.md",
+      path: "pages/Projects/production/production.md",
       category: "production",
       keywords: ["production", "manufacturing", "process optimization", "efficiency"]
     }
@@ -1758,3 +1758,4 @@ document.addEventListener('languageChanged', () => {
 
 document.dispatchEvent(new CustomEvent('moduleExperienceLoaded'));
 document.dispatchEvent(new CustomEvent('moduleProjectsLoaded'));
+

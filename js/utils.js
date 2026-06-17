@@ -206,7 +206,7 @@ class AboutModal {
     
     try {
       const currentLang = window.currentLanguage || 'en';
-      const response = await fetch(`about/${currentLang.toUpperCase()}.md`);
+      const response = await fetch(`pages/about/${currentLang.toUpperCase()}.md`);
       
       if (!response.ok) {
         throw new Error(`Failed to load content: ${response.status}`);

@@ -12,20 +12,20 @@
   <meta name="keywords" content="technology governance, IT management, business process, process optimization, project management, statistics, portfolio">
   <meta property="og:title" content="Lucas Liachi - Technology Governance Specialist">
   <meta property="og:description" content="Professional portfolio showcasing expertise in technology governance, IT management, and business process optimization.">
-  <meta property="og:image" content="src/images/perfil.jpeg">
+  <meta property="og:image" content="assets/perfil.jpeg">
   <meta property="og:url" content="https://lucasliachi.github.io/">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   
   <!-- Preload Critical Assets -->
-  <link rel="preload" href="src/styles/main.css" as="style">
+  <link rel="preload" href="css/main.css" as="style">
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style">
-  <link rel="preload" href="src/images/perfil.jpeg" as="image" fetchpriority="high">
+  <link rel="preload" href="assets/perfil.jpeg" as="image" fetchpriority="high">
   
   <!-- Stylesheets - Simplified to 2 files -->
-  <link rel="stylesheet" href="src/styles/main.css">
-  <link rel="stylesheet" href="src/styles/components.css">
-  <link rel="icon" type="image/x-icon" href="src/images/favicon.ico">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
   
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -34,7 +34,7 @@
     "@type": "Person",
     "name": "Lucas Liachi",
     "url": "https://lucasliachi.github.io/",
-    "image": "src/images/perfil.jpeg",
+    "image": "assets/perfil.jpeg",
     "jobTitle": "Technology Governance Specialist",
     "worksFor": {
       "@type": "Organization",
@@ -63,13 +63,13 @@
         </div>
         <div class="header-social-links">
           <a href="https://www.linkedin.com/in/lucasliachi/" target="_blank" rel="noopener noreferrer" aria-label="Visit Lucas Liachi's LinkedIn profile">
-            <img src="src/images/linkedin.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
+            <img src="assets/linkedin.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
           </a>
           <a href="https://medium.com/@lucasliachi" target="_blank" rel="noopener noreferrer" aria-label="Visit Lucas Liachi's Medium blog">
-            <img src="src/images/medium.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
+            <img src="assets/medium.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
           </a>
           <a href="https://github.com/LucasLiachi" target="_blank" rel="noopener noreferrer" aria-label="Visit Lucas Liachi's GitHub profile">
-            <img src="src/images/github.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
+            <img src="assets/github.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
           </a>
         </div>
       </div>
@@ -111,13 +111,13 @@
           <h1 id="hero-title" data-i18n="hero.title">Technology Governance Specialist</h1>
           <p id="hero-subtitle" data-i18n="hero.welcome">Hello! I'm Lucas Liachi and welcome to my professional space. Here, I share my journey through the projects I'm most proud of and the study materials that drive my knowledge. Explore my work to learn about my skills and, if you like what you see, let's connect on <a href='https://www.linkedin.com/in/lucasliachi/' target='_blank' rel='noopener noreferrer'>LinkedIn</a>!</p>
           <div class="hero-buttons">
-            <a href="#" class="about-link btn btn-primary" id="hero-about-btn" data-path="about/EN.md" data-i18n="hero.about" onclick="event.preventDefault(); window.openAboutModal && window.openAboutModal();">About me</a>
+            <a href="#" class="about-link btn btn-primary" id="hero-about-btn" data-path="pages/about/EN.md" data-i18n="hero.about" onclick="event.preventDefault(); window.openAboutModal && window.openAboutModal();">About me</a>
             <a href="#about" class="btn btn-primary" id="hero-resume-btn" data-i18n="hero.resume">Resume</a>
             <a href="#projects" class="btn btn-primary" id="hero-projects-btn" data-i18n="hero.projects">Projects</a>
           </div>
         </div>
         <div class="hero-image">
-          <img src="src/images/perfil.jpeg" alt="Lucas Liachi - Technology Governance Specialist" id="hero-image" width="300" height="300" fetchpriority="high">
+          <img src="assets/perfil.jpeg" alt="Lucas Liachi - Technology Governance Specialist" id="hero-image" width="300" height="300" fetchpriority="high">
         </div>
       </div>
     </section>
@@ -156,7 +156,7 @@
                   <h3 data-i18n="about.academic.title">Academic Profile</h3>
                   <p data-i18n="about.academic.description">Academic background and university specializations</p>
                   <div class="read-more">
-                    <a href="#" class="about-link" data-path="academic/EN.md" data-i18n="about.readMore">Read More</a>
+                    <a href="#" class="about-link" data-path="pages/academic/EN.md" data-i18n="about.readMore">Read More</a>
                   </div>
                 </article>
               </div>
@@ -169,7 +169,7 @@
                   <h3 data-i18n="about.certificate.title">Certificate</h3>
                   <p data-i18n="about.certificate.description">Professional certifications and specialized training</p>
                   <div class="read-more">
-                    <a href="#" class="about-link" data-path="certificate/EN.md" data-i18n="about.readMore">Read More</a>
+                    <a href="#" class="about-link" data-path="pages/certificate/EN.md" data-i18n="about.readMore">Read More</a>
                   </div>
                 </article>
               </div>
@@ -259,10 +259,10 @@
   
   <!-- Scripts -->
   <!-- Utils script with utilities and UI components -->
-  <script src="src/scripts/utils.js"></script>
+  <script src="js/utils.js"></script>
   <!-- Consolidated modules (curriculum and projects) -->
-  <script src="src/scripts/modules.js"></script>
+  <script src="js/modules.js"></script>
   <!-- Main Script with translations, core functionality and initialization -->
-  <script src="src/scripts/main.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

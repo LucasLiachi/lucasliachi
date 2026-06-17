@@ -6,7 +6,7 @@ const vm = require('vm');
 const repoRoot = path.resolve(__dirname, '..');
 
 async function generateCareerIndex() {
-  const careerDir = path.join(repoRoot, 'career');
+  const careerDir = path.join(repoRoot, 'pages', 'career');
   const outFile = path.join(careerDir, 'index.json');
   try {
     const entries = await fsp.readdir(careerDir, { withFileTypes: true });
@@ -25,7 +25,7 @@ async function generateCareerIndex() {
 }
 
 function readProjectData() {
-  const sourcePath = path.join(repoRoot, 'src', 'scripts', 'modules.js');
+  const sourcePath = path.join(repoRoot, 'js', 'modules.js');
   const source = fs.readFileSync(sourcePath, 'utf8');
   const start = source.indexOf('const projectData = ');
   if (start === -1) {
@@ -71,7 +71,7 @@ async function generateProjectsIndex() {
     const projectData = readProjectData();
     const outputPath = path.join(repoRoot, 'static', 'projects-index.json');
     const output = {
-      source: 'src/scripts/modules.js',
+      source: 'js/modules.js',
       projects: buildProjectsIndex(projectData)
     };
     await fsp.mkdir(path.dirname(outputPath), { recursive: true });
