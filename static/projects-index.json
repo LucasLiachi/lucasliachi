@@ -1,10 +1,10 @@
 {
-  "source": "src/scripts/modules.js",
+  "source": "js/modules.js",
   "projects": [
     {
       "title": "End-to-End Hire to Retire Process",
       "category": "process",
-      "path": "Projects/process/e2e-hire-to-retire.md",
+      "path": "pages/Projects/process/e2e-hire-to-retire.md",
       "hero": true,
       "date": null,
       "tags": [
@@ -23,7 +23,7 @@
     {
       "title": "Business Process Analysis",
       "category": "process",
-      "path": "Projects/process/process.md",
+      "path": "pages/Projects/process/process.md",
       "hero": true,
       "date": null,
       "tags": [
@@ -40,7 +40,7 @@
     {
       "title": "Corporate Governance Framework",
       "category": "governance",
-      "path": "Projects/governance/governance-corp.md",
+      "path": "pages/Projects/governance/governance-corp.md",
       "hero": true,
       "date": null,
       "tags": [
@@ -58,7 +58,7 @@
     {
       "title": "IT Governance Framework",
       "category": "governance",
-      "path": "Projects/governance/governance-it.md",
+      "path": "pages/Projects/governance/governance-it.md",
       "hero": false,
       "date": null,
       "tags": [
@@ -74,7 +74,7 @@
     {
       "title": "Performance and Competency Evaluation",
       "category": "governance",
-      "path": "Projects/governance/avaliacao-por-competencia/Avaliação-de-desempenho-e-ompetências.md",
+      "path": "pages/Projects/governance/avaliacao-por-competencia/Avaliação-de-desempenho-e-ompetências.md",
       "hero": false,
       "date": null,
       "tags": [
@@ -91,7 +91,7 @@
     {
       "title": "Agile Metrics Framework",
       "category": "governance",
-      "path": "Projects/governance/metrica-agil/",
+      "path": "pages/Projects/governance/metrica-agil/",
       "hero": false,
       "date": null,
       "tags": [
@@ -108,7 +108,7 @@
     {
       "title": "IT Governance Best Practices",
       "category": "it",
-      "path": "Projects/governance/governance-it.md",
+      "path": "pages/Projects/governance/governance-it.md",
       "hero": false,
       "date": null,
       "tags": [
@@ -126,7 +126,7 @@
     {
       "title": "Six Sigma for Quality Assurance",
       "category": "dev",
-      "path": "Projects/development/sixsigma-para-quality-assurance/sixsigma-para-quality-assurance.md",
+      "path": "pages/Projects/development/sixsigma-para-quality-assurance/sixsigma-para-quality-assurance.md",
       "hero": true,
       "date": null,
       "tags": [
@@ -144,7 +144,7 @@
     {
       "title": "Software Development Portfolio",
       "category": "dev",
-      "path": "Projects/development/development.md",
+      "path": "pages/Projects/development/development.md",
       "hero": false,
       "date": null,
       "tags": [
@@ -161,7 +161,7 @@
     {
       "title": "Applied Statistics Projects",
       "category": "stats",
-      "path": "Projects/estats/estats.md",
+      "path": "pages/Projects/estats/estats.md",
       "hero": true,
       "date": null,
       "tags": [
@@ -179,7 +179,7 @@
     {
       "title": "Six Sigma Statistical Control",
       "category": "stats",
-      "path": "Projects/development/sixsigma-para-quality-assurance/sixsigma-para-quality-assurance.md",
+      "path": "pages/Projects/development/sixsigma-para-quality-assurance/sixsigma-para-quality-assurance.md",
       "hero": false,
       "date": null,
       "tags": [
@@ -197,7 +197,7 @@
     {
       "title": "Overall Equipment Effectiveness (OEE)",
       "category": "production",
-      "path": "Projects/production/oee-overall-equipment-effectiveness/",
+      "path": "pages/Projects/production/oee-overall-equipment-effectiveness/",
       "hero": true,
       "date": null,
       "tags": [
@@ -214,7 +214,7 @@
     {
       "title": "Production Process Management",
       "category": "production",
-      "path": "Projects/production/production.md",
+      "path": "pages/Projects/production/production.md",
       "hero": false,
       "date": null,
       "tags": [
