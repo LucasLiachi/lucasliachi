@@ -1,6 +1,6 @@
 # ADR-002: Higienização e Adequação do Repositório à Arquitetura Funcional
 
-**Status:** Proposto
+**Status:** Substituído pelo ADR-003 (Superseded by ADR-003)
 **Data:** 2026-06-16
 
 ## Contexto

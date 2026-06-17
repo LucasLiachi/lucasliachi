@@ -652,13 +652,17 @@ class CertificateShowcase {
 
     while ((match = linkPattern.exec(normalizedMarkdown)) !== null) {
       const title = match[1].trim();
-      const path = match[2].trim();
+      let path = match[2].trim();
+      if (path.startsWith('certificate/')) {
+        path = 'pages/' + path;
+      }
       if (!path.startsWith('pages/certificate/')) {
         continue;
       }
 
       const parts = path.split('/').filter(Boolean);
-      const folder = parts.length >= 2 ? parts[1] : '';
+      const certIdx = parts.indexOf('certificate');
+      const folder = (certIdx !== -1 && parts.length > certIdx + 1) ? parts[certIdx + 1] : '';
       if (!folder) {
         continue;
       }
@@ -713,13 +717,17 @@ class CertificateShowcase {
     return this.parseCertificateMarkdown(markdown, entry, resolvedPath);
   }
   buildCertificatePathCandidates(indexPath, lang) {
-    const normalizedPath = String(indexPath || '').replace(/\\/g, '/');
+    let normalizedPath = String(indexPath || '').replace(/\\/g, '/');
+    if (normalizedPath.startsWith('certificate/')) {
+      normalizedPath = 'pages/' + normalizedPath;
+    }
     const parts = normalizedPath.split('/').filter(Boolean);
-    if (parts.length < 3) {
+    const certIdx = parts.indexOf('certificate');
+    if (certIdx === -1 || parts.length <= certIdx + 1) {
       return [normalizedPath];
     }
 
-    const folder = parts[1];
+    const folder = parts[certIdx + 1];
     const candidates = [
       `pages/certificate/${folder}/${lang}.md`,
       normalizedPath
@@ -971,13 +979,17 @@ class AcademicShowcase {
 
     while ((match = linkPattern.exec(normalizedMarkdown)) !== null) {
       const title = match[1].trim();
-      const path = match[2].trim();
+      let path = match[2].trim();
+      if (path.startsWith('academic/')) {
+        path = 'pages/' + path;
+      }
       if (!path.startsWith('pages/academic/')) {
         continue;
       }
 
       const parts = path.split('/').filter(Boolean);
-      const folder = parts.length >= 2 ? parts[1] : '';
+      const acadIdx = parts.indexOf('academic');
+      const folder = (acadIdx !== -1 && parts.length > acadIdx + 1) ? parts[acadIdx + 1] : '';
       if (!folder) {
         continue;
       }
@@ -994,13 +1006,17 @@ class AcademicShowcase {
   }
 
   buildAcademicPathCandidates(indexPath, lang) {
-    const normalizedPath = String(indexPath || '').replace(/\\/g, '/');
+    let normalizedPath = String(indexPath || '').replace(/\\/g, '/');
+    if (normalizedPath.startsWith('academic/')) {
+      normalizedPath = 'pages/' + normalizedPath;
+    }
     const parts = normalizedPath.split('/').filter(Boolean);
-    if (parts.length < 3) {
+    const acadIdx = parts.indexOf('academic');
+    if (acadIdx === -1 || parts.length <= acadIdx + 1) {
       return [normalizedPath];
     }
 
-    const folder = parts[1];
+    const folder = parts[acadIdx + 1];
     const candidates = [
       `pages/academic/${folder}/${lang}.md`,
       normalizedPath

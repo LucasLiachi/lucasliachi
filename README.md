@@ -7,11 +7,11 @@ Eu sou **Lucas Liachi** e trabalho com gerenciamento de processos, governança e
 ## Estrutura organizada dos conteúdos compartilhados:
 
 Publico esta página em formado de Blog através do link [lucasliachi.github.io](https://lucasliachi.github.io/lucasliachi/), disponibilizando na seguinte estrutura:
-- [Processos empresariais ponta a ponta](/content/repository/process/process.md);
-- [Governança corporativa](/content/repository/governance-corp/governance-corp.md);
-- [Governança de TI e práticas ágeis](/content/repository/governance-it/governance-it.md);
-- [Desenvolvimento de Sofware](/content/repository/development/development.md);
-- [Estatística aplicada](/content/repository/estats/estats.md).
+- [Processos empresariais ponta a ponta](pages/Projects/process/process.md);
+- [Governança corporativa](pages/Projects/governance/governance-corp.md);
+- [Governança de TI e práticas ágeis](pages/Projects/governance/governance-it.md);
+- [Desenvolvimento de Sofware](pages/Projects/development/development.md);
+- [Estatística aplicada](pages/Projects/estats/estats.md).
 
 Compartilho artigos alinhados com os temas em:
 - Em português através do [LinkedIn](https://linkedin.com/in/lucasliachi);

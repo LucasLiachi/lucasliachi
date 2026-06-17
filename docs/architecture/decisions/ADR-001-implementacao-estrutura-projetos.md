@@ -1,6 +1,6 @@
 # ADR-001: Implementação de Estrutura de Projetos e Padrões Arquiteturais
 
-**Status:** Aceito
+**Status:** Substituído pelo ADR-003 (Superseded by ADR-003)
 **Data:** 2026-06-16
 
 ## Contexto
