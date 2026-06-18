@@ -32,6 +32,30 @@ function initializeExperience() {
   loadExperienceContent();
 }
 
+function cleanMangledUTF8(str) {
+  return String(str || '')
+    .replace(/Ã³/g, 'ó')
+    .replace(/Ãª/g, 'ê')
+    .replace(/Ã§/g, 'ç')
+    .replace(/Ã£/g, 'ã')
+    .replace(/Ã­/g, 'í')
+    .replace(/Ãº/g, 'ú')
+    .replace(/Ã¡/g, 'á')
+    .replace(/Ã©/g, 'é')
+    .replace(/Ã±/g, 'ñ')
+    .replace(/Ã/g, 'a');
+}
+
+function normalizeMetadataKey(key) {
+  let cleaned = cleanMangledUTF8(key).toLowerCase();
+  try {
+    cleaned = cleaned.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  } catch (e) {
+    // fallback
+  }
+  return cleaned.replace(/[^a-z0-9]/g, '');
+}
+
 function parseMarkdownMetadata(markdown) {
   const lines = String(markdown || '').split(/\r?\n/);
   const metadata = {};
@@ -39,7 +63,9 @@ function parseMarkdownMetadata(markdown) {
   lines.forEach(line => {
     const match = line.match(/^[-*]\s+([^:]+):\s+(.+)$/);
     if (match) {
-      metadata[match[1].trim().toLowerCase()] = match[2].trim();
+      const key = normalizeMetadataKey(match[1]);
+      const val = cleanMangledUTF8(match[2].trim());
+      metadata[key] = val;
     }
   });
 
@@ -745,21 +771,36 @@ class CertificateShowcase {
   parseCertificateMarkdown(markdown, entry, resolvedPath) {
     const metadata = parseMarkdownMetadata(markdown);
     const title = extractMarkdownTitle(markdown, entry.title);
-    const issuer = metadata.issuer || this.getCertificateFolderLabel(entry.folder);
-    const dateText = metadata.issued || '';
-    const expiresText = metadata.expires || '';
-    const credentialId = metadata['credential id'] || '';
-    const competencies = metadata.competencies || '';
+    const issuer = metadata.issuer || metadata.emissor || this.getCertificateFolderLabel(entry.folder);
+    const dateText = metadata.issued || metadata.emitido || '';
+    const expiresText = metadata.expires || metadata.expira || '';
+    const credentialId = metadata.credentialid || metadata.codigodacredencial || metadata.iddacredencial || '';
+    const competencies = metadata.competencies || metadata.competencias || '';
     const descriptionParts = [];
 
+    const lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toLowerCase();
+    let issuedLabel = 'Issued';
+    let expiresLabel = 'Expires';
+    let credIdLabel = 'Credential ID';
+
+    if (lang === 'pt') {
+      issuedLabel = 'Emitido';
+      expiresLabel = 'Expira';
+      credIdLabel = 'Código da credencial';
+    } else if (lang === 'es') {
+      issuedLabel = 'Emitido';
+      expiresLabel = 'Expira';
+      credIdLabel = 'ID de credencial';
+    }
+
     if (dateText) {
-      descriptionParts.push(`Issued: ${dateText}`);
+      descriptionParts.push(`${issuedLabel}: ${dateText}`);
     }
     if (expiresText) {
-      descriptionParts.push(`Expires: ${expiresText}`);
+      descriptionParts.push(`${expiresLabel}: ${expiresText}`);
     }
     if (credentialId) {
-      descriptionParts.push(`Credential ID: ${credentialId}`);
+      descriptionParts.push(`${credIdLabel}: ${credentialId}`);
     }
 
     return {
@@ -801,8 +842,61 @@ class CertificateShowcase {
       return parsedDate;
     }
 
-    const parts = dateText.match(/^([A-Za-z]{3,9})\s+(\d{4})$/);
+    // Try to normalize date text by removing "de " or "del "
+    const cleaned = dateText.replace(/\b(de|del)\b/gi, '').replace(/\s+/g, ' ').trim();
+
+    const parts = cleaned.match(/^([A-Za-zÀ-ÿ]{3,9})\s+(\d{4})$/);
     if (parts) {
+      const monthStr = parts[1].toLowerCase();
+      const monthMap = {
+        // English
+        jan: 0, january: 0,
+        feb: 1, february: 1,
+        mar: 2, march: 2,
+        apr: 3, april: 3,
+        may: 4,
+        jun: 5, june: 5,
+        jul: 6, july: 6,
+        aug: 7, august: 7,
+        sep: 8, september: 8,
+        oct: 9, october: 9,
+        nov: 10, november: 10,
+        dec: 11, december: 11,
+        
+        // Portuguese
+        janeiro: 0,
+        fevereiro: 1,
+        março: 2, marco: 2,
+        abril: 3, abr: 3,
+        maio: 4,
+        junho: 5,
+        julho: 6,
+        agosto: 7,
+        setembro: 8,
+        outubro: 9,
+        novembro: 10,
+        dezembro: 11, dez: 11,
+        
+        // Spanish
+        enero: 0, ene: 0,
+        febrero: 1,
+        marzo: 2,
+        abril: 3,
+        mayo: 4,
+        junio: 5,
+        julio: 6,
+        agosto: 7,
+        septiembre: 8, set: 8,
+        octubre: 9,
+        noviembre: 10,
+        diciembre: 11, dic: 11
+      };
+
+      if (monthMap[monthStr] !== undefined) {
+        return new Date(Number(parts[2]), monthMap[monthStr], 1);
+      }
+
+      // Fallback to English parser if not in mapping
       const monthIndex = new Date(`${parts[1]} 1, 2000`).getMonth();
       if (monthIndex >= 0) {
         return new Date(Number(parts[2]), monthIndex, 1);
@@ -1084,11 +1178,11 @@ class AcademicShowcase {
 
     const metadata = parseMarkdownMetadata(markdown);
     const title = extractMarkdownTitle(markdown, entry.title);
-    const institution = metadata.institution || this.getAcademicFolderLabel(entry.folder);
-    const degree = metadata.degree || '';
-    const period = metadata.period || '';
-    const competencies = metadata.competencies || '';
-    const highlights = metadata.highlights || '';
+    const institution = metadata.institution || metadata.instituicao || metadata.institucion || this.getAcademicFolderLabel(entry.folder);
+    const degree = metadata.degree || metadata.grau || metadata.titulo || '';
+    const period = metadata.period || metadata.periodo || '';
+    const competencies = metadata.competencies || metadata.competencias || '';
+    const highlights = metadata.highlights || metadata.destaques || metadata.destacados || '';
     const descriptionParts = [];
 
     if (degree) {
@@ -1103,7 +1197,12 @@ class AcademicShowcase {
       title,
       secondaryLabel: institution,
       description: descriptionParts.join(' • '),
-      metaItems: period ? [`Period: ${period}`] : [],
+      metaItems: (() => {
+        if (!period) return [];
+        const lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toLowerCase();
+        const label = lang === 'pt' ? 'Período' : lang === 'es' ? 'Período' : 'Period';
+        return [`${label}: ${period}`];
+      })(),
       tags: splitCommaValues(competencies),
       folder: entry.folder,
       indexPath: entry.indexPath,
@@ -1347,10 +1446,10 @@ class ArticleShowcase {
 
     const metadata = parseMarkdownMetadata(markdown);
     const title = extractMarkdownTitle(markdown, entry.title);
-    const author = metadata.author || 'Lucas Liachi';
-    const category = metadata.category || this.getArticleFolderLabel(entry.folder);
-    const dateText = metadata.date || '';
-    const competencies = metadata.competencies || '';
+    const author = metadata.author || metadata.autor || 'Lucas Liachi';
+    const category = metadata.category || metadata.categoria || this.getArticleFolderLabel(entry.folder);
+    const dateText = metadata.date || metadata.data || metadata.fecha || '';
+    const competencies = metadata.competencies || metadata.competencias || '';
     const descriptionParts = [];
 
     if (category) {
@@ -1362,7 +1461,12 @@ class ArticleShowcase {
       title,
       secondaryLabel: author,
       description: descriptionParts.join(' • '),
-      metaItems: dateText ? [`Date: ${dateText}`] : [],
+      metaItems: (() => {
+        if (!dateText) return [];
+        const lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toLowerCase();
+        const label = lang === 'pt' ? 'Data' : lang === 'es' ? 'Fecha' : 'Date';
+        return [`${label}: ${dateText}`];
+      })(),
       tags: splitCommaValues(competencies),
       folder: entry.folder,
       indexPath: entry.indexPath,
