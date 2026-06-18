@@ -1213,6 +1213,265 @@ class AcademicShowcase {
   }
 }
 
+class ArticleShowcase {
+  constructor() {
+    this.articles = [];
+    this.container = document.getElementById('articles-container');
+    if (!this.container) return;
+    this.loadArticles();
+  }
+
+  async fetchMarkdownFromCandidates(candidates) {
+    for (const candidate of candidates) {
+      try {
+        const response = await fetch(candidate);
+        if (response.ok) {
+          return await response.text();
+        }
+      } catch (error) {
+        // Try the next fallback path
+      }
+    }
+    throw new Error('Failed to load article markdown files');
+  }
+
+  parseArticleIndex(markdown) {
+    const normalizedMarkdown = String(markdown || '').replace(/\]\s*\n\s*\(/g, '](');
+    const entries = [];
+    const linkPattern = /^\s*[-*]\s+\[([^\]]+)\]\(([^)]+)\)/gm;
+    let match;
+
+    while ((match = linkPattern.exec(normalizedMarkdown)) !== null) {
+      const title = match[1].trim();
+      let path = match[2].trim();
+      if (path.startsWith('articles/')) {
+        path = 'pages/' + path;
+      }
+      if (!path.startsWith('pages/articles/')) {
+        continue;
+      }
+
+      const parts = path.split('/').filter(Boolean);
+      const artIdx = parts.indexOf('articles');
+      const folder = (artIdx !== -1 && parts.length > artIdx + 1) ? parts[artIdx + 1] : '';
+      if (!folder) {
+        continue;
+      }
+
+      entries.push({
+        id: this.generateId(`${folder}-${title}`),
+        title,
+        folder,
+        indexPath: path
+      });
+    }
+
+    return entries;
+  }
+
+  buildArticlePathCandidates(indexPath, lang) {
+    let normalizedPath = String(indexPath || '').replace(/\\/g, '/');
+    if (normalizedPath.startsWith('articles/')) {
+      normalizedPath = 'pages/' + normalizedPath;
+    }
+    const parts = normalizedPath.split('/').filter(Boolean);
+    const artIdx = parts.indexOf('articles');
+    if (artIdx === -1 || parts.length <= artIdx + 1) {
+      return [normalizedPath];
+    }
+
+    const folder = parts[artIdx + 1];
+    const candidates = [
+      `pages/articles/${folder}/${lang}.md`,
+      normalizedPath
+    ];
+
+    ['EN', 'PT', 'ES'].forEach(code => {
+      const candidatePath = `pages/articles/${folder}/${code}.md`;
+      if (!candidates.includes(candidatePath)) {
+        candidates.push(candidatePath);
+      }
+    });
+
+    return [...new Set(candidates)];
+  }
+
+  generateId(str) {
+    return String(str || '')
+      .toLowerCase()
+      .replace(/[^\w\s]/g, '')
+      .replace(/\s+/g, '-');
+  }
+
+  getArticleFolderLabel(folder) {
+    if (!folder) {
+      return 'Article';
+    }
+    return folder
+      .replace(/_/g, ' ')
+      .replace(/\b\w/g, char => char.toUpperCase());
+  }
+
+  async loadArticleEntry(entry, lang) {
+    const detailPathCandidates = this.buildArticlePathCandidates(entry.indexPath, lang);
+    let markdown = null;
+    let resolvedPath = entry.indexPath;
+
+    for (const candidate of detailPathCandidates) {
+      try {
+        const response = await fetch(candidate);
+        if (response.ok) {
+          markdown = await response.text();
+          resolvedPath = candidate;
+          break;
+        }
+      } catch (error) {
+        // Try next candidate
+      }
+    }
+
+    if (!markdown) {
+      return {
+        id: entry.id,
+        title: entry.title,
+        secondaryLabel: this.getArticleFolderLabel(entry.folder),
+        description: '',
+        metaItems: [],
+        tags: [],
+        folder: entry.folder,
+        indexPath: entry.indexPath,
+        path: entry.indexPath,
+        searchBlob: `${entry.title} ${entry.folder} ${entry.indexPath}`.toLowerCase()
+      };
+    }
+
+    const metadata = parseMarkdownMetadata(markdown);
+    const title = extractMarkdownTitle(markdown, entry.title);
+    const author = metadata.author || 'Lucas Liachi';
+    const category = metadata.category || this.getArticleFolderLabel(entry.folder);
+    const dateText = metadata.date || '';
+    const competencies = metadata.competencies || '';
+    const descriptionParts = [];
+
+    if (category) {
+      descriptionParts.push(category);
+    }
+
+    return {
+      id: this.generateId(`${entry.folder}-${title}`),
+      title,
+      secondaryLabel: author,
+      description: descriptionParts.join(' • '),
+      metaItems: dateText ? [`Date: ${dateText}`] : [],
+      tags: splitCommaValues(competencies),
+      folder: entry.folder,
+      indexPath: entry.indexPath,
+      path: resolvedPath || entry.indexPath,
+      searchBlob: [
+        title,
+        author,
+        category,
+        dateText,
+        competencies,
+        entry.indexPath,
+        descriptionParts.join(' ')
+      ].filter(Boolean).join(' ').toLowerCase()
+    };
+  }
+
+  async loadArticles() {
+    this.container.setAttribute('aria-busy', 'true');
+    this.container.innerHTML = `
+      <div class="no-certificates">
+        <p data-i18n="articles.loading">Loading articles...</p>
+      </div>
+    `;
+
+    try {
+      const lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toUpperCase();
+      const indexMarkdown = await this.fetchMarkdownFromCandidates([
+        `pages/articles/${lang}.md`,
+        'pages/articles/EN.md'
+      ]);
+      const entries = this.parseArticleIndex(indexMarkdown);
+      const articles = await Promise.all(entries.map(entry => this.loadArticleEntry(entry, lang)));
+      this.articles = articles.filter(Boolean);
+      this.renderArticles();
+    } catch (error) {
+      console.error('Error loading articles:', error);
+      this.showErrorMessage();
+    } finally {
+      this.container.removeAttribute('aria-busy');
+    }
+  }
+
+  renderArticles() {
+    this.container.innerHTML = '';
+
+    if (this.articles.length === 0) {
+      const noResults = document.createElement('div');
+      noResults.className = 'no-certificates';
+      noResults.setAttribute('data-i18n', 'articles.noResults');
+      noResults.textContent = window.Translations?.get('articles.noResults') || 'No articles available';
+      this.container.appendChild(noResults);
+      return;
+    }
+
+    const grid = document.createElement('div');
+    grid.className = 'projects-grid profile-grid';
+    this.articles.forEach((article, index) => {
+      grid.appendChild(this.createArticleCard(article, index));
+    });
+    this.container.appendChild(grid);
+    this.bindArticleLinks();
+  }
+
+  createArticleCard(article, index) {
+    const card = document.createElement('article');
+    card.className = 'project-card article-card profile-card fade-in';
+    card.style.animationDelay = `${index * 0.1}s`;
+    card.setAttribute('aria-labelledby', `article-title-${article.id}`);
+    card.innerHTML = buildProfileCardMarkup({
+      id: article.id,
+      title: article.title,
+      secondaryLabel: article.secondaryLabel,
+      description: article.description,
+      metaItems: article.metaItems || [],
+      tags: article.tags || [],
+      linkPath: article.path,
+      linkLabel: window.Translations?.get('articles.readArticle') || 'Read Article',
+      linkClass: 'article-link btn btn-secondary',
+      titleIdPrefix: 'article-title'
+    });
+    return card;
+  }
+
+  bindArticleLinks() {
+    this.container.querySelectorAll('.article-link').forEach(link => {
+      if (link.dataset.bound === 'true') {
+        return;
+      }
+
+      link.dataset.bound = 'true';
+      link.addEventListener('click', event => {
+        event.preventDefault();
+        const path = link.getAttribute('data-path');
+        if (path && window.loadProjectContent) {
+          window.loadProjectContent(path);
+        }
+      });
+    });
+  }
+
+  showErrorMessage() {
+    this.container.innerHTML = `
+      <div class="certificate-error">
+        <p data-i18n="articles.error">Unable to load articles. Please try again later.</p>
+      </div>
+    `;
+  }
+}
+
 const projectData = {
   process: [
     {
@@ -1355,7 +1614,6 @@ class ProjectManager {
   constructor() {
     this.projects = [];
     this.filteredProjects = [];
-    this.allFilteredProjects = [];
     this.categories = ['process', 'technology', 'statistics'];
     this.categoryMapping = {
       'process': 'process',
@@ -1365,82 +1623,60 @@ class ProjectManager {
       'stats': 'statistics',
       'production': 'statistics'
     };
-    this.DEFAULT_CATEGORY = 'process';
-    this.currentCategory = null;
+    this.currentCategory = 'process';
     this.currentFilter = '';
     this.currentSort = 'date-desc';
-    this.isSearching = false;
-    this.projectContainers = {
-      process: document.getElementById('process-projects-container'),
-      technology: document.getElementById('technology-projects-container'),
-      statistics: document.getElementById('statistics-projects-container')
-    };
-    this.searchInput = document.getElementById('projects-search');
-    this.clearButton = document.getElementById('clear-search');
-    this.searchResultsDisplay = document.getElementById('search-results-count');
-    this.categoryFilter = document.getElementById('category-filter');
-    if (document.getElementById('projects') && !Object.values(this.projectContainers).some(c => c)) {
-        console.warn('ProjectManager: No project category containers found, but #projects section exists. Projects may not display.');
-    }
-    this.setupGlobalSearch();
-    this.setupCategoryFilter();
-    this.setupCategoryTabs();
+    this.container = document.getElementById('projects-container');
+    if (!this.container) return;
+    this.setupUI();
     this.loadProjects();
   }
-  setupGlobalSearch() {
-    if (!this.searchInput) return;
-    this.searchInput.addEventListener('input', (e) => {
-      const query = e.target.value.trim();
-      this.performGlobalSearch(query);
-    });
-    if (this.clearButton) {
-      this.clearButton.addEventListener('click', () => {
-        this.clearGlobalSearch();
-      });
-      this.searchInput.addEventListener('input', (e) => {
-        this.clearButton.style.display = e.target.value ? 'block' : 'none';
-      });
-      this.clearButton.style.display = this.searchInput.value ? 'block' : 'none';
-    }
-  }
-  setupCategoryFilter() {
-    if (!this.categoryFilter) return;
-    this.categoryFilter.addEventListener('change', (e) => {
-      const selectedCategory = e.target.value;
-      const currentSearchTerm = this.searchInput ? this.searchInput.value.trim() : '';
-      if (selectedCategory === 'all') {
-        this.performGlobalSearch(currentSearchTerm);
-        this.updateTabsActiveState(null);
-      } else {
-        this.changeCategory(selectedCategory); 
-      }
-    });
-  }
-  setupCategoryTabs() {
-    const tabs = document.querySelectorAll('.projects-nav .project-tab');
-    if (!tabs || tabs.length === 0) return; // fallback: no visual tabs in template
+
+  setupUI() {
+    const tabs = document.querySelectorAll('.project-tabs .project-tab');
     tabs.forEach(tab => {
       tab.addEventListener('click', (e) => {
         e.preventDefault();
-        const category = tab.dataset.category || (e.target && e.target.dataset && e.target.dataset.category);
+        const category = tab.dataset.category;
         if (category && this.categories.includes(category)) {
           this.changeCategory(category);
         }
       });
     });
+
+    this.searchInput = document.getElementById('projects-search');
+    this.clearButton = document.getElementById('projects-clear-search');
+    this.searchResultsDisplay = document.getElementById('projects-search-results-count');
+
+    if (this.searchInput) {
+      this.searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.trim();
+        this.filterProjects(query);
+        if (this.clearButton) {
+          this.clearButton.style.display = query ? 'block' : 'none';
+        }
+      });
+    }
+
+    if (this.clearButton) {
+      this.clearButton.addEventListener('click', () => {
+        if (this.searchInput) {
+          this.searchInput.value = '';
+          this.searchInput.focus();
+        }
+        this.filterProjects('');
+        this.clearButton.style.display = 'none';
+      });
+    }
+
+    this.sortSelect = document.getElementById('projects-sort');
+    if (this.sortSelect) {
+      this.sortSelect.addEventListener('change', (e) => {
+        this.sortProjects(e.target.value);
+      });
+    }
   }
 
-  updateTabsActiveState(activeCategory) {
-    const tabs = document.querySelectorAll('.projects-nav .project-tab');
-    if (!tabs || tabs.length === 0) return;
-    tabs.forEach(tab => {
-      if (activeCategory === null) {
-        tab.classList.remove('active');
-      } else {
-        tab.classList.toggle('active', tab.dataset.category === activeCategory);
-      }
-    });
-  }
   loadProjects() {
     this.projects = Object.entries(projectData).flatMap(([categoryKey, projectsInCategory]) => {
       return projectsInCategory.map(project => ({
@@ -1449,294 +1685,175 @@ class ProjectManager {
         category: this.categoryMapping[project.category || categoryKey] || 'technology',
         date: project.date || '1970-01-01'
       }));
-    }).sort((a, b) => {
+    });
+
+    this.filterProjects(this.searchInput ? this.searchInput.value.trim() : '');
+  }
+
+  changeCategory(category) {
+    this.currentCategory = category;
+    
+    const tabs = document.querySelectorAll('.project-tabs .project-tab');
+    tabs.forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.category === category);
+    });
+
+    const query = this.searchInput ? this.searchInput.value.trim() : '';
+    this.filterProjects(query);
+  }
+
+  filterProjects(searchTerm) {
+    this.currentFilter = searchTerm.trim();
+    const normalizedSearch = this.currentFilter.toLowerCase();
+    
+    this.filteredProjects = this.projects.filter(project => {
+      if (project.category !== this.currentCategory) {
+        return false;
+      }
+      if (!normalizedSearch) {
+        return true;
+      }
+      return (
+        project.title.toLowerCase().includes(normalizedSearch) ||
+        (project.description && project.description.toLowerCase().includes(normalizedSearch)) ||
+        (project.technologies && project.technologies.some(tech => tech.toLowerCase().includes(normalizedSearch))) ||
+        (project.keywords && project.keywords.some(kw => kw.toLowerCase().includes(normalizedSearch)))
+      );
+    });
+
+    this.sortProjects(this.currentSort, false);
+    this.renderProjects();
+  }
+
+  sortProjects(sortOption, shouldRender = true) {
+    this.currentSort = sortOption;
+    this.filteredProjects.sort((a, b) => {
       const heroA = a.hero ? 1 : 0;
       const heroB = b.hero ? 1 : 0;
       if (heroA !== heroB) {
         return heroB - heroA;
       }
-      return a.title.localeCompare(b.title);
+
+      switch (sortOption) {
+        case 'date-asc':
+          return new Date(a.date) - new Date(b.date);
+        case 'date-desc':
+          return new Date(b.date) - new Date(a.date);
+        case 'name-asc':
+          return a.title.localeCompare(b.title);
+        case 'name-desc':
+          return b.title.localeCompare(a.title);
+        default:
+          return 0;
+      }
     });
-    this.handleInitialHash();
-    if (!this.currentCategory) {
-      this.hideAllProjectContainers();
-    } else {
-      this.changeCategory(this.currentCategory);
+
+    if (shouldRender) {
+      this.renderProjects();
     }
   }
-  hideAllProjectContainers() {
-    Object.values(this.projectContainers).forEach(container => {
-      if (container) container.style.display = 'none';
+
+  renderProjects() {
+    this.updateSearchResultsCount(this.filteredProjects.length);
+    this.container.innerHTML = '';
+
+    if (this.filteredProjects.length === 0) {
+      const noResults = document.createElement('div');
+      noResults.className = 'no-results';
+      const noResultsTextKey = 'projects.noMatchInCategory';
+      const noResultsText = window.Translations?.get(noResultsTextKey) || 'No projects match your criteria in this category.';
+      noResults.innerHTML = `<p>${noResultsText}</p>`;
+      this.container.appendChild(noResults);
+      return;
+    }
+
+    const grid = document.createElement('div');
+    grid.className = 'projects-grid profile-grid';
+    
+    this.filteredProjects.forEach((project, index) => {
+      const card = this.createProjectCard(project, index);
+      grid.appendChild(card);
     });
+
+    this.container.appendChild(grid);
+    this.bindProjectLinks();
   }
-  handleInitialHash() {
-    const hash = window.location.hash;
-    if (hash && hash.startsWith('#projects-')) {
-        const categoryFromHash = hash.substring('#projects-'.length);
-        if (this.categories.includes(categoryFromHash)) {
-            this.currentCategory = categoryFromHash;
-        this.updateTabsActiveState(categoryFromHash);
-            return;
-        }
-    }
-    // If no valid hash, set default category to ensure projects render on load
-    this.currentCategory = this.DEFAULT_CATEGORY || null;
-  }
-  performGlobalSearch(query) {
-    this.currentFilter = query;
-    if (!query && this.categoryFilter && this.categoryFilter.value !== 'all') {
-        this.isSearching = false;
-        this.changeCategory(this.categoryFilter.value);
-        if (this.clearButton) this.clearButton.style.display = 'none';
-        return;
-    }
-    this.isSearching = true;
-    if (this.categoryFilter && this.categoryFilter.value !== 'all') {
-        this.categoryFilter.value = 'all';
-    }
-    this.updateTabsActiveState(null);
-    if (!query) {
-        this.allFilteredProjects = [...this.projects];
-    } else {
-        this.allFilteredProjects = this.projects.filter(project => {
-          const searchLower = query.toLowerCase();
-          return (
-            project.title.toLowerCase().includes(searchLower) ||
-            project.description.toLowerCase().includes(searchLower) ||
-            (project.technologies && project.technologies.some(tech => tech.toLowerCase().includes(searchLower))) ||
-            (project.keywords && project.keywords.some(keyword => keyword.toLowerCase().includes(searchLower)))
-          );
-        });
-    }
-    this.updateSearchResultsCount(this.allFilteredProjects.length);
-    this.displayGlobalSearchResults();
-    if (this.clearButton) {
-      this.clearButton.style.display = query ? 'block' : 'none';
-    }
-  }
-  clearGlobalSearch() {
-    if (this.searchInput) this.searchInput.value = '';
-    this.performGlobalSearch(''); 
-  }
+
   updateSearchResultsCount(count) {
-    if (!this.searchResultsDisplay) return;
-    const queryExists = (this.searchInput && this.searchInput.value.trim() !== '');
-    if (!this.isSearching && !queryExists) { 
+    if (!this.searchResultsDisplay) {
+      return;
+    }
+
+    if (!this.currentFilter) {
       this.searchResultsDisplay.textContent = '';
       this.searchResultsDisplay.style.display = 'none';
       return;
     }
+
     this.searchResultsDisplay.style.display = 'block';
-    let noResultsText = 'No results found';
-    let resultsTextSuffix = 'results found';
+    
+    let resultsTextSuffix = 'projects found';
     if (window.Translations) {
-        noResultsText = window.Translations.get('projects.noResults') || noResultsText;
-        resultsTextSuffix = window.Translations.get('projects.resultsFound') || resultsTextSuffix;
+      resultsTextSuffix = window.Translations.get('projects.resultsFound') || resultsTextSuffix;
     }
-    if (count === 0) {
-      this.searchResultsDisplay.textContent = noResultsText;
-    } else {
-      this.searchResultsDisplay.textContent = `${count} ${resultsTextSuffix}`;
-    }
+    
+    this.searchResultsDisplay.textContent = count === 0
+      ? (window.Translations?.get('projects.noResults') || 'No results found')
+      : `${count} ${resultsTextSuffix}`;
   }
-  displayGlobalSearchResults() {
-    Object.values(this.projectContainers).forEach(container => {
-      if (container) container.style.display = 'none';
-    });
-    const categoryTabs = document.querySelectorAll('.projects-nav .project-tab');
-    if (categoryTabs && categoryTabs.length) categoryTabs.forEach(tab => tab.style.opacity = '0.5');
-    let searchResultsContainer = document.getElementById('search-results-container');
-    if (!searchResultsContainer) {
-      searchResultsContainer = document.createElement('div');
-      searchResultsContainer.id = 'search-results-container';
-      searchResultsContainer.className = 'search-results-container';
-      const projectsNav = document.querySelector('.projects-nav');
-      if (projectsNav) {
-        projectsNav.parentNode.insertBefore(searchResultsContainer, projectsNav.nextSibling);
-      } else {
-        const projectsSection = document.getElementById('projects');
-        if (projectsSection) projectsSection.appendChild(searchResultsContainer);
-        else console.error("ProjectManager: Cannot find .projects-nav or #projects to append search results container.");
-      }
-    }
-    searchResultsContainer.style.display = 'block';
-    this.renderProjectsToContainer(this.allFilteredProjects, searchResultsContainer, true);
-  }
-  hideGlobalSearchResults() {
-    const categoryTabs = document.querySelectorAll('.projects-nav .project-tab');
-    if (categoryTabs && categoryTabs.length) categoryTabs.forEach(tab => tab.style.opacity = '1');
-    const searchResultsContainer = document.getElementById('search-results-container');
-    if (searchResultsContainer) {
-      searchResultsContainer.style.display = 'none';
-      searchResultsContainer.innerHTML = ''; 
-    }
-  }
-  changeCategory(category) {
-    if (!this.categories.includes(category)) {
-        return;
-    }
-    if (this.isSearching) {
-        this.hideGlobalSearchResults();
-    }
-    this.isSearching = false;
-    this.currentCategory = category;
-    window.location.hash = `projects-${category}`;
-    if (this.categoryFilter && this.categoryFilter.value !== category) {
-        this.categoryFilter.value = category;
-    }
-    this.updateTabsActiveState(this.currentCategory);
-    Object.entries(this.projectContainers).forEach(([catKey, container]) => {
-        if (container) {
-            container.style.display = (catKey === this.currentCategory) ? 'block' : 'none';
-        }
-    });
-    const currentSearchQuery = this.searchInput ? this.searchInput.value.trim() : '';
-    this.filterProjectsByCategory(currentSearchQuery);
-  }
-  filterProjectsByCategory(query) {
-    if (this.isSearching) { 
-      return; 
-    }
-    if (!this.currentCategory || !this.categories.includes(this.currentCategory)) {
-        return;
-    }
-    const localQuery = query ? query.toLowerCase() : '';
-    const container = this.projectContainers[this.currentCategory];
-    if (!container) {
-        return;
-    }
-    this.filteredProjects = this.projects.filter(project => {
-      if (project.category !== this.currentCategory) return false;
-      if (!localQuery) return true;
-      return (
-        project.title.toLowerCase().includes(localQuery) ||
-        project.description.toLowerCase().includes(localQuery) ||
-        (project.technologies && project.technologies.some(tech => tech.toLowerCase().includes(localQuery))) ||
-        (project.keywords && project.keywords.some(keyword => keyword.toLowerCase().includes(localQuery)))
-      );
-    });
-    this.applySortToCategoryProjects(); 
-    this.renderProjectsToContainer(this.filteredProjects, container, false); 
-    this.updateSearchResultsCount(this.filteredProjects.length); 
-  }
-  sortCategoryProjects(sortBy) { 
-    if (sortBy) {
-      this.currentSort = sortBy;
-    }
-    this.applySortToCategoryProjects();
-    const container = this.projectContainers[this.currentCategory];
-    this.renderProjectsToContainer(this.filteredProjects, container, false);
-  }
-  applySortToCategoryProjects() {
-    const [criterion, direction] = this.currentSort.split('-');
-    this.filteredProjects.sort((a, b) => {
-      let comparison = 0;
-      if (criterion === 'date') {
-        const dateA = new Date(a.date);
-        const dateB = new Date(b.date);
-        if (!isNaN(dateA) && !isNaN(dateB)) {
-            comparison = dateB - dateA;
-        }
-      } else if (criterion === 'name') {
-        comparison = a.title.localeCompare(b.title);
-      }
-      return direction === 'asc' ? -comparison : comparison;
-    });
-  }
-  renderProjectsToContainer(projectsToRender, container, isGlobalSearchLayout) {
-    if (!container) {
-      return;
-    }
-    container.innerHTML = '';
-    let noResultsTextKey = isGlobalSearchLayout ? 'projects.noMatch' : 'projects.noMatchInCategory';
-    let noResultsDefaultText = isGlobalSearchLayout ? 'No projects match your search criteria.' : 'No projects match your criteria in this category.';
-    let noResultsText = noResultsDefaultText;
-    if (window.Translations) {
-        noResultsText = window.Translations.get(noResultsTextKey) || noResultsDefaultText;
-    }
-    if (projectsToRender.length === 0) {
-      container.innerHTML = `<div class="no-results"><p>${noResultsText}</p></div>`;
-      return;
-    }
-    if (isGlobalSearchLayout) {
-        const groupedResults = projectsToRender.reduce((acc, project) => {
-            if (!acc[project.category]) acc[project.category] = [];
-            acc[project.category].push(project);
-            return acc;
-        }, {});
-        Object.entries(groupedResults).forEach(([categoryKey, projectsInCategory]) => {
-            const categorySection = document.createElement('div');
-            categorySection.className = 'search-category-section';
-            const categoryTitle = document.createElement('h3');
-            categoryTitle.className = 'search-category-title';
-            categoryTitle.textContent = this.getCategoryDisplayName(categoryKey);
-            categorySection.appendChild(categoryTitle);
-            const projectsGrid = document.createElement('div');
-            projectsGrid.className = `project-category search-projects-grid ${categoryKey}-projects active`; 
-            projectsInCategory.forEach((project, index) => {
-                const projectElement = this.createProjectCardElement(project, index, true);
-                projectsGrid.appendChild(projectElement);
-            });
-            categorySection.appendChild(projectsGrid);
-            container.appendChild(categorySection);
-        });
-    } else {
-        projectsToRender.forEach((project, index) => {
-            const projectElement = this.createProjectCardElement(project, index, false);
-            container.appendChild(projectElement);
-        });
-    }
-    container.querySelectorAll('.project-link').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const path = link.getAttribute('data-path');
-        if (path) loadProjectContent(path);
-        else console.warn("Project card link clicked, but data-path attribute is missing or empty.");
-      });
-    });
-  }
+
   getCategoryDisplayName(categoryKey) {
     if (window.Translations) {
-        const translationKey = `projects.category.${categoryKey}`;
-        const translatedName = window.Translations.get(translationKey);
-        if (translatedName && translatedName !== translationKey) return translatedName;
+      const translationKey = `projects.category.${categoryKey}`;
+      const translatedName = window.Translations.get(translationKey);
+      if (translatedName && translatedName !== translationKey) return translatedName;
     }
     const names = {
       process: 'Process Improvement',
-      governance: 'Governance & Management',
-      it: 'IT & Technology',
-      dev: 'Development',
-      stats: 'Statistics & Analytics',
-      production: 'Production & Manufacturing'
+      technology: 'Technology Solutions',
+      statistics: 'Statistics & Analytics'
     };
     return names[categoryKey] || categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1);
   }
-  createProjectCardElement(project, index, isGlobalSearchContext) {
-    const projectElement = document.createElement('div');
-    projectElement.className = 'project-card fade-in'; 
-    projectElement.style.animationDelay = `${index * 0.1}s`;
-    const technologiesHtml = (project.technologies || [])
-      .map(tech => `<span class="tech-tag">${tech}</span>`)
-      .join('');
-    let readMoreText = 'Read More';
-    if (window.Translations) {
-        readMoreText = window.Translations.get('projects.readMore') || readMoreText;
+
+  createProjectCard(project, index) {
+    const card = document.createElement('article');
+    card.className = 'project-card profile-card fade-in';
+    card.style.animationDelay = `${index * 0.08}s`;
+    card.setAttribute('aria-labelledby', `project-title-${project.id}`);
+
+    const badges = [];
+    if (project.hero) {
+      badges.push('Hero');
     }
-    projectElement.innerHTML = `
-      <div class="project-header">
-        <h3>${project.title}</h3>
-        ${project.hero ? '<span class="project-badge project-badge-hero">Hero</span>' : ''}
-        ${isGlobalSearchContext ? `<span class="project-category-tag">${this.getCategoryDisplayName(project.category)}</span>` : ''}
-      </div>
-      <p class="project-description">${project.description || 'No description available.'}</p>
-      <div class="project-technologies">
-        ${technologiesHtml}
-      </div>
-      <div class="project-links">
-        <a href="#" class="project-link btn btn-secondary" data-path="${project.path}">${readMoreText}</a>
-      </div>
-    `;
-    return projectElement;
+
+    card.innerHTML = buildProfileCardMarkup({
+      id: project.id,
+      title: project.title,
+      secondaryLabel: this.getCategoryDisplayName(project.category),
+      description: project.description || '',
+      metaItems: badges,
+      tags: project.technologies || [],
+      linkPath: project.path,
+      linkLabel: window.Translations?.get('projects.readMore') || 'Read More',
+      linkClass: 'project-link btn btn-secondary',
+      titleIdPrefix: 'project-title'
+    });
+    return card;
+  }
+
+  bindProjectLinks() {
+    this.container.querySelectorAll('.project-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const path = link.getAttribute('data-path');
+        if (path && window.loadProjectContent) {
+          window.loadProjectContent(path);
+        } else {
+          console.warn("Project card link clicked, but data-path attribute is missing or empty.");
+        }
+      });
+    });
   }
 }
 
@@ -1754,6 +1871,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('certificate-container')) {
     window.certificateShowcase = new CertificateShowcase();
   }
+  if (document.getElementById('articles-container')) {
+    window.articleShowcase = new ArticleShowcase();
+  }
   initializeExperience();
   if (document.getElementById('projects')) {
     window.projectManager = new ProjectManager();
@@ -1769,6 +1889,12 @@ document.addEventListener('languageChanged', () => {
   }
   if (window.certificateShowcase) {
     window.certificateShowcase.loadCertificates();
+  }
+  if (window.articleShowcase) {
+    window.articleShowcase.loadArticles();
+  }
+  if (window.projectManager) {
+    window.projectManager.loadProjects();
   }
 });
 

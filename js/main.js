@@ -4,7 +4,8 @@ const Translations = (() => {
       navbar: {
         home: 'Home',
         about: 'Resume',
-        projects: 'Projects'
+        projects: 'Projects',
+        articles: 'Articles'
       },
       hero: {
         title: 'Technology Governance Specialist',
@@ -56,6 +57,17 @@ const Translations = (() => {
           technology: 'Technology',
           statistics: 'Statistics'
         },
+        sort: {
+          newest: 'Newest first',
+          oldest: 'Oldest first',
+          nameAsc: 'Name (A-Z)',
+          nameDesc: 'Name (Z-A)'
+        },
+        tab: {
+          process: 'Process Improvement',
+          technology: 'Technology Solutions',
+          statistics: 'Statistics & Analytics'
+        },
         category: {
           process: 'Process Improvement',
           governance: 'Corporate Governance',
@@ -85,6 +97,13 @@ const Translations = (() => {
         noMatchInCategory: 'No projects match your criteria in this category.',
         readMore: 'Read More'
       },
+      articles: {
+        title: 'Articles',
+        readArticle: 'Read Article',
+        loading: 'Loading articles...',
+        noResults: 'No articles available.',
+        error: 'Unable to load articles.'
+      },
       modal: {
         about: {
           title: 'About me',
@@ -101,7 +120,8 @@ const Translations = (() => {
       navbar: {
         home: 'Início',
         about: 'Currículo',
-        projects: 'Projetos'
+        projects: 'Projetos',
+        articles: 'Artigos'
       },
       hero: {
         title: 'Especialista em Governança de Tecnologia',
@@ -153,6 +173,17 @@ const Translations = (() => {
           technology: 'Tecnologia',
           statistics: 'Estatística'
         },
+        sort: {
+          newest: 'Mais recentes',
+          oldest: 'Mais antigos',
+          nameAsc: 'Nome (A-Z)',
+          nameDesc: 'Nome (Z-A)'
+        },
+        tab: {
+          process: 'Melhoria de Processos',
+          technology: 'Soluções em Tecnologia',
+          statistics: 'Estatística e Análise'
+        },
         category: {
           process: 'Melhoria de Processos',
           governance: 'Governança Corporativa',
@@ -182,6 +213,13 @@ const Translations = (() => {
         noMatchInCategory: 'Nenhum projeto corresponde aos critérios nesta categoria.',
         readMore: 'Ler mais'
       },
+      articles: {
+        title: 'Artigos',
+        readArticle: 'Ler Artigo',
+        loading: 'Carregando artigos...',
+        noResults: 'Nenhum artigo disponível.',
+        error: 'Não foi possível carregar os artigos.'
+      },
       modal: {
         about: {
           title: 'Sobre mim',
@@ -198,7 +236,8 @@ const Translations = (() => {
       navbar: {
         home: 'Inicio',
         about: 'Currículum',
-        projects: 'Proyectos'
+        projects: 'Proyectos',
+        articles: 'Artículos'
       },
       hero: {
         title: 'Especialista en Gobernanza de Tecnología',
@@ -250,6 +289,17 @@ const Translations = (() => {
           technology: 'Tecnología',
           statistics: 'Estadística'
         },
+        sort: {
+          newest: 'Más recientes',
+          oldest: 'Más antiguos',
+          nameAsc: 'Nombre (A-Z)',
+          nameDesc: 'Nombre (Z-A)'
+        },
+        tab: {
+          process: 'Mejora de Procesos',
+          technology: 'Soluciones Tecnológicas',
+          statistics: 'Estadística y Análisis'
+        },
         category: {
           process: 'Mejora de Procesos',
           governance: 'Gobernanza Corporativa',
@@ -278,6 +328,13 @@ const Translations = (() => {
         noMatch: 'Ningún proyecto coincide con los criterios de búsqueda.',
         noMatchInCategory: 'Ningún proyecto coincide con los criterios de esta categoría.',
         readMore: 'Leer más'
+      },
+      articles: {
+        title: 'Artículos',
+        readArticle: 'Leer Artículo',
+        loading: 'Cargando artículos...',
+        noResults: 'No hay artículos disponibles.',
+        error: 'No se pudieron cargar los artículos.'
       },
       modal: {
         about: {
