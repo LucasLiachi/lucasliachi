@@ -5,6 +5,7 @@ const Translations = (() => {
         home: 'Home',
         about: 'Resume',
         projects: 'Projects',
+        certificates: 'Certificates',
         articles: 'Articles'
       },
       hero: {
@@ -104,6 +105,9 @@ const Translations = (() => {
         noResults: 'No articles available.',
         error: 'Unable to load articles.'
       },
+      certificates: {
+        title: 'Certificates'
+      },
       modal: {
         about: {
           title: 'About me',
@@ -121,6 +125,7 @@ const Translations = (() => {
         home: 'Início',
         about: 'Currículo',
         projects: 'Projetos',
+        certificates: 'Certificados',
         articles: 'Artigos'
       },
       hero: {
@@ -220,6 +225,9 @@ const Translations = (() => {
         noResults: 'Nenhum artigo disponível.',
         error: 'Não foi possível carregar os artigos.'
       },
+      certificates: {
+        title: 'Certificados'
+      },
       modal: {
         about: {
           title: 'Sobre mim',
@@ -237,6 +245,7 @@ const Translations = (() => {
         home: 'Inicio',
         about: 'Currículum',
         projects: 'Proyectos',
+        certificates: 'Certificados',
         articles: 'Artículos'
       },
       hero: {
@@ -333,8 +342,11 @@ const Translations = (() => {
         title: 'Artículos',
         readArticle: 'Leer Artículo',
         loading: 'Cargando artículos...',
-        noResults: 'No hay artículos disponibles.',
+        noResults: 'No hay artículos disponíveis.',
         error: 'No se pudieron cargar los artículos.'
+      },
+      certificates: {
+        title: 'Certificados'
       },
       modal: {
         about: {
