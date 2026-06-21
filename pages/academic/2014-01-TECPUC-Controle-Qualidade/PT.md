@@ -1,5 +1,6 @@
 # Centro de Educação Profissional Irmão Mário Cristóvão - TECPUC — Técnico, Tecnologia em Controle de Qualidade
 
+- Attachment: pages/academic/2014-01-TECPUC-Controle-Qualidade/certificate.pdf
 - Instituição: TECPUC
 - Grau: Técnico, Tecnologia em Controle de Qualidade
 - Período: 2014 – 2015

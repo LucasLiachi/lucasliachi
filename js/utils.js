@@ -459,11 +459,15 @@ function loadProjectContent(path) {
       if (window.marked) {
         const html = window.marked.parse(text);
 
+        // Try to match the Attachment/Anexo key in markdown
+        const attachmentMatch = String(text || '').match(/^[-*]\s+(Attachment|Anexo):\s+(.+)$/mi);
+        const attachmentPath = attachmentMatch ? attachmentMatch[2].trim() : null;
+
         // Do not hijack AboutModal to prevent replacing the "About Me" content
         try {
           const titleMatch = String(text || '').match(/^#\s+(.+)$/m);
           const modalTitle = titleMatch ? titleMatch[1].trim() : null;
-          showContentModal(html, modalTitle || path);
+          showContentModal(html, modalTitle || path, attachmentPath);
         } catch (e) {
           Logger.error('Failed to open generic modal with project content', e);
         }
@@ -476,7 +480,7 @@ function loadProjectContent(path) {
   })();
 }
 
-function showContentModal(html, title) {
+function showContentModal(html, title, attachmentPath) {
   // Create modal
   const modal = document.createElement('div');
   modal.classList.add('modal');
@@ -499,7 +503,36 @@ function showContentModal(html, title) {
   
   const contentEl = document.createElement('div');
   contentEl.classList.add('markdown-content');
-  contentEl.innerHTML = html;
+
+  const textEl = document.createElement('div');
+  textEl.innerHTML = html;
+  contentEl.appendChild(textEl);
+
+  if (attachmentPath) {
+    const isPdf = attachmentPath.toLowerCase().endsWith('.pdf');
+    const mediaContainer = document.createElement('div');
+    mediaContainer.classList.add('modal-media-container');
+    
+    if (isPdf) {
+      mediaContainer.innerHTML = `
+        <iframe 
+          src="${attachmentPath}" 
+          class="modal-pdf-iframe" 
+          title="${title || 'Certificate PDF'}" 
+          frameborder="0"
+        ></iframe>
+      `;
+    } else {
+      mediaContainer.innerHTML = `
+        <img 
+          src="${attachmentPath}" 
+          class="modal-img-preview" 
+          alt="${title || 'Certificate Image'}"
+        />
+      `;
+    }
+    contentEl.appendChild(mediaContainer);
+  }
   
   modalContent.appendChild(closeBtn);
   modalContent.appendChild(contentEl);

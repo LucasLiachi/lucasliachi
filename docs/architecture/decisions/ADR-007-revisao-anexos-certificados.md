@@ -1,7 +1,7 @@
 # ADR-007: Revisão de Anexos e Exibição de Certificados em Modal
 
-**Status:** Proposto
-**Data:** 2026-06-18
+**Status:** Aceito
+**Data:** 2026-06-21
 
 ## Contexto
 Atualmente, os arquivos físicos das certificações (arquivos PDF, imagens JPG/PNG) encontram-se centralizados em uma pasta genérica em `docs/architecture/certificados/`. Essa arquitetura centralizada gera os seguintes problemas:
