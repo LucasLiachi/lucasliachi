@@ -1,0 +1,172 @@
+[
+  {
+    "id": "2022-08-process-specialist-governance",
+    "folder": "2022-08-process-specialist-governance",
+    "role": "Process Specialist (Governance)",
+    "company": "Softplan",
+    "start": "2022-08",
+    "end": null,
+    "technologies": ["ITIL", "ProcessosE2E", "GestãoDeMudanças", "Agile", "TransformaçãoDigital", "Indicadores"],
+    "highlights": [
+      "End-to-End Process Mapping and Value Chain",
+      "ITIL Process Implementation",
+      "Standardization of Development Methods",
+      "Data Extraction for Operational Indicators"
+    ],
+    "side": "right"
+  },
+  {
+    "id": "2021-11-business-analyst-industries",
+    "folder": "2021-11-business-analyst-industries",
+    "role": "Business Analyst (Industries)",
+    "company": "UpFlux Process Mining",
+    "start": "2021-11",
+    "end": "2022-08",
+    "technologies": ["ProcessMining", "DataAnalysis", "ProcessOptimization", "CustomerSuccess", "BusinessConsulting", "OperationalEfficiency"],
+    "highlights": [
+      "Consulting for Industry, Services, and Logistics",
+      "Process Mining Implementation"
+    ],
+    "side": "left"
+  },
+  {
+    "id": "2018-10-business-analyst-it-governance",
+    "folder": "2018-10-business-analyst-it-governance",
+    "role": "Business Analyst (IT Governance)",
+    "company": "Softplan Planejamento e Sistemas",
+    "start": "2018-10",
+    "end": "2021-11",
+    "technologies": ["ITGovernance", "ProcessMapping", "DataPrivacy", "AgileManagement", "ProcessMining", "DataAnalysis"],
+    "highlights": [
+      "E2E Process Mapping and Development Standardization",
+      "Data Extraction for Operational Indicators",
+      "Tool Customization and License Control",
+      "Data Privacy Governance (LGPD/GDPR)"
+    ],
+    "side": "right"
+  },
+  {
+    "id": "2017-10-business-process-analyst-consultant",
+    "folder": "2017-10-business-process-analyst-consultant",
+    "role": "Business Process Analyst and Consultant",
+    "company": "SPRO IT Solutions",
+    "start": "2017-10",
+    "end": "2018-10",
+    "technologies": ["ProcessMapping", "SAPSolutionManager", "MDM", "PMO", "IntegratedTesting", "E2EProcesses"],
+    "highlights": [
+      "Process Mapping for MDM at Nutrien International",
+      "E2E Mapping and PMO at Coopercitrus",
+      "SAP Solution Manager Customization",
+      "Integrated Testing Management"
+    ],
+    "side": "left"
+  },
+  {
+    "id": "2016-05-iso-9001-scholar",
+    "folder": "2016-05-iso-9001-scholar",
+    "role": "ISO 9001 Extension Program Scholar",
+    "company": "Universidade Federal do Paraná",
+    "start": "2016-05",
+    "end": "2017-06",
+    "technologies": ["ISO9001Certification", "WebsiteDevelopment", "FileSharing", "AlumniResearch"],
+    "highlights": [
+      "Course Website Development",
+      "File Sharing Environment Creation",
+      "ISO 9001 Certification Activities"
+    ],
+    "side": "right"
+  },
+  {
+    "id": "2016-01-project-quality-analyst",
+    "folder": "2016-01-project-quality-analyst",
+    "role": "Project and Quality Analyst",
+    "company": "SPRO IT Solutions",
+    "start": "2016-01",
+    "end": "2017-10",
+    "technologies": ["ProjectManagement", "SAPActivate", "PMO", "MicrosoftTools", "Moodle", "QualityAssurance"],
+    "highlights": [
+      "SAP ACTIVATE Methodology Implementation",
+      "Cost and Schedule Control in PMO",
+      "Moodle E-learning Platform Development",
+      "Quality Assurance Audits (Quality Gates)"
+    ],
+    "side": "left"
+  },
+  {
+    "id": "2015-02-business-analyst",
+    "folder": "2015-02-business-analyst",
+    "role": "Business Analyst",
+    "company": "Motored Consultoria",
+    "start": "2015-02",
+    "end": "2015-12",
+    "technologies": ["BusinessIntegration", "ProcessUnification", "InventoryManagement", "ERPImplementation"],
+    "highlights": [
+      "Integration of Stores, Factory, and Importer",
+      "Strategy and Process Unification",
+      "ERP Implementation Strategy"
+    ],
+    "side": "right"
+  },
+  {
+    "id": "2014-01-quality-analyst",
+    "folder": "2014-01-quality-analyst",
+    "role": "Quality Analyst",
+    "company": "Integra Brasil Transportes",
+    "start": "2014-01",
+    "end": "2015-01",
+    "technologies": ["QualityManagement", "ISO9001", "ISO14001", "ProcessMapping", "CustomerSatisfaction", "5SProgram"],
+    "highlights": [
+      "Process Mapping and QMS Implementation",
+      "Internal Audits Organization and Execution",
+      "Customer Satisfaction Control",
+      "5S Program Management"
+    ],
+    "side": "left"
+  },
+  {
+    "id": "2012-12-senior-commercial-analyst",
+    "folder": "2012-12-senior-commercial-analyst",
+    "role": "Senior Commercial Analyst",
+    "company": "Integra Brasil Transportes",
+    "start": "2012-12",
+    "end": "2014-01",
+    "technologies": ["CommercialNegotiations", "LogisticsPlanning", "TeamCoordination", "PerformanceReporting"],
+    "highlights": [
+      "National Transportation Negotiations",
+      "Logistics Planning for Installations",
+      "Logistics and Financial Indicator Reporting"
+    ],
+    "side": "right"
+  },
+  {
+    "id": "2011-08-administrative-assistant",
+    "folder": "2011-08-administrative-assistant",
+    "role": "Administrative Assistant",
+    "company": "Distribuidora de Medicamentos ANB Farma Ltda",
+    "start": "2011-08",
+    "end": "2012-11",
+    "technologies": ["MedicationDistribution", "OrderChecking", "InvoiceManagement", "Logistics"],
+    "highlights": [
+      "Medication Distribution Logistics",
+      "Order and Route Checking",
+      "Invoice Issuance and Checking"
+    ],
+    "side": "left"
+  },
+  {
+    "id": "2007-03-inventory-purchasing-manager",
+    "folder": "2007-03-inventory-purchasing-manager",
+    "role": "Inventory and Purchasing Manager",
+    "company": "Adrenalina Moto Racing",
+    "start": "2007-03",
+    "end": "2012-11",
+    "technologies": ["InventoryManagement", "PurchasingManagement", "NF-e", "NCMImplementation", "CustomerService"],
+    "highlights": [
+      "Inventory Management of Motorcycle Parts",
+      "NF-e Issuance System Implementation",
+      "Purchasing Management and Demand Control",
+      "NCM Implementation for Inventory Control"
+    ],
+    "side": "right"
+  }
+]

@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="../../css/main.css">
   <link rel="stylesheet" href="../../css/components.css">
   <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
 </head>
 <body>
   <a href="#main-content" class="skip-to-content">Skip to content</a>
@@ -83,10 +82,8 @@
 
     <div class="page-content">
       <div class="container">
-        <div id="career-content" class="markdown-content coming-soon-box">
-          <span class="coming-soon-icon" aria-hidden="true">&#128679;</span>
-          <h2 data-i18n="pages.career.title">Career</h2>
-          <p data-i18n="pages.career.description">Professional timeline with experiences, roles and achievements.</p>
+        <div class="career-json-timeline" id="career-json-timeline" aria-live="polite">
+          <div class="career-loading" aria-busy="true" data-i18n="pages.career.loading">Loading timeline...</div>
         </div>
       </div>
     </div>
@@ -101,36 +98,110 @@
   </footer>
 
   <script src="../../js/utils.js"></script>
+  <script src="../../js/modules.js"></script>
   <script src="../../js/main.js"></script>
   <script>
-    (async function loadCareerContent() {
-      const lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toUpperCase();
-      const candidates = [
-        `../../pages/career/${lang}.md`,
-        '../../pages/career/EN.md'
-      ];
-      const container = document.getElementById('career-content');
-      if (!container) return;
+    (function () {
+      var _currentLang = null;
 
-      for (const url of candidates) {
+      function getPeriodLabel(entry) {
+        var lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toLowerCase();
+        var presentLabel = lang === 'pt' ? 'Presente' : lang === 'es' ? 'Presente' : 'Present';
+        return entry.end ? (entry.start + ' — ' + entry.end) : (entry.start + ' — ' + presentLabel);
+      }
+
+      function buildTimelineHTML(entries) {
+        return entries.map(function (entry, index) {
+          var period = getPeriodLabel(entry);
+          var side = entry.side || (index % 2 === 0 ? 'right' : 'left');
+
+          var techPills = entry.technologies.map(function (t) {
+            var span = document.createElement('span');
+            span.className = 'jt-tech-pill';
+            span.textContent = t;
+            return span.outerHTML;
+          }).join('');
+
+          var highlights = entry.highlights.map(function (h) {
+            var li = document.createElement('li');
+            li.textContent = h;
+            return li.outerHTML;
+          }).join('');
+
+          var periodEl = document.createElement('div');
+          periodEl.className = 'jt-period';
+          periodEl.textContent = period;
+
+          var roleEl = document.createElement('h3');
+          roleEl.className = 'jt-role';
+          roleEl.textContent = entry.role;
+
+          var companyEl = document.createElement('p');
+          companyEl.className = 'jt-company';
+          companyEl.textContent = entry.company;
+
+          var card = '<div class="jt-card">'
+            + periodEl.outerHTML
+            + roleEl.outerHTML
+            + companyEl.outerHTML
+            + '<ul class="jt-highlights">' + highlights + '</ul>'
+            + '<div class="jt-tech">' + techPills + '</div>'
+            + '</div>';
+
+          return '<div class="jt-item ' + side + '" style="animation-delay:' + (index * 0.07) + 's">'
+            + '<div class="jt-marker" aria-hidden="true"></div>'
+            + card
+            + '</div>';
+        }).join('');
+      }
+
+      async function renderTimeline() {
+        var container = document.getElementById('career-json-timeline');
+        if (!container) return;
+
+        container.setAttribute('aria-busy', 'true');
+        container.innerHTML = '<div class="career-loading">' + (window.Translations && window.Translations.get('pages.career.loading') || 'Loading timeline...') + '</div>';
+
         try {
-          const response = await fetch(url);
-          if (!response.ok) continue;
-          const text = await response.text();
-          if (window.marked) {
-            container.classList.remove('coming-soon-box');
-            container.innerHTML = window.marked.parse(text);
-          }
-          return;
-        } catch (_) {
-          continue;
+          var res = await fetch('../../data/carreira.json');
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          var entries = await res.json();
+
+          var wrapper = document.createElement('div');
+          wrapper.className = 'jt-timeline';
+          wrapper.innerHTML = buildTimelineHTML(entries);
+          container.innerHTML = '';
+          container.appendChild(wrapper);
+        } catch (err) {
+          var lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toLowerCase();
+          var msg = lang === 'pt'
+            ? 'Não foi possível carregar a linha do tempo.'
+            : lang === 'es'
+            ? 'No se pudo cargar la línea de tiempo.'
+            : 'Unable to load career timeline.';
+          var p = document.createElement('p');
+          p.className = 'career-loading error';
+          p.textContent = msg;
+          container.innerHTML = '';
+          container.appendChild(p);
+        } finally {
+          container.removeAttribute('aria-busy');
         }
       }
-    })();
 
-    document.addEventListener('languageChanged', function () {
-      location.reload();
-    });
+      document.addEventListener('DOMContentLoaded', function () {
+        _currentLang = window.currentLanguage || localStorage.getItem('language') || 'en';
+        renderTimeline();
+      });
+
+      document.addEventListener('languageChanged', function () {
+        var newLang = window.currentLanguage || localStorage.getItem('language') || 'en';
+        if (newLang !== _currentLang) {
+          _currentLang = newLang;
+          renderTimeline();
+        }
+      });
+    })();
   </script>
 </body>
 </html>

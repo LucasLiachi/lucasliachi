@@ -1325,3 +1325,153 @@
     font-size: var(--text-3xl);
   }
 }
+
+/* ============================================
+   JSON CAREER TIMELINE (jt-*)
+   Alternating left/right on desktop,
+   single column on mobile.
+   Prefixed jt- to avoid conflicts with
+   existing .timeline-* markdown classes.
+============================================ */
+.career-json-timeline {
+  padding: 1rem 0 2rem;
+}
+
+.jt-timeline {
+  position: relative;
+  padding: 1rem 0;
+}
+
+.jt-timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent, #0ea5e9);
+  transform: translateX(-50%);
+}
+
+.jt-item {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: calc(50% + 2.25rem);
+  margin-bottom: 2.5rem;
+  position: relative;
+  animation: fadeIn 0.4s ease both;
+}
+
+.jt-item.right {
+  justify-content: flex-start;
+  padding-right: 0;
+  padding-left: calc(50% + 2.25rem);
+}
+
+.jt-marker {
+  position: absolute;
+  left: 50%;
+  top: 1.1rem;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent, #0ea5e9);
+  border: 3px solid var(--background, #fff);
+  transform: translateX(-50%);
+  z-index: 1;
+  transition: background-color var(--transition-fast);
+}
+
+.jt-item:hover .jt-marker {
+  background: var(--foreground, #111);
+}
+
+.jt-card {
+  background: var(--card, #f8f9fa);
+  border: 1px solid var(--border, #e0e0e0);
+  border-radius: var(--radius, 8px);
+  padding: 1.25rem 1.5rem;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform var(--transition-medium), box-shadow var(--transition-medium);
+}
+
+.jt-item:hover .jt-card {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.jt-period {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent, #0ea5e9);
+  letter-spacing: 0.03em;
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+}
+
+.jt-role {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0 0 0.2rem;
+  line-height: 1.3;
+}
+
+.jt-company {
+  font-size: 0.875rem;
+  color: var(--muted-foreground, #6c757d);
+  margin: 0 0 0.85rem;
+}
+
+.jt-highlights {
+  margin: 0 0 0.85rem;
+  padding-left: 1.15rem;
+  font-size: 0.85rem;
+  color: var(--muted-foreground, #6c757d);
+  line-height: 1.55;
+}
+
+.jt-highlights li {
+  margin-bottom: 0.3rem;
+}
+
+.jt-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.jt-tech-pill {
+  display: inline-block;
+  font-size: 0.72rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: var(--secondary, #e8f0fe);
+  color: var(--accent, #0ea5e9);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Mobile: single column */
+@media (max-width: 767px) {
+  .jt-timeline::before {
+    left: 1.1rem;
+  }
+
+  .jt-item,
+  .jt-item.right {
+    justify-content: flex-start;
+    padding-left: 3rem;
+    padding-right: 0;
+  }
+
+  .jt-marker {
+    left: 1.1rem;
+  }
+
+  .jt-card {
+    max-width: 100%;
+  }
+}
