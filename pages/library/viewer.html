@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Material — Knowledge Library — Lucas Liachi</title>
+  <meta name="description" content="Study material from Lucas Liachi knowledge library.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Lucas Liachi">
+  <link rel="canonical" href="https://lucasliachi.github.io/lucasliachi/pages/library/viewer.html">
+
+  <!-- Open Graph (static fallback — overwritten by JS after item loads) -->
+  <meta property="og:title" content="Material — Knowledge Library — Lucas Liachi">
+  <meta property="og:description" content="Study material from Lucas Liachi knowledge library.">
+  <meta property="og:image" content="https://lucasliachi.github.io/lucasliachi/assets/perfil.jpeg">
+  <meta property="og:url" content="https://lucasliachi.github.io/lucasliachi/pages/library/viewer.html">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:locale:alternate" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Material — Knowledge Library — Lucas Liachi">
+  <meta name="twitter:description" content="Study material from Lucas Liachi knowledge library.">
+  <meta name="twitter:image" content="https://lucasliachi.github.io/lucasliachi/assets/perfil.jpeg">
+
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+  <style>
+    /* ── Viewer-specific styles ───────────────────────────────────────── */
+    .viewer-header {
+      padding: 2.5rem 0 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .viewer-back {
+      display: inline-block;
+      font-size: 0.875rem;
+      color: var(--accent);
+      text-decoration: none;
+      margin-bottom: 1.25rem;
+      transition: color 0.15s;
+    }
+
+    .viewer-back:hover {
+      color: var(--foreground);
+    }
+
+    .viewer-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .viewer-section-pill {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .viewer-type-badge {
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--muted-foreground);
+      background: var(--secondary);
+    }
+
+    .viewer-level-badge {
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+    }
+
+    .viewer-level-iniciante    { background: #d1fae5; color: #065f46; }
+    .viewer-level-intermedirio { background: #fef3c7; color: #92400e; }
+    .viewer-level-avancado     { background: #fee2e2; color: #991b1b; }
+
+    [data-theme="dark"] .viewer-level-iniciante    { background: #064e3b; color: #6ee7b7; }
+    [data-theme="dark"] .viewer-level-intermedirio { background: #451a03; color: #fcd34d; }
+    [data-theme="dark"] .viewer-level-avancado     { background: #450a0a; color: #fca5a5; }
+
+    .viewer-updated {
+      font-size: 0.8rem;
+      color: var(--muted-foreground);
+    }
+
+    .viewer-title {
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--foreground);
+      margin: 0;
+    }
+
+    .viewer-body {
+      padding: 2.5rem 0 3rem;
+    }
+
+    .viewer-body .container {
+      max-width: 780px;
+    }
+
+    /* Markdown content styles */
+    .viewer-content h1 { font-size: 1.8rem; margin-top: 0; margin-bottom: 1rem; color: var(--foreground); }
+    .viewer-content h2 { font-size: 1.4rem; margin-top: 2rem; margin-bottom: 0.75rem; color: var(--foreground); border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+    .viewer-content h3 { font-size: 1.15rem; margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--foreground); }
+    .viewer-content h4 { font-size: 1rem; margin-top: 1.25rem; margin-bottom: 0.4rem; color: var(--foreground); }
+    .viewer-content p  { margin-bottom: 1rem; color: var(--muted-foreground); line-height: 1.8; }
+    .viewer-content ul,
+    .viewer-content ol { margin: 0.75rem 0 1rem 1.5rem; }
+    .viewer-content li { margin-bottom: 0.4rem; color: var(--muted-foreground); line-height: 1.7; }
+    .viewer-content code { background: var(--secondary); padding: 0.15rem 0.4rem; border-radius: 4px; font-family: monospace; font-size: 0.88em; }
+    .viewer-content pre { background: var(--secondary); padding: 1.1rem 1.25rem; border-radius: var(--radius); overflow-x: auto; margin: 1.25rem 0; }
+    .viewer-content pre code { background: transparent; padding: 0; font-size: 0.875rem; }
+    .viewer-content blockquote { border-left: 3px solid var(--accent); padding: 0.5rem 1rem; margin: 1rem 0; background: var(--secondary); border-radius: 0 var(--radius) var(--radius) 0; }
+    .viewer-content blockquote p { color: var(--muted-foreground); margin: 0; }
+    .viewer-content table { width: 100%; border-collapse: collapse; margin: 1.25rem 0; font-size: 0.9rem; }
+    .viewer-content th,
+    .viewer-content td { padding: 0.5rem 0.75rem; border: 1px solid var(--border); text-align: left; }
+    .viewer-content th { background: var(--secondary); font-weight: 600; color: var(--foreground); }
+    .viewer-content img { max-width: 100%; height: auto; border-radius: var(--radius); margin: 1rem 0; }
+    .viewer-content a { color: var(--accent); }
+    .viewer-content a:hover { color: var(--foreground); text-decoration: underline; }
+    .viewer-content strong { color: var(--foreground); font-weight: 600; }
+    .viewer-content hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+    .viewer-loading,
+    .viewer-error {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--muted-foreground);
+    }
+
+    .viewer-error { color: var(--destructive); }
+
+    /* Section colour map */
+    .sec-Algebra-Linear        { background: #6366f1; }
+    .sec-Estatistica           { background: #06b6d4; }
+    .sec-Governanca            { background: #f59e0b; }
+    .sec-Inteligencia-Artificial { background: #8b5cf6; }
+    .sec-Probabilidade         { background: #10b981; }
+    .sec-Processos             { background: #ef4444; }
+    .sec-Python                { background: #3b82f6; }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
+
+  <header>
+    <div class="container header-container">
+      <div class="logo-section">
+        <div class="logo">
+          <a href="../../index.html">Lucas Liachi</a>
+        </div>
+        <div class="header-social-links">
+          <a href="https://www.linkedin.com/in/lucasliachi/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <img src="../../assets/linkedin.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
+          </a>
+          <a href="https://medium.com/@lucasliachi" target="_blank" rel="noopener noreferrer" aria-label="Medium">
+            <img src="../../assets/medium.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
+          </a>
+          <a href="https://github.com/LucasLiachi" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <img src="../../assets/github.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
+          </a>
+        </div>
+      </div>
+      <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <span class="menu-icon">&#9776;</span>
+        <span class="close-icon">&#x2715;</span>
+      </button>
+      <nav id="main-nav">
+        <ul id="nav-links" role="menubar">
+          <li role="none"><a href="../../index.html#hero" data-i18n="navbar.home" role="menuitem">Home</a></li>
+          <li role="none"><a href="../about/" data-i18n="navbar.about" role="menuitem">About</a></li>
+          <li role="none"><a href="../career/" data-i18n="navbar.career" role="menuitem">Career</a></li>
+          <li role="none"><a href="../projects/" data-i18n="navbar.projects" role="menuitem">Projects</a></li>
+          <li role="none"><a href="../certificate/" data-i18n="navbar.certificates" role="menuitem">Certificates</a></li>
+          <li role="none"><a href="../articles/" data-i18n="navbar.blog" role="menuitem">Blog</a></li>
+          <li role="none"><a href="../library/" data-i18n="navbar.library" role="menuitem" class="active">Library</a></li>
+          <li role="none"><a href="../dashboard/" data-i18n="navbar.dashboard" role="menuitem">Dashboard</a></li>
+          <li role="none"><a href="../../index.html#contact" data-i18n="navbar.contact" role="menuitem">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="right-section">
+        <div class="language-selector">
+          <button class="language-option" data-language="en">EN</button>
+          <button class="language-option" data-language="pt">PT</button>
+          <button class="language-option" data-language="es">ES</button>
+        </div>
+        <button id="dark-mode-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+          <span class="sun-icon">&#9728;&#65039;</span>
+          <span class="moon-icon">&#127769;</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Breadcrumb: updated dynamically once item loads -->
+  <nav class="breadcrumb" aria-label="breadcrumb">
+    <div class="container">
+      <ol id="viewer-breadcrumb">
+        <li><a href="../../index.html" data-i18n="breadcrumb.home">Home</a></li>
+        <li><a href="../library/" data-i18n="navbar.library">Library</a></li>
+        <li id="breadcrumb-title" aria-current="page">Material</li>
+      </ol>
+    </div>
+  </nav>
+
+  <main id="main-content">
+    <!-- Header section (populated by JS) -->
+    <div class="viewer-header" id="viewer-header">
+      <div class="container">
+        <a href="../library/" class="viewer-back" data-i18n="library.backToLibrary">← Back to Library</a>
+        <div class="viewer-meta" id="viewer-meta" aria-live="polite">
+          <p class="viewer-loading" data-i18n="library.loading">Loading materials...</p>
+        </div>
+        <h1 class="viewer-title" id="viewer-title"></h1>
+      </div>
+    </div>
+
+    <!-- Content body -->
+    <div class="viewer-body">
+      <div class="container">
+        <div id="viewer-content" class="viewer-content" aria-live="polite">
+          <!-- Markdown rendered here -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <p data-i18n="footer.copyright">&#169; 2025 Lucas Liachi.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/main.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      /* ── Helpers ──────────────────────────────────────────────────────── */
+      function t(key) {
+        return (window.Translations && window.Translations.get(key)) || key;
+      }
+
+      function getCurrentLang() {
+        return (window.currentLanguage || localStorage.getItem('language') || 'en').toLowerCase();
+      }
+
+      function getItemId() {
+        return new URLSearchParams(window.location.search).get('id') || '';
+      }
+
+      function formatDate(iso, lang) {
+        if (!iso) return '';
+        try {
+          var localeMap = { pt: 'pt-BR', es: 'es-ES', en: 'en-US' };
+          return new Date(iso + 'T00:00:00').toLocaleDateString(localeMap[lang] || 'en-US', {
+            year: 'numeric', month: 'long', day: 'numeric'
+          });
+        } catch (e) { return iso; }
+      }
+
+      function secClass(secao) {
+        return 'sec-' + (secao || '').replace(/\s+/g, '-')
+          .replace(/[áàâãä]/g, 'a').replace(/[éèêë]/g, 'e')
+          .replace(/[íìîï]/g, 'i').replace(/[óòôõö]/g, 'o')
+          .replace(/[úùûü]/g, 'u').replace(/[ç]/g, 'c');
+      }
+
+      function levelClass(nivel) {
+        return 'viewer-level-' + (nivel || '').toLowerCase()
+          .replace(/[áàâãä]/g, 'a').replace(/[éèêë]/g, 'e')
+          .replace(/[íìîï]/g, 'i').replace(/[óòôõö]/g, 'o')
+          .replace(/[úùûü]/g, 'u').replace(/[ç]/g, 'c');
+      }
+
+      function tipoLabel(tipo) {
+        var key = (tipo || '').toLowerCase()
+          .replace(/[áàâãä]/g, 'a').replace(/[éèêë]/g, 'e')
+          .replace(/[óòôõö]/g, 'o').replace(/[úùûü]/g, 'u').replace(/[ç]/g, 'c');
+        if (key === 'formulas' || key === 'formulas') key = 'formulas';
+        var label = t('library.types.' + key);
+        return label !== ('library.types.' + key) ? label : tipo;
+      }
+
+      function nivelLabel(nivel) {
+        var key = (nivel || '').toLowerCase()
+          .replace(/[áàâãä]/g, 'a').replace(/[éèêë]/g, 'e')
+          .replace(/[íìîï]/g, 'i').replace(/[óòôõö]/g, 'o')
+          .replace(/[úùûü]/g, 'u').replace(/[ç]/g, 'c');
+        var label = t('library.levels.' + key);
+        return label !== ('library.levels.' + key) ? label : nivel;
+      }
+
+      function sanitizeHtml(html) {
+        /* Strip <script> tags from static Markdown as a precaution */
+        return html.replace(/<script[\s\S]*?<\/script>/gi, '');
+      }
+
+      /* ── State ────────────────────────────────────────────────────────── */
+      var currentItem = null;
+
+      /* ── Load item from JSON ──────────────────────────────────────────── */
+      async function loadItem() {
+        var id = getItemId();
+        if (!id) {
+          showError(t('library.error'));
+          return;
+        }
+
+        try {
+          var res = await fetch('../../data/biblioteca.json');
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          var data = await res.json();
+          var item = data.find(function (i) { return i.id === id; });
+          if (!item) throw new Error('Item not found: ' + id);
+          currentItem = item;
+          renderHeader(item);
+          await loadMarkdown(item);
+        } catch (e) {
+          showError(t('library.error'));
+        }
+      }
+
+      /* ── Render header ────────────────────────────────────────────────── */
+      function renderHeader(item) {
+        var lang = getCurrentLang();
+        var title = (item.titulo && item.titulo[lang]) || item.titulo.en || '';
+        var desc = (item.descricao && item.descricao[lang]) || item.descricao.en || '';
+
+        /* Page title + description meta */
+        document.title = title + ' — Lucas Liachi';
+        var descMeta = document.querySelector('meta[name="description"]');
+        if (descMeta) descMeta.setAttribute('content', desc);
+
+        /* Breadcrumb */
+        var bcTitle = document.getElementById('breadcrumb-title');
+        if (bcTitle) bcTitle.textContent = title;
+
+        /* Meta row */
+        var metaDiv = document.getElementById('viewer-meta');
+        metaDiv.innerHTML = '';
+
+        var secPill = document.createElement('span');
+        secPill.className = 'viewer-section-pill ' + secClass(item.secao);
+        secPill.textContent = item.secao || '';
+        metaDiv.appendChild(secPill);
+
+        var typeBadge = document.createElement('span');
+        typeBadge.className = 'viewer-type-badge';
+        typeBadge.textContent = tipoLabel(item.tipo);
+        metaDiv.appendChild(typeBadge);
+
+        var levelBadge = document.createElement('span');
+        levelBadge.className = 'viewer-level-badge ' + levelClass(item.nivel);
+        levelBadge.textContent = nivelLabel(item.nivel);
+        metaDiv.appendChild(levelBadge);
+
+        if (item.atualizado) {
+          var updatedSpan = document.createElement('span');
+          updatedSpan.className = 'viewer-updated';
+          updatedSpan.textContent = t('library.updated') + ': ' + formatDate(item.atualizado, lang);
+          metaDiv.appendChild(updatedSpan);
+        }
+
+        /* Title */
+        var titleEl = document.getElementById('viewer-title');
+        titleEl.textContent = title;
+
+        /* Schema.org LearningResource — injected/updated after item loads */
+        injectLearningResourceSchema(item, title, desc, lang);
+      }
+
+      /* ── Schema.org LearningResource (dynamic) ───────────────────────── */
+      function injectLearningResourceSchema(item, title, desc, lang) {
+        var existingScript = document.getElementById('schema-learning-resource');
+        if (existingScript) existingScript.remove();
+
+        var levelMap = {
+          'iniciante': 'Beginner',
+          'intermediario': 'Intermediate',
+          'intermediário': 'Intermediate',
+          'avancado': 'Advanced',
+          'avançado': 'Advanced'
+        };
+        var nivel = (item.nivel || '').toLowerCase()
+          .replace(/[áàâãä]/g, 'a').replace(/[éèêë]/g, 'e')
+          .replace(/[íìîï]/g, 'i').replace(/[óòôõö]/g, 'o')
+          .replace(/[úùûü]/g, 'u').replace(/[ç]/g, 'c');
+        var educationalLevel = levelMap[nivel] || item.nivel || '';
+
+        var itemId = getItemId();
+        var pageUrl = 'https://lucasliachi.github.io/lucasliachi/pages/library/viewer.html?id=' + encodeURIComponent(itemId);
+
+        var schema = {
+          '@context': 'https://schema.org',
+          '@type': 'LearningResource',
+          'name': title,
+          'description': desc,
+          'educationalLevel': educationalLevel,
+          'learningResourceType': item.tipo || '',
+          'about': item.secao || '',
+          'inLanguage': lang === 'pt' ? 'pt-BR' : lang === 'es' ? 'es' : 'en',
+          'author': {
+            '@type': 'Person',
+            'name': 'Lucas Liachi',
+            'url': 'https://lucasliachi.github.io/lucasliachi/',
+            'sameAs': [
+              'https://www.linkedin.com/in/lucasliachi/',
+              'https://github.com/LucasLiachi'
+            ]
+          },
+          'url': pageUrl
+        };
+
+        if (item.atualizado) {
+          schema['dateModified'] = item.atualizado;
+        }
+
+        var script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.id = 'schema-learning-resource';
+        script.textContent = JSON.stringify(schema, null, 2);
+        document.head.appendChild(script);
+      }
+
+      /* ── Fetch and render Markdown ────────────────────────────────────── */
+      async function loadMarkdown(item) {
+        var contentEl = document.getElementById('viewer-content');
+        if (!item.arquivo) {
+          contentEl.innerHTML = '<p class="viewer-error">' + t('library.error') + '</p>';
+          return;
+        }
+
+        var mdPath = '../../' + item.arquivo;
+
+        try {
+          var res = await fetch(mdPath);
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          var mdText = await res.text();
+
+          if (typeof marked !== 'undefined') {
+            marked.setOptions({ gfm: true, breaks: false });
+            var rawHtml = marked.parse(mdText);
+            contentEl.innerHTML = sanitizeHtml(rawHtml);
+          } else {
+            var pre = document.createElement('pre');
+            pre.textContent = mdText;
+            contentEl.innerHTML = '';
+            contentEl.appendChild(pre);
+          }
+        } catch (e) {
+          contentEl.innerHTML = '<p class="viewer-error">' + t('library.error') + '</p>';
+        }
+      }
+
+      /* ── Show error state ─────────────────────────────────────────────── */
+      function showError(msg) {
+        var metaDiv = document.getElementById('viewer-meta');
+        metaDiv.innerHTML = '';
+        var p = document.createElement('p');
+        p.className = 'viewer-error';
+        p.textContent = msg;
+        metaDiv.appendChild(p);
+      }
+
+      /* ── Init ─────────────────────────────────────────────────────────── */
+      document.addEventListener('DOMContentLoaded', function () {
+        loadItem();
+      });
+
+      /* Re-render header labels and schema on language change */
+      document.addEventListener('languageChanged', function () {
+        if (currentItem) {
+          renderHeader(currentItem);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

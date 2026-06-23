@@ -1,0 +1,135 @@
+[
+  {
+    "id": "algebra-linear-operacoes-matrizes",
+    "titulo": {
+      "en": "Summary of Matrix Operations",
+      "pt": "Resumo de Operações com Matrizes",
+      "es": "Resumen de Operaciones con Matrices"
+    },
+    "descricao": {
+      "en": "Compact reference covering the main matrix operations: addition, multiplication, transposition, determinant and inverse, with worked examples.",
+      "pt": "Referência compacta cobrindo as principais operações com matrizes: adição, multiplicação, transposição, determinante e inversa, com exemplos resolvidos.",
+      "es": "Referencia compacta que cubre las principales operaciones con matrices: suma, multiplicación, transposición, determinante e inversa, con ejemplos resueltos."
+    },
+    "secao": "Álgebra Linear",
+    "tipo": "resumo",
+    "tags": ["matrizes", "álgebra linear", "determinante", "numpy"],
+    "arquivo": "pages/library/content/algebra-linear-operacoes-matrizes.md",
+    "atualizado": "2026-06-01",
+    "nivel": "iniciante"
+  },
+  {
+    "id": "estatistica-distribuicoes-probabilidade",
+    "titulo": {
+      "en": "Probability Distributions Cheatsheet",
+      "pt": "Cheatsheet de Distribuições de Probabilidade",
+      "es": "Cheatsheet de Distribuciones de Probabilidad"
+    },
+    "descricao": {
+      "en": "Quick reference for the main discrete and continuous probability distributions: parameters, formulas, mean, variance and Python usage with SciPy.",
+      "pt": "Referência rápida das principais distribuições de probabilidade discretas e contínuas: parâmetros, fórmulas, média, variância e uso em Python com SciPy.",
+      "es": "Referencia rápida de las principales distribuciones de probabilidad discretas y continuas: parámetros, fórmulas, media, varianza y uso en Python con SciPy."
+    },
+    "secao": "Estatística",
+    "tipo": "cheatsheet",
+    "tags": ["distribuições", "normal", "binomial", "poisson", "scipy"],
+    "arquivo": "pages/library/content/estatistica-distribuicoes-probabilidade.md",
+    "atualizado": "2026-06-05",
+    "nivel": "intermediário"
+  },
+  {
+    "id": "governanca-ti-cobit",
+    "titulo": {
+      "en": "IT Governance and COBIT Cheatsheet",
+      "pt": "Cheatsheet de Governança de TI e COBIT",
+      "es": "Cheatsheet de Gobernanza de TI y COBIT"
+    },
+    "descricao": {
+      "en": "Consolidated reference on IT Governance principles, COBIT 2019 domains, control objectives and alignment with ISO/IEC 38500 and ITIL.",
+      "pt": "Referência consolidada sobre princípios de Governança de TI, domínios do COBIT 2019, objetivos de controle e alinhamento com ISO/IEC 38500 e ITIL.",
+      "es": "Referencia consolidada sobre principios de Gobernanza de TI, dominios de COBIT 2019, objetivos de control y alineación con ISO/IEC 38500 e ITIL."
+    },
+    "secao": "Governança",
+    "tipo": "cheatsheet",
+    "tags": ["cobit", "governança de ti", "iso 38500", "controles de ti", "conformidade"],
+    "arquivo": "pages/library/content/governanca-ti-cobit.md",
+    "atualizado": "2026-06-20",
+    "nivel": "avançado"
+  },
+  {
+    "id": "ia-algoritmos-machine-learning",
+    "titulo": {
+      "en": "Machine Learning Algorithms Guide",
+      "pt": "Guia de Algoritmos de Machine Learning",
+      "es": "Guía de Algoritmos de Machine Learning"
+    },
+    "descricao": {
+      "en": "Practical guide to the main supervised and unsupervised ML algorithms: how they work, when to use them, key hyperparameters and scikit-learn implementation.",
+      "pt": "Guia prático dos principais algoritmos de ML supervisionados e não supervisionados: como funcionam, quando usar, hiperparâmetros-chave e implementação com scikit-learn.",
+      "es": "Guía práctica de los principales algoritmos de ML supervisados y no supervisados: cómo funcionan, cuándo usarlos, hiperparámetros clave e implementación con scikit-learn."
+    },
+    "secao": "Inteligência Artificial",
+    "tipo": "guia",
+    "tags": ["machine learning", "scikit-learn", "regressão", "classificação", "clusterização"],
+    "arquivo": "pages/library/content/ia-algoritmos-machine-learning.md",
+    "atualizado": "2026-06-15",
+    "nivel": "intermediário"
+  },
+  {
+    "id": "probabilidade-formulas-essenciais",
+    "titulo": {
+      "en": "Essential Probability Formulas",
+      "pt": "Fórmulas Essenciais de Probabilidade",
+      "es": "Fórmulas Esenciales de Probabilidad"
+    },
+    "descricao": {
+      "en": "Condensed sheet with the essential probability formulas: classical definition, conditional probability, Bayes' theorem, expectation and variance.",
+      "pt": "Folha condensada com as fórmulas essenciais de probabilidade: definição clássica, probabilidade condicional, teorema de Bayes, esperança e variância.",
+      "es": "Hoja condensada con las fórmulas esenciales de probabilidad: definición clásica, probabilidad condicional, teorema de Bayes, esperanza y varianza."
+    },
+    "secao": "Probabilidade",
+    "tipo": "fórmulas",
+    "tags": ["probabilidade", "teorema de bayes", "esperança", "variância"],
+    "arquivo": "pages/library/content/probabilidade-formulas-essenciais.md",
+    "atualizado": "2026-06-03",
+    "nivel": "iniciante"
+  },
+  {
+    "id": "processos-resumo-itil4",
+    "titulo": {
+      "en": "ITIL 4 Framework Summary",
+      "pt": "Resumo do Framework ITIL 4",
+      "es": "Resumen del Framework ITIL 4"
+    },
+    "descricao": {
+      "en": "Structured summary of ITIL 4: Service Value System, four dimensions, guiding principles and the 34 management practices.",
+      "pt": "Resumo estruturado do ITIL 4: Sistema de Valor de Serviço, quatro dimensões, princípios orientadores e as 34 práticas de gestão.",
+      "es": "Resumen estructurado de ITIL 4: Sistema de Valor del Servicio, cuatro dimensiones, principios orientadores y las 34 prácticas de gestión."
+    },
+    "secao": "Processos",
+    "tipo": "resumo",
+    "tags": ["itil4", "itsm", "gestão de serviços", "svs"],
+    "arquivo": "pages/library/content/processos-resumo-itil4.md",
+    "atualizado": "2026-06-10",
+    "nivel": "iniciante"
+  },
+  {
+    "id": "python-pandas-analise-dados",
+    "titulo": {
+      "en": "Pandas for Data Analysis Cheatsheet",
+      "pt": "Cheatsheet de Pandas para Análise de Dados",
+      "es": "Cheatsheet de Pandas para Análisis de Datos"
+    },
+    "descricao": {
+      "en": "Essential Pandas operations for data analysis: loading, cleaning, filtering, grouping, merging, pivot tables and export, with ready-to-use code snippets.",
+      "pt": "Operações essenciais do Pandas para análise de dados: carregamento, limpeza, filtragem, agrupamento, merge, tabelas pivot e exportação, com snippets prontos para uso.",
+      "es": "Operaciones esenciales de Pandas para análisis de datos: carga, limpieza, filtrado, agrupación, merge, tablas pivot y exportación, con snippets listos para usar."
+    },
+    "secao": "Python",
+    "tipo": "cheatsheet",
+    "tags": ["pandas", "python", "dataframe", "análise de dados", "data wrangling"],
+    "arquivo": "pages/library/content/python-pandas-analise-dados.md",
+    "atualizado": "2026-06-12",
+    "nivel": "intermediário"
+  }
+]

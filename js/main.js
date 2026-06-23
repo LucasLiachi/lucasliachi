@@ -128,6 +128,35 @@ const Translations = (() => {
           plural: 'articles'
         }
       },
+      library: {
+        title: 'Knowledge Library',
+        description: 'Study materials, cheatsheets, formula sheets and reference guides organized by subject.',
+        search: { placeholder: 'Search materials...' },
+        filterAll: 'All',
+        filterType: 'Type',
+        filterLevel: 'Level',
+        openItem: 'Open →',
+        backToLibrary: '← Back to Library',
+        loading: 'Loading materials...',
+        noResults: 'No materials found.',
+        error: 'Unable to load library.',
+        updated: 'Updated',
+        count: {
+          singular: 'material',
+          plural: 'materials'
+        },
+        types: {
+          resumo: 'Summary',
+          cheatsheet: 'Cheatsheet',
+          formulas: 'Formulas',
+          guia: 'Guide'
+        },
+        levels: {
+          iniciante: 'Beginner',
+          intermediario: 'Intermediate',
+          avancado: 'Advanced'
+        }
+      },
       certificates: {
         title: 'Certificates'
       },
@@ -341,6 +370,35 @@ const Translations = (() => {
           plural: 'artigos'
         }
       },
+      library: {
+        title: 'Biblioteca de Conhecimento',
+        description: 'Materiais de estudo, cheatsheets, fórmulas e guias de referência organizados por área.',
+        search: { placeholder: 'Pesquisar materiais...' },
+        filterAll: 'Todos',
+        filterType: 'Tipo',
+        filterLevel: 'Nível',
+        openItem: 'Abrir →',
+        backToLibrary: '← Voltar à Biblioteca',
+        loading: 'Carregando materiais...',
+        noResults: 'Nenhum material encontrado.',
+        error: 'Não foi possível carregar a biblioteca.',
+        updated: 'Atualizado',
+        count: {
+          singular: 'material',
+          plural: 'materiais'
+        },
+        types: {
+          resumo: 'Resumo',
+          cheatsheet: 'Cheatsheet',
+          formulas: 'Fórmulas',
+          guia: 'Guia'
+        },
+        levels: {
+          iniciante: 'Iniciante',
+          intermediario: 'Intermediário',
+          avancado: 'Avançado'
+        }
+      },
       certificates: {
         title: 'Certificados'
       },
@@ -552,6 +610,35 @@ const Translations = (() => {
         count: {
           singular: 'artículo',
           plural: 'artículos'
+        }
+      },
+      library: {
+        title: 'Biblioteca de Conocimiento',
+        description: 'Materiales de estudio, cheatsheets, fórmulas y guías de referencia organizados por área.',
+        search: { placeholder: 'Buscar materiales...' },
+        filterAll: 'Todos',
+        filterType: 'Tipo',
+        filterLevel: 'Nivel',
+        openItem: 'Abrir →',
+        backToLibrary: '← Volver a la Biblioteca',
+        loading: 'Cargando materiales...',
+        noResults: 'No se encontraron materiales.',
+        error: 'No se pudo cargar la biblioteca.',
+        updated: 'Actualizado',
+        count: {
+          singular: 'material',
+          plural: 'materiales'
+        },
+        types: {
+          resumo: 'Resumen',
+          cheatsheet: 'Cheatsheet',
+          formulas: 'Fórmulas',
+          guia: 'Guía'
+        },
+        levels: {
+          iniciante: 'Principiante',
+          intermediario: 'Intermedio',
+          avancado: 'Avanzado'
         }
       },
       certificates: {
