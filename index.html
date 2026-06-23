@@ -273,6 +273,7 @@
     .type-certificate { background: #10b981; color: #fff; }
     .type-article     { background: #6366f1; color: #fff; }
     .type-career      { background: #f59e0b; color: #fff; }
+    .type-library     { background: #166534; color: #f0fdf4; }
 
     .result-title {
       font-size: 1rem;
@@ -380,7 +381,7 @@
           <li role="none"><a href="pages/projects/" id="nav-projects" data-i18n="navbar.projects" role="menuitem">Projects</a></li>
           <li role="none"><a href="pages/certificate/" id="nav-certificates" data-i18n="navbar.certificates" role="menuitem">Certificates</a></li>
           <li role="none"><a href="pages/articles/" id="nav-blog" data-i18n="navbar.blog" role="menuitem">Blog</a></li>
-          <li role="none"><a href="pages/academic/" id="nav-library" data-i18n="navbar.library" role="menuitem">Library</a></li>
+          <li role="none"><a href="pages/about/#academic" id="nav-library" data-i18n="navbar.library" role="menuitem">Library</a></li>
           <li role="none"><a href="pages/dashboard/" id="nav-dashboard" data-i18n="navbar.dashboard" role="menuitem">Dashboard</a></li>
           <li role="none"><a href="pages/contact/" id="nav-contact" data-i18n="navbar.contact" role="menuitem">Contact</a></li>
         </ul>
@@ -646,12 +647,29 @@
         });
       }
 
+      function normalizeLibrary(items, lang) {
+        return items.map(function (item) {
+          var title = (item.titulo && (item.titulo[lang] || item.titulo.en)) || item.id;
+          var excerpt = (item.descricao && (item.descricao[lang] || item.descricao.en)) || '';
+          return {
+            _type: 'library',
+            _id: 'lib-' + item.id,
+            title: title,
+            subtitle: excerpt,
+            date: item.atualizado || '',
+            tags: Array.isArray(item.tags) ? item.tags : [],
+            url: 'pages/library/viewer.html?id=' + encodeURIComponent(item.id),
+            meta: (item.secao || '') + (item.nivel ? ' · ' + item.nivel : '')
+          };
+        });
+      }
+
       /* ── Load all JSONs in parallel ────────────────────────────────────── */
       async function loadData() {
         showState('loading');
         try {
           var lang = getCurrentLang();
-          var results = await Promise.all([
+          var results = await Promise.allSettled([
             fetch('data/certificados.json').then(function (r) {
               if (!r.ok) throw new Error('certificados.json: HTTP ' + r.status);
               return r.json();
@@ -667,14 +685,19 @@
             fetch('data/carreira.json').then(function (r) {
               if (!r.ok) throw new Error('carreira.json: HTTP ' + r.status);
               return r.json();
+            }),
+            fetch('data/biblioteca.json').then(function (r) {
+              if (!r.ok) throw new Error('biblioteca.json: HTTP ' + r.status);
+              return r.json();
             })
           ]);
 
           allItems = [].concat(
-            normalizeCertificates(results[0]),
-            normalizeProjects(results[1]),
-            normalizeArticles(results[2], lang),
-            normalizeCareer(results[3])
+            results[0].status === 'fulfilled' ? normalizeCertificates(results[0].value) : [],
+            results[1].status === 'fulfilled' ? normalizeProjects(results[1].value) : [],
+            results[2].status === 'fulfilled' ? normalizeArticles(results[2].value, lang) : [],
+            results[3].status === 'fulfilled' ? normalizeCareer(results[3].value) : [],
+            results[4].status === 'fulfilled' ? normalizeLibrary(results[4].value, lang) : []
           );
 
           initFuse();
@@ -712,20 +735,25 @@
         });
       }
 
-      /* Rebuild Fuse after language change (article titles change) */
+      /* Rebuild Fuse after language change (localized titles change) */
       function rebuildForLanguage() {
         var lang = getCurrentLang();
         if (!allItems.length) return;
-        fetch('data/artigos.json')
-          .then(function (r) { return r.json(); })
-          .then(function (data) {
-            allItems = allItems.filter(function (i) { return i._type !== 'article'; });
-            allItems = allItems.concat(normalizeArticles(data, lang));
-            initFuse();
-            var q = document.getElementById('global-search-input').value.trim();
-            if (q.length >= 2) runSearch(q);
-          })
-          .catch(function () {});
+        Promise.allSettled([
+          fetch('data/artigos.json').then(function (r) { return r.json(); }),
+          fetch('data/biblioteca.json').then(function (r) { return r.json(); })
+        ]).then(function (results) {
+          allItems = allItems.filter(function (i) { return i._type !== 'article' && i._type !== 'library'; });
+          if (results[0].status === 'fulfilled') {
+            allItems = allItems.concat(normalizeArticles(results[0].value, lang));
+          }
+          if (results[1].status === 'fulfilled') {
+            allItems = allItems.concat(normalizeLibrary(results[1].value, lang));
+          }
+          initFuse();
+          var q = document.getElementById('global-search-input').value.trim();
+          if (q.length >= 2) runSearch(q);
+        });
       }
 
       /* ── URL helpers ───────────────────────────────────────────────────── */
@@ -787,9 +815,10 @@
           certificate: [],
           project: [],
           article: [],
-          career: []
+          career: [],
+          library: []
         };
-        var typeOrder = ['project', 'certificate', 'article', 'career'];
+        var typeOrder = ['project', 'certificate', 'article', 'career', 'library'];
 
         raw.forEach(function (r) {
           var type = r.item._type;
@@ -823,7 +852,8 @@
           project:     'pages.search.groups.projects',
           certificate: 'pages.search.groups.certificates',
           article:     'pages.search.groups.articles',
-          career:      'pages.search.groups.career'
+          career:      'pages.search.groups.career',
+          library:     'pages.search.groups.library'
         };
 
         var section = document.createElement('section');
@@ -874,13 +904,15 @@
           project:     'result-type-pill type-project',
           certificate: 'result-type-pill type-certificate',
           article:     'result-type-pill type-article',
-          career:      'result-type-pill type-career'
+          career:      'result-type-pill type-career',
+          library:     'result-type-pill type-library'
         };
         var pillTextMap = {
           project:     'pages.search.groups.projects',
           certificate: 'pages.search.groups.certificates',
           article:     'pages.search.groups.articles',
-          career:      'pages.search.groups.career'
+          career:      'pages.search.groups.career',
+          library:     'pages.search.groups.library'
         };
         pill.className = pillClassMap[item._type] || 'result-type-pill';
         pill.textContent = t(pillTextMap[item._type] || item._type);

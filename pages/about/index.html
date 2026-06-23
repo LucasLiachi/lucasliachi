@@ -51,6 +51,113 @@
   <link rel="stylesheet" href="../../css/components.css">
   <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
   <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js" defer></script>
+
+  <style>
+    .about-section {
+      margin-bottom: 3rem;
+    }
+
+    .about-section h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--foreground);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    /* Cards da biblioteca — coluna única */
+    .academic-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .academic-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+
+    .academic-card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      border-color: var(--accent);
+    }
+
+    .academic-card-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .academic-card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--foreground);
+      margin: 0 0 0.25rem;
+    }
+
+    .academic-card-section {
+      font-size: 0.8rem;
+      color: var(--muted-foreground);
+      margin: 0 0 0.5rem;
+    }
+
+    .academic-card-desc {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .academic-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.75rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .academic-pill {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.18rem 0.6rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    /* Tipo */
+    .pill-resumo     { background: #dbeafe; color: #1e40af; }
+    .pill-cheatsheet { background: #f3e8ff; color: #6b21a8; }
+    .pill-guia       { background: #dcfce7; color: #166534; }
+    .pill-estudo     { background: #fef9c3; color: #854d0e; }
+    .pill-formulas   { background: #fef3c7; color: #92400e; }
+    .pill-fórmulas   { background: #fef3c7; color: #92400e; }
+
+    /* Nível */
+    .pill-iniciante      { background: #d1fae5; color: #065f46; }
+    .pill-intermediario  { background: #fef3c7; color: #92400e; }
+    .pill-intermediário  { background: #fef3c7; color: #92400e; }
+    .pill-avancado       { background: #fee2e2; color: #991b1b; }
+    .pill-avançado       { background: #fee2e2; color: #991b1b; }
+
+    .academic-card-link {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .academic-card-link:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
   <a href="#main-content" class="skip-to-content">Skip to content</a>
@@ -85,7 +192,7 @@
           <li role="none"><a href="../projects/" data-i18n="navbar.projects" role="menuitem">Projects</a></li>
           <li role="none"><a href="../certificate/" data-i18n="navbar.certificates" role="menuitem">Certificates</a></li>
           <li role="none"><a href="../articles/" data-i18n="navbar.blog" role="menuitem">Blog</a></li>
-          <li role="none"><a href="../academic/" data-i18n="navbar.library" role="menuitem">Library</a></li>
+          <li role="none"><a href="../about/#academic" data-i18n="navbar.library" role="menuitem">Library</a></li>
           <li role="none"><a href="../dashboard/" data-i18n="navbar.dashboard" role="menuitem">Dashboard</a></li>
           <li role="none"><a href="../../index.html#search" data-i18n="navbar.search" role="menuitem">Search</a></li>
           <li role="none"><a href="../contact/" data-i18n="navbar.contact" role="menuitem">Contact</a></li>
@@ -115,6 +222,8 @@
   </nav>
 
   <main id="main-content">
+
+    <!-- Hero -->
     <div class="page-hero">
       <div class="container">
         <h1 data-i18n="pages.about.title">About</h1>
@@ -124,11 +233,21 @@
 
     <div class="page-content">
       <div class="container">
-        <div id="about-content" class="markdown-content coming-soon-box">
-          <span class="coming-soon-icon" aria-hidden="true">&#128679;</span>
-          <h2 data-i18n="pages.about.title">About</h2>
-          <p data-i18n="pages.about.description">Learn more about Lucas Liachi, his background and professional profile.</p>
-        </div>
+
+        <!-- Section 1: Professional Profile (Markdown) -->
+        <section class="about-section" aria-labelledby="about-profile-heading">
+          <h2 id="about-profile-heading" data-i18n="pages.about.profile.title">Professional Profile</h2>
+          <div id="about-profile" class="markdown-content"></div>
+        </section>
+
+        <!-- Section 2: Academic Profile — library cards -->
+        <section id="academic" class="about-section" aria-labelledby="about-academic-heading">
+          <h2 id="about-academic-heading" data-i18n="pages.about.academic.title">Academic Profile</h2>
+          <div id="about-academic-list" class="academic-list">
+            <p data-i18n="library.loading">Loading materials...</p>
+          </div>
+        </section>
+
       </div>
     </div>
   </main>
@@ -136,7 +255,7 @@
   <footer>
     <div class="container">
       <div class="footer-content">
-        <p data-i18n="footer.copyright">&#169; 2025 Lucas Liachi.</p>
+        <p data-i18n="footer.copyright">&#169; 2026 Lucas Liachi.</p>
       </div>
     </div>
   </footer>
@@ -144,34 +263,119 @@
   <script src="../../js/utils.js"></script>
   <script src="../../js/main.js"></script>
   <script>
-    (async function loadAboutContent() {
-      const lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toUpperCase();
-      const candidates = [
-        `../../pages/about/${lang}.md`,
-        '../../pages/about/EN.md'
-      ];
-      const container = document.getElementById('about-content');
-      if (!container) return;
-
-      for (const url of candidates) {
-        try {
-          const response = await fetch(url);
-          if (!response.ok) continue;
-          const text = await response.text();
-          if (window.marked) {
-            container.classList.remove('coming-soon-box');
-            container.innerHTML = window.marked.parse(text);
-          }
-          return;
-        } catch (_) {
-          continue;
+    (function () {
+      // ── Carrega perfil Markdown ──
+      async function loadProfile() {
+        var lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toUpperCase();
+        var candidates = [
+          '../../pages/about/' + lang + '.md',
+          '../../pages/about/EN.md'
+        ];
+        var container = document.getElementById('about-profile');
+        if (!container) return;
+        for (var i = 0; i < candidates.length; i++) {
+          try {
+            var r = await fetch(candidates[i]);
+            if (!r.ok) continue;
+            var text = await r.text();
+            if (window.marked) container.innerHTML = window.marked.parse(text);
+            return;
+          } catch (_) {}
         }
       }
-    })();
 
-    document.addEventListener('languageChanged', function (e) {
-      location.reload();
-    });
+      // ── Carrega cards da biblioteca ──
+      async function loadAcademic() {
+        var lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toLowerCase();
+        var list = document.getElementById('about-academic-list');
+        if (!list) return;
+        try {
+          var r = await fetch('../../data/biblioteca.json');
+          if (!r.ok) throw new Error();
+          var items = await r.json();
+          list.innerHTML = '';
+          items.forEach(function (item) {
+            var title = (item.titulo && (item.titulo[lang] || item.titulo.en)) || '';
+            var desc  = (item.descricao && (item.descricao[lang] || item.descricao.en)) || '';
+            var tipo  = (item.tipo || '');
+            var tipoClass = tipo.toLowerCase()
+              .replace(/[áàâãä]/g, 'a').replace(/[éèêë]/g, 'e')
+              .replace(/[íìîï]/g, 'i').replace(/[óòôõö]/g, 'o')
+              .replace(/[úùûü]/g, 'u').replace(/[ç]/g, 'c');
+            var nivel = (item.nivel || '');
+            var nivelClass = nivel.toLowerCase()
+              .replace(/[áàâãä]/g, 'a').replace(/[éèêë]/g, 'e')
+              .replace(/[íìîï]/g, 'i').replace(/[óòôõö]/g, 'o')
+              .replace(/[úùûü]/g, 'u').replace(/[ç]/g, 'c');
+            var viewLabel = (window.Translations && window.Translations.get('pages.about.academic.viewMaterial')) || 'View material';
+
+            var card = document.createElement('div');
+            card.className = 'academic-card';
+
+            var body = document.createElement('div');
+            body.className = 'academic-card-body';
+
+            var h3 = document.createElement('h3');
+            h3.className = 'academic-card-title';
+            h3.textContent = title;
+            body.appendChild(h3);
+
+            var secao = document.createElement('p');
+            secao.className = 'academic-card-section';
+            secao.textContent = item.secao || '';
+            body.appendChild(secao);
+
+            var descP = document.createElement('p');
+            descP.className = 'academic-card-desc';
+            descP.textContent = desc;
+            body.appendChild(descP);
+
+            var footer = document.createElement('div');
+            footer.className = 'academic-card-footer';
+
+            var pillsWrap = document.createElement('div');
+            pillsWrap.style.cssText = 'display:flex;gap:0.4rem;flex-wrap:wrap;';
+
+            var tipoPill = document.createElement('span');
+            tipoPill.className = 'academic-pill pill-' + tipoClass;
+            tipoPill.textContent = tipo;
+            pillsWrap.appendChild(tipoPill);
+
+            var nivelPill = document.createElement('span');
+            nivelPill.className = 'academic-pill pill-' + nivelClass;
+            nivelPill.textContent = nivel;
+            pillsWrap.appendChild(nivelPill);
+
+            footer.appendChild(pillsWrap);
+
+            var link = document.createElement('a');
+            link.className = 'academic-card-link';
+            link.href = '../../pages/library/viewer.html?id=' + encodeURIComponent(item.id);
+            link.textContent = viewLabel;
+            footer.appendChild(link);
+
+            body.appendChild(footer);
+            card.appendChild(body);
+            list.appendChild(card);
+          });
+        } catch (_) {
+          if (list) {
+            var errP = document.createElement('p');
+            errP.textContent = 'Unable to load materials.';
+            list.innerHTML = '';
+            list.appendChild(errP);
+          }
+        }
+      }
+
+      loadProfile();
+      loadAcademic();
+
+      document.addEventListener('languageChanged', function () {
+        loadProfile();
+        loadAcademic();
+      });
+    })();
   </script>
 </body>
 </html>

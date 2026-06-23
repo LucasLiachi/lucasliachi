@@ -177,7 +177,7 @@ const Translations = (() => {
         description: 'Get in touch via the platforms below.'
       },
       pages: {
-        about: { title: 'About', description: 'Learn more about Lucas Liachi, his background and professional profile.' },
+        about: { title: 'About', description: 'Learn more about Lucas Liachi, his background and professional profile.', profile: { title: 'Professional Profile' }, academic: { title: 'Academic Profile', viewMaterial: 'View material' } },
         career: { title: 'Career', description: 'Professional timeline with experiences, roles and achievements.', loading: 'Loading timeline...', printResume: 'Print Resume' },
         certificate: {
           title: 'Certificates',
@@ -236,7 +236,8 @@ const Translations = (() => {
             projects: 'Projects',
             certificates: 'Certificates',
             articles: 'Articles',
-            career: 'Career'
+            career: 'Career',
+            library: 'Library'
           },
           viewItem: 'View'
         },
@@ -442,7 +443,7 @@ const Translations = (() => {
         description: 'Entre em contato pelas plataformas abaixo.'
       },
       pages: {
-        about: { title: 'Sobre', description: 'Conheça Lucas Liachi, sua trajetória e perfil profissional.' },
+        about: { title: 'Sobre', description: 'Conheça Lucas Liachi, sua trajetória e perfil profissional.', profile: { title: 'Perfil Profissional' }, academic: { title: 'Perfil Acadêmico', viewMaterial: 'Ver material' } },
         career: { title: 'Carreira', description: 'Linha do tempo profissional com experiências, cargos e conquistas.', loading: 'Carregando linha do tempo...', printResume: 'Imprimir Currículo' },
         certificate: {
           title: 'Certificados',
@@ -501,7 +502,8 @@ const Translations = (() => {
             projects: 'Projetos',
             certificates: 'Certificados',
             articles: 'Artigos',
-            career: 'Carreira'
+            career: 'Carreira',
+            library: 'Biblioteca'
           },
           viewItem: 'Ver'
         },
@@ -707,7 +709,7 @@ const Translations = (() => {
         description: 'Contáctame a través de las plataformas a continuación.'
       },
       pages: {
-        about: { title: 'Sobre', description: 'Conoce a Lucas Liachi, su trayectoria y perfil profesional.' },
+        about: { title: 'Sobre', description: 'Conoce a Lucas Liachi, su trayectoria y perfil profesional.', profile: { title: 'Perfil Profesional' }, academic: { title: 'Perfil Académico', viewMaterial: 'Ver material' } },
         career: { title: 'Carrera', description: 'Línea de tiempo profesional con experiencias, cargos y logros.', loading: 'Cargando línea de tiempo...', printResume: 'Imprimir Currículum' },
         certificate: {
           title: 'Certificados',
@@ -766,7 +768,8 @@ const Translations = (() => {
             projects: 'Proyectos',
             certificates: 'Certificados',
             articles: 'Artículos',
-            career: 'Carrera'
+            career: 'Carrera',
+            library: 'Biblioteca'
           },
           viewItem: 'Ver'
         },
