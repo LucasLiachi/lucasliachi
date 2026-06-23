@@ -100,7 +100,15 @@ const Translations = (() => {
         resultsFound: 'results found',
         noMatch: 'No projects match your search criteria.',
         noMatchInCategory: 'No projects match your criteria in this category.',
-        readMore: 'Read More'
+        readMore: 'Read More',
+        github: {
+          unavailable: 'GitHub repositories temporarily unavailable.',
+          loading: 'Loading GitHub projects...'
+        },
+        viewRepo: 'View Repository',
+        viewDemo: 'Live Demo',
+        lastUpdated: 'Last updated',
+        local: 'Local Project'
       },
       articles: {
         title: 'Articles',
@@ -150,6 +158,7 @@ const Translations = (() => {
           countSingular: 'certificate',
           countPlural: 'certificates'
         },
+        projects: { title: 'Projects', description: 'Portfolio of projects in process improvement, governance, data and development.' },
         blog: { title: 'Blog', description: 'Technical articles and insights on technology, governance and data.' },
         library: { title: 'Library', description: 'Study materials, cheatsheets and reference guides.' },
         dashboard: { title: 'Dashboard', description: 'Professional indicators and career metrics.' }
@@ -258,7 +267,15 @@ const Translations = (() => {
         resultsFound: 'resultados encontrados',
         noMatch: 'Nenhum projeto corresponde aos critérios de busca.',
         noMatchInCategory: 'Nenhum projeto corresponde aos critérios nesta categoria.',
-        readMore: 'Ler mais'
+        readMore: 'Ler mais',
+        github: {
+          unavailable: 'Repositórios do GitHub temporariamente indisponíveis.',
+          loading: 'Carregando projetos do GitHub...'
+        },
+        viewRepo: 'Ver Repositório',
+        viewDemo: 'Demo ao Vivo',
+        lastUpdated: 'Última atualização',
+        local: 'Projeto Local'
       },
       articles: {
         title: 'Artigos',
@@ -308,6 +325,7 @@ const Translations = (() => {
           countSingular: 'certificado',
           countPlural: 'certificados'
         },
+        projects: { title: 'Projetos', description: 'Portfólio de projetos em melhoria de processos, governança, dados e desenvolvimento.' },
         blog: { title: 'Blog', description: 'Artigos técnicos sobre tecnologia, governança e dados.' },
         library: { title: 'Biblioteca', description: 'Materiais de estudo, cheatsheets e guias de referência.' },
         dashboard: { title: 'Dashboard', description: 'Indicadores profissionais e métricas de carreira.' }
@@ -416,7 +434,15 @@ const Translations = (() => {
         resultsFound: 'resultados encontrados',
         noMatch: 'Ningún proyecto coincide con los criterios de búsqueda.',
         noMatchInCategory: 'Ningún proyecto coincide con los criterios de esta categoría.',
-        readMore: 'Leer más'
+        readMore: 'Leer más',
+        github: {
+          unavailable: 'Repositorios de GitHub temporalmente no disponibles.',
+          loading: 'Cargando proyectos de GitHub...'
+        },
+        viewRepo: 'Ver Repositorio',
+        viewDemo: 'Demo en Vivo',
+        lastUpdated: 'Última actualización',
+        local: 'Proyecto Local'
       },
       articles: {
         title: 'Artículos',
@@ -466,6 +492,7 @@ const Translations = (() => {
           countSingular: 'certificado',
           countPlural: 'certificados'
         },
+        projects: { title: 'Proyectos', description: 'Portafolio de proyectos en mejora de procesos, gobernanza, datos y desarrollo.' },
         blog: { title: 'Blog', description: 'Artículos técnicos sobre tecnología, gobernanza y datos.' },
         library: { title: 'Biblioteca', description: 'Materiales de estudio, cheatsheets y guías de referencia.' },
         dashboard: { title: 'Dashboard', description: 'Indicadores profesionales y métricas de carrera.' }
