@@ -172,7 +172,25 @@ const Translations = (() => {
         projects: { title: 'Projects', description: 'Portfolio of projects in process improvement, governance, data and development.' },
         blog: { title: 'Blog', description: 'Technical articles and insights on technology, governance and data.' },
         library: { title: 'Library', description: 'Study materials, cheatsheets and reference guides.' },
-        dashboard: { title: 'Dashboard', description: 'Professional indicators and career metrics.' }
+        dashboard: {
+          title: 'Dashboard',
+          description: 'Professional indicators and career metrics.',
+          cards: {
+            projects: 'Total Projects',
+            certificates: 'Certificates',
+            articles: 'Published Articles',
+            experience: 'Years of Experience',
+            technologies: 'Technologies Mastered',
+            repos: 'Public Repositories',
+            years: 'years'
+          },
+          charts: {
+            certsByCategory: 'Certificates by Category',
+            projectsByTech: 'Top Technologies in Projects'
+          },
+          loading: 'Loading dashboard data...',
+          error: 'Unable to load some data. Showing available information.'
+        }
       },
       footer: {
         copyright: '© 2025 Lucas Liachi.'
@@ -350,7 +368,25 @@ const Translations = (() => {
         projects: { title: 'Projetos', description: 'Portfólio de projetos em melhoria de processos, governança, dados e desenvolvimento.' },
         blog: { title: 'Blog', description: 'Artigos técnicos sobre tecnologia, governança e dados.' },
         library: { title: 'Biblioteca', description: 'Materiais de estudo, cheatsheets e guias de referência.' },
-        dashboard: { title: 'Dashboard', description: 'Indicadores profissionais e métricas de carreira.' }
+        dashboard: {
+          title: 'Dashboard',
+          description: 'Indicadores profissionais e métricas de carreira.',
+          cards: {
+            projects: 'Total de Projetos',
+            certificates: 'Certificados',
+            articles: 'Artigos Publicados',
+            experience: 'Anos de Experiência',
+            technologies: 'Tecnologias Dominadas',
+            repos: 'Repositórios Públicos',
+            years: 'anos'
+          },
+          charts: {
+            certsByCategory: 'Certificados por Categoria',
+            projectsByTech: 'Top Tecnologias em Projetos'
+          },
+          loading: 'Carregando dados do dashboard...',
+          error: 'Não foi possível carregar alguns dados. Exibindo informações disponíveis.'
+        }
       },
       footer: {
         copyright: '© 2025 Lucas Liachi.'
@@ -528,7 +564,25 @@ const Translations = (() => {
         projects: { title: 'Proyectos', description: 'Portafolio de proyectos en mejora de procesos, gobernanza, datos y desarrollo.' },
         blog: { title: 'Blog', description: 'Artículos técnicos sobre tecnología, gobernanza y datos.' },
         library: { title: 'Biblioteca', description: 'Materiales de estudio, cheatsheets y guías de referencia.' },
-        dashboard: { title: 'Dashboard', description: 'Indicadores profesionales y métricas de carrera.' }
+        dashboard: {
+          title: 'Dashboard',
+          description: 'Indicadores profesionales y métricas de carrera.',
+          cards: {
+            projects: 'Total de Proyectos',
+            certificates: 'Certificados',
+            articles: 'Artículos Publicados',
+            experience: 'Años de Experiencia',
+            technologies: 'Tecnologías Dominadas',
+            repos: 'Repositorios Públicos',
+            years: 'años'
+          },
+          charts: {
+            certsByCategory: 'Certificados por Categoría',
+            projectsByTech: 'Top Tecnologías en Proyectos'
+          },
+          loading: 'Cargando datos del dashboard...',
+          error: 'No se pudieron cargar algunos datos. Mostrando información disponible.'
+        }
       },
       footer: {
         copyright: '© 2025 Lucas Liachi.'

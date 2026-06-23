@@ -3,13 +3,212 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-i18n="pages.dashboard.title">Dashboard — Lucas Liachi</title>
-  <meta name="description" content="Professional indicators and career metrics.">
+  <title data-i18n="pages.dashboard.title">Dashboard Profissional — Lucas Liachi</title>
+
+  <!-- SEO Essencial -->
+  <meta name="description" content="Dashboard profissional de Lucas Liachi: indicadores de carreira, projetos, certificados, tecnologias e anos de experiência em governança de TI.">
+  <meta name="keywords" content="dashboard, indicadores de carreira, projetos, certificados, analytics, tecnologias, governança de TI, Lucas Liachi, portfólio profissional">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Lucas Liachi">
+  <link rel="canonical" href="https://lucasliachi.github.io/lucasliachi/pages/dashboard/">
+
+  <!-- Open Graph (LinkedIn, Facebook, WhatsApp) -->
+  <meta property="og:title" content="Dashboard Profissional — Lucas Liachi">
+  <meta property="og:description" content="Dashboard profissional de Lucas Liachi: indicadores de carreira, projetos, certificados, tecnologias e anos de experiência em governança de TI.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lucasliachi.github.io/lucasliachi/pages/dashboard/">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:image" content="https://lucasliachi.github.io/lucasliachi/assets/perfil.jpeg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Dashboard Profissional — Lucas Liachi">
+  <meta name="twitter:description" content="Dashboard profissional de Lucas Liachi: indicadores de carreira, projetos, certificados, tecnologias e anos de experiência em governança de TI.">
+  <meta name="twitter:image" content="https://lucasliachi.github.io/lucasliachi/assets/perfil.jpeg">
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "name": "Dashboard Profissional — Lucas Liachi",
+    "description": "Dashboard profissional de Lucas Liachi com indicadores de carreira, projetos, certificados e tecnologias dominadas.",
+    "url": "https://lucasliachi.github.io/lucasliachi/pages/dashboard/",
+    "mainEntity": {
+      "@type": "Person",
+      "name": "Lucas Liachi",
+      "url": "https://lucasliachi.github.io/lucasliachi/",
+      "image": "https://lucasliachi.github.io/lucasliachi/assets/perfil.jpeg",
+      "jobTitle": "Technology Governance Specialist",
+      "sameAs": [
+        "https://www.linkedin.com/in/lucasliachi/",
+        "https://github.com/LucasLiachi",
+        "https://medium.com/@lucasliachi"
+      ]
+    }
+  }
+  </script>
+
   <link rel="stylesheet" href="../../css/main.css">
   <link rel="stylesheet" href="../../css/components.css">
   <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+  <style>
+    /* ── Dashboard layout ── */
+    .dash-section {
+      margin-bottom: 3rem;
+    }
+
+    .dash-section-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--foreground);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--primary);
+      display: inline-block;
+    }
+
+    /* ── Indicator cards grid ── */
+    .dash-cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .dash-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .dash-cards {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* ── Single indicator card ── */
+    .dash-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+      transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dash-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--primary);
+      border-radius: var(--radius) 0 0 var(--radius);
+    }
+
+    .dash-card:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .dash-card-icon {
+      font-size: 1.75rem;
+      line-height: 1;
+    }
+
+    .dash-card-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .dash-card-label {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      font-weight: 500;
+    }
+
+    /* ── Charts grid ── */
+    .dash-charts {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .dash-charts {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .dash-chart-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+
+    .dash-chart-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--foreground);
+      margin-bottom: 1rem;
+    }
+
+    .dash-chart-container {
+      position: relative;
+      height: 300px;
+    }
+
+    /* ── Loading / error states ── */
+    .dash-status {
+      padding: 1rem 1.25rem;
+      border-radius: var(--radius);
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .dash-status.loading {
+      background: var(--secondary);
+      color: var(--secondary-foreground);
+    }
+
+    .dash-status.error {
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffc107;
+    }
+
+    [data-theme="dark"] .dash-status.error {
+      background: #332a00;
+      color: #ffd663;
+      border-color: #665200;
+    }
+
+    /* skeleton pulse while loading */
+    .dash-card-value.skeleton {
+      background: var(--border);
+      border-radius: 4px;
+      color: transparent;
+      animation: skeleton-pulse 1.4s ease-in-out infinite;
+      min-width: 3rem;
+    }
+
+    @keyframes skeleton-pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+  </style>
 </head>
 <body>
   <a href="#main-content" class="skip-to-content">Skip to content</a>
@@ -82,11 +281,78 @@
 
     <div class="page-content">
       <div class="container">
-        <div class="coming-soon-box">
-          <span class="coming-soon-icon" aria-hidden="true">&#128679;</span>
-          <h2 data-i18n="pages.dashboard.title">Dashboard</h2>
-          <p data-i18n="pages.dashboard.description">Professional indicators and career metrics.</p>
+
+        <!-- Status banner (loading / error) -->
+        <div id="dash-status" class="dash-status loading" role="status" aria-live="polite">
+          <span data-i18n="pages.dashboard.loading">Loading dashboard data...</span>
         </div>
+
+        <!-- ── Indicator cards ── -->
+        <section class="dash-section" aria-labelledby="dash-indicators-heading">
+          <h2 id="dash-indicators-heading" class="dash-section-title" data-i18n="pages.dashboard.title">Dashboard</h2>
+          <div class="dash-cards">
+
+            <div class="dash-card" id="card-projects">
+              <span class="dash-card-icon" aria-hidden="true">&#128193;</span>
+              <span class="dash-card-value skeleton" id="val-projects">--</span>
+              <span class="dash-card-label" data-i18n="pages.dashboard.cards.projects">Total Projects</span>
+            </div>
+
+            <div class="dash-card" id="card-certificates">
+              <span class="dash-card-icon" aria-hidden="true">&#127941;</span>
+              <span class="dash-card-value skeleton" id="val-certificates">--</span>
+              <span class="dash-card-label" data-i18n="pages.dashboard.cards.certificates">Certificates</span>
+            </div>
+
+            <div class="dash-card" id="card-articles">
+              <span class="dash-card-icon" aria-hidden="true">&#128221;</span>
+              <span class="dash-card-value skeleton" id="val-articles">--</span>
+              <span class="dash-card-label" data-i18n="pages.dashboard.cards.articles">Published Articles</span>
+            </div>
+
+            <div class="dash-card" id="card-experience">
+              <span class="dash-card-icon" aria-hidden="true">&#127775;</span>
+              <span class="dash-card-value skeleton" id="val-experience">--</span>
+              <span class="dash-card-label" data-i18n="pages.dashboard.cards.experience">Years of Experience</span>
+            </div>
+
+            <div class="dash-card" id="card-technologies">
+              <span class="dash-card-icon" aria-hidden="true">&#9881;&#65039;</span>
+              <span class="dash-card-value skeleton" id="val-technologies">--</span>
+              <span class="dash-card-label" data-i18n="pages.dashboard.cards.technologies">Technologies Mastered</span>
+            </div>
+
+            <div class="dash-card" id="card-repos">
+              <span class="dash-card-icon" aria-hidden="true">&#128025;</span>
+              <span class="dash-card-value skeleton" id="val-repos">--</span>
+              <span class="dash-card-label" data-i18n="pages.dashboard.cards.repos">Public Repositories</span>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ── Charts ── -->
+        <section class="dash-section" aria-labelledby="dash-charts-heading">
+          <h2 id="dash-charts-heading" class="dash-section-title" data-i18n="pages.dashboard.title">Charts</h2>
+          <div class="dash-charts">
+
+            <div class="dash-chart-card">
+              <h3 class="dash-chart-title" data-i18n="pages.dashboard.charts.certsByCategory">Certificates by Category</h3>
+              <div class="dash-chart-container">
+                <canvas id="chart-certs" aria-label="Certificates by category" role="img"></canvas>
+              </div>
+            </div>
+
+            <div class="dash-chart-card">
+              <h3 class="dash-chart-title" data-i18n="pages.dashboard.charts.projectsByTech">Top Technologies in Projects</h3>
+              <div class="dash-chart-container">
+                <canvas id="chart-tech" aria-label="Top technologies in projects" role="img"></canvas>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
       </div>
     </div>
   </main>
@@ -99,7 +365,423 @@
     </div>
   </footer>
 
+  <!-- Chart.js must load before the init script -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/main.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      /* ── Constants ── */
+      var GITHUB_CACHE_KEY = 'github_repos_cache';
+      var GITHUB_CACHE_TTL = 5 * 60 * 1000; // 5 minutes — same key as Fase 4
+      var GITHUB_USER      = 'LucasLiachi';
+
+      /* Chart instances (kept so they can be destroyed on language re-render) */
+      var chartCerts = null;
+      var chartTech  = null;
+
+      /* ─────────────────────────────────────────
+         DATA FETCHERS
+      ───────────────────────────────────────── */
+
+      async function fetchJSON(url) {
+        var resp = await fetch(url);
+        if (!resp.ok) throw new Error('HTTP ' + resp.status + ' — ' + url);
+        return resp.json();
+      }
+
+      async function fetchGitHubUser() {
+        try {
+          var resp = await fetch('https://api.github.com/users/' + GITHUB_USER);
+          if (!resp.ok) throw new Error('HTTP ' + resp.status);
+          return await resp.json();
+        } catch (e) {
+          return null;
+        }
+      }
+
+      async function fetchGitHubRepos() {
+        try {
+          var cached = sessionStorage.getItem(GITHUB_CACHE_KEY);
+          if (cached) {
+            var parsed = JSON.parse(cached);
+            if (Date.now() - parsed.ts < GITHUB_CACHE_TTL) return parsed.data;
+          }
+          var resp = await fetch(
+            'https://api.github.com/users/' + GITHUB_USER + '/repos?per_page=100&sort=updated'
+          );
+          if (!resp.ok) throw new Error('HTTP ' + resp.status);
+          var data = await resp.json();
+          sessionStorage.setItem(GITHUB_CACHE_KEY, JSON.stringify({ data: data, ts: Date.now() }));
+          return data;
+        } catch (e) {
+          /* Attempt to return stale cache rather than null */
+          var stale = sessionStorage.getItem(GITHUB_CACHE_KEY);
+          if (stale) {
+            try { return JSON.parse(stale).data; } catch (_) {}
+          }
+          return null;
+        }
+      }
+
+      /* ─────────────────────────────────────────
+         CALCULATIONS
+      ───────────────────────────────────────── */
+
+      function calcExperienceYears(carreira) {
+        if (!carreira || !carreira.length) return 0;
+        var earliest = carreira.reduce(function (min, entry) {
+          var d = entry.start || entry.inicio || '';
+          return d < min ? d : min;
+        }, '9999-99');
+        if (!earliest || earliest === '9999-99') return 0;
+        /* Parse YYYY-MM or YYYY-MM-DD */
+        var parts = earliest.split('-');
+        var year  = parseInt(parts[0], 10);
+        var month = parseInt(parts[1] || '1', 10);
+        var startDate = new Date(year, month - 1, 1);
+        var now = new Date();
+        var diffMs    = now - startDate;
+        var diffYears = diffMs / (1000 * 60 * 60 * 24 * 365.25);
+        return Math.floor(diffYears);
+      }
+
+      function collectUniqueTechnologies(carreira, projetos, certificados) {
+        var tech = new Set();
+
+        (carreira || []).forEach(function (entry) {
+          (entry.technologies || []).forEach(function (t) { tech.add(t); });
+        });
+
+        (projetos || []).forEach(function (p) {
+          (p.technologies || []).forEach(function (t) { tech.add(t); });
+        });
+
+        /* Pull tags from certificados as a proxy for knowledge areas */
+        (certificados || []).forEach(function (c) {
+          (c.tags || []).forEach(function (t) { tech.add(t); });
+        });
+
+        return tech.size;
+      }
+
+      function countCertsByCategory(certificados) {
+        var counts = {};
+        (certificados || []).forEach(function (c) {
+          (c.categories || []).forEach(function (cat) {
+            counts[cat] = (counts[cat] || 0) + 1;
+          });
+        });
+        return counts;
+      }
+
+      function topTechFromProjects(projetos, githubRepos, limit) {
+        limit = limit || 8;
+        var counts = {};
+
+        (projetos || []).forEach(function (p) {
+          (p.technologies || []).forEach(function (t) {
+            counts[t] = (counts[t] || 0) + 1;
+          });
+        });
+
+        (githubRepos || []).forEach(function (r) {
+          if (r.language) {
+            counts[r.language] = (counts[r.language] || 0) + 1;
+          }
+        });
+
+        return Object.entries(counts)
+          .sort(function (a, b) { return b[1] - a[1]; })
+          .slice(0, limit);
+      }
+
+      /* ─────────────────────────────────────────
+         COUNT-UP ANIMATION
+      ───────────────────────────────────────── */
+
+      function animateCountUp(element, target, duration) {
+        duration = duration || 1200;
+        var start     = 0;
+        var startTime = null;
+
+        function step(timestamp) {
+          if (!startTime) startTime = timestamp;
+          var progress = Math.min((timestamp - startTime) / duration, 1);
+          /* Ease-out cubic */
+          var eased = 1 - Math.pow(1 - progress, 3);
+          var current = Math.round(eased * target);
+          element.textContent = current;
+          if (progress < 1) {
+            requestAnimationFrame(step);
+          } else {
+            element.textContent = target;
+          }
+        }
+
+        requestAnimationFrame(step);
+      }
+
+      function setCardValue(id, value) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.classList.remove('skeleton');
+        animateCountUp(el, value);
+      }
+
+      /* ─────────────────────────────────────────
+         CHARTS
+      ───────────────────────────────────────── */
+
+      var CHART_PALETTE = [
+        '#3b82f6', '#10b981', '#f59e0b', '#ef4444',
+        '#8b5cf6', '#06b6d4', '#f97316', '#ec4899',
+        '#6366f1', '#14b8a6'
+      ];
+
+      function buildCertsChart(categoryCounts) {
+        var canvas = document.getElementById('chart-certs');
+        if (!canvas) return;
+        if (chartCerts) { chartCerts.destroy(); chartCerts = null; }
+
+        var labels = Object.keys(categoryCounts);
+        var data   = Object.values(categoryCounts);
+
+        chartCerts = new Chart(canvas, {
+          type: 'doughnut',
+          data: {
+            labels: labels,
+            datasets: [{
+              data: data,
+              backgroundColor: CHART_PALETTE.slice(0, labels.length),
+              borderWidth: 2,
+              borderColor: getComputedStyle(document.documentElement)
+                .getPropertyValue('--card').trim() || '#ffffff'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  padding: 12,
+                  font: { size: 12 },
+                  color: getComputedStyle(document.documentElement)
+                    .getPropertyValue('--foreground').trim() || '#1f2937'
+                }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function (ctx) {
+                    var total = ctx.dataset.data.reduce(function (a, b) { return a + b; }, 0);
+                    var pct   = total ? Math.round((ctx.parsed / total) * 100) : 0;
+                    return ' ' + ctx.label + ': ' + ctx.parsed + ' (' + pct + '%)';
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      function buildTechChart(topTech) {
+        var canvas = document.getElementById('chart-tech');
+        if (!canvas) return;
+        if (chartTech) { chartTech.destroy(); chartTech = null; }
+
+        var labels = topTech.map(function (t) { return t[0]; });
+        var data   = topTech.map(function (t) { return t[1]; });
+
+        chartTech = new Chart(canvas, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              data: data,
+              backgroundColor: CHART_PALETTE.slice(0, labels.length),
+              borderRadius: 4,
+              borderSkipped: false
+            }]
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: function (ctx) {
+                    return ' ' + ctx.parsed.x + ' projects';
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                beginAtZero: true,
+                ticks: {
+                  stepSize: 1,
+                  color: getComputedStyle(document.documentElement)
+                    .getPropertyValue('--muted-foreground').trim() || '#6b7280'
+                },
+                grid: {
+                  color: getComputedStyle(document.documentElement)
+                    .getPropertyValue('--border').trim() || '#e5e7eb'
+                }
+              },
+              y: {
+                ticks: {
+                  color: getComputedStyle(document.documentElement)
+                    .getPropertyValue('--foreground').trim() || '#1f2937'
+                },
+                grid: { display: false }
+              }
+            }
+          }
+        });
+      }
+
+      /* ─────────────────────────────────────────
+         STATUS BANNER
+      ───────────────────────────────────────── */
+
+      function setStatus(type, messageKey) {
+        var el = document.getElementById('dash-status');
+        if (!el) return;
+        if (type === 'hidden') {
+          el.style.display = 'none';
+          return;
+        }
+        el.className = 'dash-status ' + type;
+        el.style.display = '';
+        var span = el.querySelector('[data-i18n]');
+        if (span) {
+          span.setAttribute('data-i18n', messageKey);
+          span.textContent = (window.Translations && window.Translations.get(messageKey)) || '';
+        }
+      }
+
+      /* ─────────────────────────────────────────
+         MAIN INIT
+      ───────────────────────────────────────── */
+
+      async function init() {
+        setStatus('loading', 'pages.dashboard.loading');
+
+        var carreira     = [];
+        var certificados = [];
+        var projetos     = [];
+        var artigos      = [];
+        var hasError     = false;
+
+        /* Fetch local JSONs in parallel */
+        var results = await Promise.allSettled([
+          fetchJSON('../../data/carreira.json'),
+          fetchJSON('../../data/certificados.json'),
+          fetchJSON('../../data/projetos.json'),
+          fetchJSON('../../data/artigos.json')
+        ]);
+
+        if (results[0].status === 'fulfilled') carreira     = results[0].value;
+        else hasError = true;
+
+        if (results[1].status === 'fulfilled') certificados = results[1].value;
+        else hasError = true;
+
+        if (results[2].status === 'fulfilled') projetos     = results[2].value;
+        else hasError = true;
+
+        if (results[3].status === 'fulfilled') artigos      = results[3].value;
+        else hasError = true;
+
+        /* Fetch GitHub data */
+        var ghUser  = await fetchGitHubUser();
+        var ghRepos = await fetchGitHubRepos();
+
+        /* ── Compute indicators ── */
+
+        /* Total projects = local JSON count + unique GitHub repos not in local JSON */
+        var localGithubNames = new Set(
+          projetos
+            .filter(function (p) { return !!p.github_repo; })
+            .map(function (p) {
+              var parts = (p.github_repo || '').split('/');
+              return parts[parts.length - 1].toLowerCase();
+            })
+        );
+        var ghPublicCount = 0;
+        if (ghRepos) {
+          ghPublicCount = ghRepos.filter(function (r) {
+            return !r.fork && !localGithubNames.has(r.name.toLowerCase());
+          }).length;
+        }
+        var totalProjects = projetos.length + ghPublicCount;
+
+        var totalCerts = certificados.length;
+
+        var totalArticles = artigos.filter(function (a) {
+          return a.publicado === true;
+        }).length;
+
+        var yearsExp = calcExperienceYears(carreira);
+
+        var totalTech = collectUniqueTechnologies(carreira, projetos, certificados);
+
+        var publicRepos = ghUser ? (ghUser.public_repos || 0) : 0;
+
+        /* ── Populate cards ── */
+        setCardValue('val-projects',     totalProjects);
+        setCardValue('val-certificates', totalCerts);
+        setCardValue('val-articles',     totalArticles);
+        setCardValue('val-experience',   yearsExp);
+        setCardValue('val-technologies', totalTech);
+        setCardValue('val-repos',        publicRepos);
+
+        /* ── Build charts ── */
+        var catCounts = countCertsByCategory(certificados);
+        if (Object.keys(catCounts).length) buildCertsChart(catCounts);
+
+        var topTech = topTechFromProjects(projetos, ghRepos, 8);
+        if (topTech.length) buildTechChart(topTech);
+
+        /* ── Update status banner ── */
+        if (hasError) {
+          setStatus('error', 'pages.dashboard.error');
+        } else {
+          setStatus('hidden', '');
+        }
+      }
+
+      /* ─────────────────────────────────────────
+         RE-RENDER CHARTS ON LANGUAGE CHANGE
+         (labels don't change but chart titles do via data-i18n; charts themselves
+          use no translated strings, so no full rebuild needed)
+      ───────────────────────────────────────── */
+      document.addEventListener('languageChanged', function () {
+        /* Status banner text is re-applied by main.js via data-i18n;
+           chart axis tick colours may need refresh — just update legend colours */
+        if (chartCerts) {
+          var fg = getComputedStyle(document.documentElement)
+            .getPropertyValue('--foreground').trim() || '#1f2937';
+          chartCerts.options.plugins.legend.labels.color = fg;
+          chartCerts.update('none');
+        }
+        if (chartTech) {
+          var fg2 = getComputedStyle(document.documentElement)
+            .getPropertyValue('--foreground').trim() || '#1f2937';
+          chartTech.options.scales.y.ticks.color = fg2;
+          chartTech.update('none');
+        }
+      });
+
+      /* Trigger when DOM is ready */
+      document.addEventListener('DOMContentLoaded', init);
+    })();
+  </script>
 </body>
 </html>
