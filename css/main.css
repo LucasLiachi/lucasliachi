@@ -714,3 +714,78 @@ select:focus {
     scroll-behavior: auto !important;
   }
 }
+
+/* ============================================
+   PRINT / PDF
+============================================ */
+@media print {
+  :root,
+  .dark {
+    --background: #ffffff;
+    --foreground: #000000;
+    --card: #ffffff;
+    --card-foreground: #000000;
+    --muted-foreground: #555555;
+    --border: #cccccc;
+  }
+
+  header,
+  footer,
+  .breadcrumb,
+  .mobile-menu-toggle,
+  .language-selector,
+  #dark-mode-toggle,
+  .skip-to-content,
+  .btn-print-resume,
+  .page-hero {
+    display: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+  }
+
+  @page {
+    size: A4;
+    margin: 1.5cm;
+  }
+
+  body {
+    background: #ffffff;
+    color: #000000;
+    font-size: 11pt;
+  }
+
+  .jt-item,
+  .jt-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .jt-card {
+    border: 1px solid #cccccc !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  a {
+    color: #000000 !important;
+    text-decoration: none !important;
+  }
+
+  .container {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .page-content {
+    padding: 0 !important;
+  }
+}

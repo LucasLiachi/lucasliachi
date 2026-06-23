@@ -178,7 +178,7 @@ const Translations = (() => {
       },
       pages: {
         about: { title: 'About', description: 'Learn more about Lucas Liachi, his background and professional profile.' },
-        career: { title: 'Career', description: 'Professional timeline with experiences, roles and achievements.', loading: 'Loading timeline...' },
+        career: { title: 'Career', description: 'Professional timeline with experiences, roles and achievements.', loading: 'Loading timeline...', printResume: 'Print Resume' },
         certificate: {
           title: 'Certificates',
           description: 'Professional certifications, courses and training programs.',
@@ -443,7 +443,7 @@ const Translations = (() => {
       },
       pages: {
         about: { title: 'Sobre', description: 'Conheça Lucas Liachi, sua trajetória e perfil profissional.' },
-        career: { title: 'Carreira', description: 'Linha do tempo profissional com experiências, cargos e conquistas.', loading: 'Carregando linha do tempo...' },
+        career: { title: 'Carreira', description: 'Linha do tempo profissional com experiências, cargos e conquistas.', loading: 'Carregando linha do tempo...', printResume: 'Imprimir Currículo' },
         certificate: {
           title: 'Certificados',
           description: 'Certificações profissionais, cursos e treinamentos.',
@@ -708,7 +708,7 @@ const Translations = (() => {
       },
       pages: {
         about: { title: 'Sobre', description: 'Conoce a Lucas Liachi, su trayectoria y perfil profesional.' },
-        career: { title: 'Carrera', description: 'Línea de tiempo profesional con experiencias, cargos y logros.', loading: 'Cargando línea de tiempo...' },
+        career: { title: 'Carrera', description: 'Línea de tiempo profesional con experiencias, cargos y logros.', loading: 'Cargando línea de tiempo...', printResume: 'Imprimir Currículum' },
         certificate: {
           title: 'Certificados',
           description: 'Certificaciones profesionales, cursos y programas de formación.',

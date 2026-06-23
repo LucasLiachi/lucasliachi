@@ -50,6 +50,32 @@
   <link rel="stylesheet" href="../../css/main.css">
   <link rel="stylesheet" href="../../css/components.css">
   <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+  <style>
+    .print-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-print-resume {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.25rem;
+      background: var(--accent);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity var(--transition-fast);
+    }
+
+    .btn-print-resume:hover {
+      opacity: 0.85;
+    }
+  </style>
 </head>
 <body>
   <a href="#main-content" class="skip-to-content">Skip to content</a>
@@ -123,6 +149,9 @@
 
     <div class="page-content">
       <div class="container">
+        <div class="print-actions">
+          <button class="btn-print-resume" onclick="window.print()" data-i18n="pages.career.printResume">Print Resume</button>
+        </div>
         <div class="career-json-timeline" id="career-json-timeline" aria-live="polite">
           <div class="career-loading" aria-busy="true" data-i18n="pages.career.loading">Loading timeline...</div>
         </div>
@@ -133,7 +162,7 @@
   <footer>
     <div class="container">
       <div class="footer-content">
-        <p data-i18n="footer.copyright">&#169; 2025 Lucas Liachi.</p>
+        <p id="footer-copyright" data-i18n="footer.copyright"></p>
       </div>
     </div>
   </footer>
