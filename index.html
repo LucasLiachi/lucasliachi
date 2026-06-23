@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lucas Liachi - Technology Governance Specialist</title>
   <meta name="description" content="Professional portfolio of Lucas Liachi, a Technology Governance specialist with expertise in strategic alignment of IT initiatives with organizational goals.">
-  
+
   <!-- SEO Meta Tags -->
   <meta name="robots" content="index, follow">
   <meta name="author" content="Lucas Liachi">
@@ -23,17 +23,17 @@
   <meta name="twitter:title" content="Lucas Liachi — Technology Governance Specialist">
   <meta name="twitter:description" content="Portfólio profissional de Lucas Liachi: especialista em governança de TI, gestão de tecnologia, Python data science e estatística aplicada.">
   <meta name="twitter:image" content="https://lucasliachi.github.io/lucasliachi/assets/perfil.jpeg">
-  
+
   <!-- Preload Critical Assets -->
   <link rel="preload" href="css/main.css" as="style">
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style">
   <link rel="preload" href="assets/perfil.jpeg" as="image" fetchpriority="high">
-  
-  <!-- Stylesheets - Simplified to 2 files -->
+
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/components.css?v=6">
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
-  
+
   <!-- Structured Data -->
   <script type="application/ld+json">
   {
@@ -54,14 +54,281 @@
     ]
   }
   </script>
-  
-  <!-- Markdown Parser with defer -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
+
+  <style>
+    /* ── Search section styles ──────────────────────────────────────────── */
+    .search-section {
+      padding: 2rem 0 3rem;
+    }
+
+    /* Search box */
+    .search-box-wrap {
+      position: relative;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .search-box-wrap svg.search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      color: var(--muted-foreground);
+      pointer-events: none;
+      flex-shrink: 0;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.85rem 3rem 0.85rem 3rem;
+      font-size: 1.05rem;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: var(--card);
+      color: var(--foreground);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.12);
+    }
+
+    .search-clear-btn {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted-foreground);
+      font-size: 1.1rem;
+      padding: 0.25rem;
+      border-radius: 4px;
+      display: none;
+      line-height: 1;
+    }
+
+    .search-clear-btn:hover {
+      color: var(--foreground);
+    }
+
+    .search-clear-btn.visible {
+      display: block;
+    }
+
+    /* Status bar */
+    .search-status {
+      text-align: center;
+      padding: 0.5rem 0 1.5rem;
+      color: var(--muted-foreground);
+      font-size: 0.9rem;
+      min-height: 2.5rem;
+    }
+
+    /* States */
+    .search-hint {
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--muted-foreground);
+    }
+
+    .search-hint svg {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 1rem;
+      opacity: 0.25;
+      display: block;
+    }
+
+    .search-hint p {
+      font-size: 1rem;
+    }
+
+    .search-loading {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--muted-foreground);
+      font-size: 0.95rem;
+    }
+
+    .search-no-results {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--muted-foreground);
+      font-size: 1rem;
+    }
+
+    /* Groups */
+    .result-group {
+      margin-bottom: 2.5rem;
+    }
+
+    .result-group-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .result-group-header h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--foreground);
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .result-group-count {
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* Result cards */
+    .result-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .result-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      transition: box-shadow 0.15s, transform 0.15s, border-color 0.15s;
+    }
+
+    .result-card:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      transform: translateY(-1px);
+      border-color: var(--accent);
+    }
+
+    .result-card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .result-type-pill {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.18rem 0.6rem;
+      border-radius: 999px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+
+    .type-project     { background: #3b82f6; color: #fff; }
+    .type-certificate { background: #10b981; color: #fff; }
+    .type-article     { background: #6366f1; color: #fff; }
+    .type-career      { background: #f59e0b; color: #fff; }
+
+    .result-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--foreground);
+      margin: 0;
+      line-height: 1.4;
+      flex: 1;
+    }
+
+    .result-title mark {
+      background: rgba(14, 165, 233, 0.25);
+      color: inherit;
+      border-radius: 3px;
+      padding: 0 1px;
+    }
+
+    .result-subtitle {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .result-subtitle mark {
+      background: rgba(14, 165, 233, 0.2);
+      color: inherit;
+      border-radius: 3px;
+      padding: 0 1px;
+    }
+
+    .result-card-bottom {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.2rem;
+    }
+
+    .result-date {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+    }
+
+    .result-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      flex: 1;
+    }
+
+    .result-tag {
+      font-size: 0.68rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      background: var(--secondary);
+      color: var(--muted-foreground);
+    }
+
+    .result-link {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      white-space: nowrap;
+      margin-left: auto;
+      padding: 0.25rem 0.6rem;
+      border: 1px solid var(--accent);
+      border-radius: 5px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .result-link:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    @media (max-width: 640px) {
+      .search-input { font-size: 1rem; }
+      .result-card  { padding: 0.9rem 1rem; }
+      .result-link  { margin-left: 0; }
+    }
+  </style>
 </head>
 <body>
   <!-- Skip to content link for accessibility -->
   <a href="#main-content" class="skip-to-content">Skip to content</a>
-  
+
   <header>
     <div class="container header-container">
       <div class="logo-section">
@@ -94,8 +361,8 @@
           <li role="none"><a href="pages/articles/" id="nav-blog" data-i18n="navbar.blog" role="menuitem">Blog</a></li>
           <li role="none"><a href="pages/academic/" id="nav-library" data-i18n="navbar.library" role="menuitem">Library</a></li>
           <li role="none"><a href="pages/dashboard/" id="nav-dashboard" data-i18n="navbar.dashboard" role="menuitem">Dashboard</a></li>
-          <li role="none"><a href="pages/search/" id="nav-search" data-i18n="navbar.search" role="menuitem">Search</a></li>
-          <li role="none"><a href="#contact" id="nav-contact" data-i18n="navbar.contact" role="menuitem">Contact</a></li>
+          <li role="none"><a href="#search" id="nav-search" data-i18n="navbar.search" role="menuitem">Search</a></li>
+          <li role="none"><a href="pages/contact/" id="nav-contact" data-i18n="navbar.contact" role="menuitem">Contact</a></li>
         </ul>
       </nav>
       <div class="right-section">
@@ -119,159 +386,59 @@
         <div class="hero-content">
           <h1 id="hero-title" data-i18n="hero.title">Technology Governance Specialist</h1>
           <p id="hero-subtitle" data-i18n="hero.welcome">Hello! I'm Lucas Liachi and welcome to my professional space. Here, I share my journey through the projects I'm most proud of and the study materials that drive my knowledge. Explore my work to learn about my skills and, if you like what you see, let's connect on <a href='https://www.linkedin.com/in/lucasliachi/' target='_blank' rel='noopener noreferrer'>LinkedIn</a>!</p>
-          <div class="hero-buttons">
-            <a href="#" class="about-link btn btn-primary" id="hero-about-btn" data-path="pages/about/EN.md" data-i18n="hero.about" onclick="event.preventDefault(); window.openAboutModal && window.openAboutModal();">About me</a>
-            <a href="#about" class="btn btn-primary" id="hero-resume-btn" data-i18n="hero.resume">Resume</a>
-            <a href="#projects" class="btn btn-primary" id="hero-projects-btn" data-i18n="hero.projects">Projects</a>
-          </div>
         </div>
         <div class="hero-image">
           <img src="assets/perfil.jpeg" alt="Lucas Liachi - Technology Governance Specialist" id="hero-image" width="300" height="300" fetchpriority="high">
         </div>
       </div>
     </section>
-    
-    <!-- Resume section - primeiro bloco de conteúdo abaixo do hero -->
-    <section id="about" class="section">
+
+    <!-- Global Search section -->
+    <section id="search" class="search-section">
       <div class="container">
-        <h2 class="section-title" id="about-title" data-i18n="about.title">Resume</h2>
-        
-        <div class="tabbed-resume-box">
-          <!-- Resume Navigation -->
-          <div class="about-nav">
-            <ul class="category-tabs">
-              <li><a href="#about-career" class="category-tab active" data-category="career" id="tab-career" data-i18n="about.career.title">Professional Career</a></li>
-              <li><a href="#about-academic" class="category-tab" data-category="academic" id="tab-academic" data-i18n="about.academic.title">Academic Profile</a></li>
-            </ul>
+        <div class="search-box-wrap">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input
+            type="search"
+            id="global-search-input"
+            class="search-input"
+            data-i18n-placeholder="pages.search.placeholder"
+            placeholder="Search projects, certificates, articles..."
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Global search">
+          <button id="search-clear-btn" class="search-clear-btn" aria-label="Clear search">&#x2715;</button>
+        </div>
+
+        <!-- Status line -->
+        <div id="search-status" class="search-status" aria-live="polite"></div>
+
+        <!-- Results area -->
+        <div id="search-results" aria-live="polite" aria-atomic="false">
+          <!-- Hint state (initial) -->
+          <div id="search-state-hint" class="search-hint">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <p data-i18n="pages.search.hint">Type to search across the entire portfolio</p>
           </div>
 
-          <!-- Content Area -->
-          <div class="about-content-area">
-            <!-- Curriculum categories -->
-            <div id="about-career" class="about-category active-content">
-              <div class="timeline-section">
-                <p class="timeline-instructions" data-i18n="about.career.timeline.instructions">Click on any experience item to see detailed information</p>
-                <div class="timeline" id="career-timeline">
-                  <!-- Timeline will be populated by JavaScript -->
-                </div>
-              </div>
-            </div>
-            
-            <div id="about-academic" class="about-category">
-              <h3 class="category-title" id="academic-title" data-i18n="about.academic.title">Academic Profile</h3>
-              <div class="about-grid" id="academic-container">
-                <article class="card">
-                  <h3 data-i18n="about.academic.title">Academic Profile</h3>
-                  <p data-i18n="about.academic.description">Academic background and university specializations</p>
-                  <div class="read-more">
-                    <a href="#" class="about-link" data-path="pages/academic/EN.md" data-i18n="about.readMore">Read More</a>
-                  </div>
-                </article>
-              </div>
-            </div>
+          <!-- Loading state -->
+          <div id="search-state-loading" class="search-loading" style="display:none;">
+            <p data-i18n="pages.search.loading">Loading...</p>
           </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Projects section - depois do currículo -->
-    <section id="projects" class="section">
-      <div class="container">
-        <h2 class="section-title" id="projects-title" data-i18n="projects.title">Projects</h2>
-        
-        <!-- Projects Filters (Search & Sort) -->
-        <div class="projects-filters">
-          <div class="filter-search">
-            <label for="projects-search" class="sr-only">Search projects</label>
-            <input 
-              type="search" 
-              id="projects-search" 
-              placeholder="Search projects..." 
-              data-i18n-placeholder="projects.search.placeholder"
-              aria-label="Search projects by title, description or technology"
-              autocomplete="off"
-            >
-            <button id="projects-clear-search" class="clear-search" aria-label="Clear project search" style="display: none;">
-              ✕
-            </button>
+          <!-- No-results state -->
+          <div id="search-state-no-results" class="search-no-results" style="display:none;">
+            <p data-i18n="pages.search.noResults">No results found for your search.</p>
           </div>
-          
-          <div class="filter-sort">
-            <label for="projects-sort" class="sr-only">Sort projects</label>
-            <select id="projects-sort" aria-label="Sort projects by">
-              <option value="date-desc" data-i18n="projects.sort.newest">Newest first</option>
-              <option value="date-asc" data-i18n="projects.sort.oldest">Oldest first</option>
-              <option value="name-asc" data-i18n="projects.sort.nameAsc">Name (A-Z)</option>
-              <option value="name-desc" data-i18n="projects.sort.nameDesc">Name (Z-A)</option>
-            </select>
-          </div>
-          
-          <div id="projects-search-results-count" class="search-results-count" style="display: none;"></div>
-        </div>
-        
-        <!-- Projects Tabbed Box -->
-        <div class="tabbed-projects-box">
-          <!-- Projects Navigation -->
-          <div class="projects-nav">
-            <ul class="project-tabs">
-              <li><a href="#projects-process" class="project-tab active" data-category="process" id="tab-projects-process" data-i18n="projects.tab.process">Process Improvement</a></li>
-              <li><a href="#projects-technology" class="project-tab" data-category="technology" id="tab-projects-technology" data-i18n="projects.tab.technology">Technology Solutions</a></li>
-              <li><a href="#projects-statistics" class="project-tab" data-category="statistics" id="tab-projects-statistics" data-i18n="projects.tab.statistics">Statistics & Analytics</a></li>
-            </ul>
-          </div>
-          
-          <!-- Projects Content Area -->
-          <div class="projects-content-area">
-            <div id="projects-container">
-              <!-- Projects will be populated here by JavaScript -->
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Certificates section -->
-    <section id="certificates" class="section">
-      <div class="container">
-        <h2 class="section-title" id="certificates-title" data-i18n="certificates.title">Certificates</h2>
-        <div class="about-grid" id="certificate-container">
-          <!-- Certificates will be populated by JavaScript -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Articles section -->
-    <section id="articles" class="section">
-      <div class="container">
-        <h2 class="section-title" id="articles-title" data-i18n="articles.title">Articles</h2>
-        <div class="about-grid" id="articles-container">
-          <!-- Articles will be populated by JavaScript -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact section -->
-    <section id="contact" class="section">
-      <div class="container">
-        <h2 class="section-title" data-i18n="contact.title">Contact</h2>
-        <p class="contact-description" data-i18n="contact.description">Get in touch via the platforms below.</p>
-        <div class="contact-links">
-          <a href="https://www.linkedin.com/in/lucasliachi/" target="_blank" rel="noopener noreferrer" class="contact-link">
-            <img src="assets/linkedin.png" alt="LinkedIn" class="contact-icon" width="24" height="24" loading="lazy">
-            <span>LinkedIn</span>
-          </a>
-          <a href="https://github.com/LucasLiachi" target="_blank" rel="noopener noreferrer" class="contact-link">
-            <img src="assets/github.png" alt="GitHub" class="contact-icon" width="24" height="24" loading="lazy">
-            <span>GitHub</span>
-          </a>
-          <a href="https://medium.com/@lucasliachi" target="_blank" rel="noopener noreferrer" class="contact-link">
-            <img src="assets/medium.png" alt="Medium" class="contact-icon" width="24" height="24" loading="lazy">
-            <span>Medium</span>
-          </a>
-          <a href="mailto:lucasliachi@gmail.com" class="contact-link">
-            <span class="contact-icon-text">@</span>
-            <span>lucasliachi@gmail.com</span>
-          </a>
+          <!-- Grouped results (populated by JS) -->
+          <div id="search-grouped-results"></div>
         </div>
       </div>
     </section>
@@ -284,7 +451,7 @@
       </div>
     </div>
   </footer>
-  
+
   <!-- About Modal (loaded dynamically by AboutModal) -->
   <div id="about-modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="about-modal-title">
     <div class="modal-content about-modal-inner" role="document">
@@ -295,13 +462,492 @@
       <div id="about-modal-content" class="about-modal-content" tabindex="0" aria-live="polite"></div>
     </div>
   </div>
-  
+
   <!-- Scripts -->
-  <!-- Utils script with utilities and UI components -->
+  <script src="js/fuse.min.js"></script>
   <script src="js/utils.js?v=6"></script>
-  <!-- Consolidated modules (curriculum and projects) -->
   <script src="js/modules.js?v=5"></script>
-  <!-- Main Script with translations, core functionality and initialization -->
   <script src="js/main.js?v=5"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      /* ── State ─────────────────────────────────────────────────────────── */
+      var allItems = [];
+      var fuseInstance = null;
+      var debounceTimer = null;
+
+      /* ── i18n helper ───────────────────────────────────────────────────── */
+      function t(key) {
+        return (window.Translations && window.Translations.get(key)) || key;
+      }
+
+      function getCurrentLang() {
+        return (window.currentLanguage || localStorage.getItem('language') || 'en').toLowerCase();
+      }
+
+      /* ── DOM helpers ───────────────────────────────────────────────────── */
+      function showState(state) {
+        // state: 'hint' | 'loading' | 'no-results' | 'results'
+        document.getElementById('search-state-hint').style.display       = state === 'hint'       ? '' : 'none';
+        document.getElementById('search-state-loading').style.display    = state === 'loading'    ? '' : 'none';
+        document.getElementById('search-state-no-results').style.display = state === 'no-results' ? '' : 'none';
+        document.getElementById('search-grouped-results').style.display  = state === 'results'    ? '' : 'none';
+      }
+
+      /* ── Sanitizer ─────────────────────────────────────────────────────── */
+      function escapeHtml(str) {
+        return String(str || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      /* ── Highlight builder ─────────────────────────────────────────────── */
+      function buildHighlight(text, indices) {
+        if (!text) return '';
+        var safe = escapeHtml(text);
+        if (!indices || !indices.length) return safe;
+
+        var sorted = indices.slice().sort(function (a, b) { return a[0] - b[0]; });
+        var result = '';
+        var cursor = 0;
+        for (var i = 0; i < sorted.length; i++) {
+          var start = sorted[i][0];
+          var end = sorted[i][1];
+          if (start > cursor) {
+            result += escapeHtml(text.slice(cursor, start));
+          }
+          result += '<mark>' + escapeHtml(text.slice(start, end + 1)) + '</mark>';
+          cursor = end + 1;
+        }
+        if (cursor < text.length) {
+          result += escapeHtml(text.slice(cursor));
+        }
+        return result;
+      }
+
+      /* ── Extract match indices per key ─────────────────────────────────── */
+      function getIndicesForKey(matchesArray, keyName) {
+        if (!matchesArray) return null;
+        for (var i = 0; i < matchesArray.length; i++) {
+          if (matchesArray[i].key === keyName) {
+            return matchesArray[i].indices || null;
+          }
+        }
+        return null;
+      }
+
+      /* ── Date formatter ────────────────────────────────────────────────── */
+      function formatDate(iso, lang) {
+        if (!iso) return '';
+        try {
+          var localeMap = { pt: 'pt-BR', es: 'es-ES', en: 'en-US' };
+          var locale = localeMap[lang] || 'en-US';
+          return new Date(iso + '-01').toLocaleDateString(locale, { year: 'numeric', month: 'short' });
+        } catch (e) {
+          return iso;
+        }
+      }
+
+      /* ── Normalize items from each JSON ────────────────────────────────── */
+      function normalizeCertificates(data) {
+        return data.map(function (item) {
+          return {
+            _type: 'certificate',
+            _id: item.id,
+            title: item.title || '',
+            subtitle: item.issuer || '',
+            date: item.issued || '',
+            tags: Array.isArray(item.tags) ? item.tags : [],
+            url: 'pages/certificate/'
+          };
+        });
+      }
+
+      function normalizeProjects(data) {
+        return data.map(function (item) {
+          return {
+            _type: 'project',
+            _id: item.id,
+            title: item.title || '',
+            subtitle: item.description || '',
+            date: item.updated || item.created || '',
+            tags: Array.isArray(item.technologies) ? item.technologies : [],
+            url: item.demo_url || item.github_repo || 'pages/projects/'
+          };
+        });
+      }
+
+      function normalizeArticles(data, lang) {
+        return data
+          .filter(function (item) { return item.publicado === true; })
+          .map(function (item) {
+            var title = (item.titulo && (item.titulo[lang] || item.titulo.en)) || '';
+            var subtitle = (item.resumo && (item.resumo[lang] || item.resumo.en)) || '';
+            return {
+              _type: 'article',
+              _id: item.id,
+              title: title,
+              subtitle: subtitle,
+              date: item.data || '',
+              tags: Array.isArray(item.tags) ? item.tags : [],
+              url: 'pages/articles/post.html?id=' + encodeURIComponent(item.id)
+            };
+          });
+      }
+
+      function normalizeCareer(data) {
+        return data.map(function (item) {
+          return {
+            _type: 'career',
+            _id: item.id,
+            title: item.role || '',
+            subtitle: item.company || '',
+            date: item.start || '',
+            tags: Array.isArray(item.technologies) ? item.technologies : [],
+            url: 'pages/career/'
+          };
+        });
+      }
+
+      /* ── Load all JSONs in parallel ────────────────────────────────────── */
+      async function loadData() {
+        showState('loading');
+        try {
+          var lang = getCurrentLang();
+          var results = await Promise.all([
+            fetch('data/certificados.json').then(function (r) {
+              if (!r.ok) throw new Error('certificados.json: HTTP ' + r.status);
+              return r.json();
+            }),
+            fetch('data/projetos.json').then(function (r) {
+              if (!r.ok) throw new Error('projetos.json: HTTP ' + r.status);
+              return r.json();
+            }),
+            fetch('data/artigos.json').then(function (r) {
+              if (!r.ok) throw new Error('artigos.json: HTTP ' + r.status);
+              return r.json();
+            }),
+            fetch('data/carreira.json').then(function (r) {
+              if (!r.ok) throw new Error('carreira.json: HTTP ' + r.status);
+              return r.json();
+            })
+          ]);
+
+          allItems = [].concat(
+            normalizeCertificates(results[0]),
+            normalizeProjects(results[1]),
+            normalizeArticles(results[2], lang),
+            normalizeCareer(results[3])
+          );
+
+          initFuse();
+          showState('hint');
+
+          // If URL has ?q= parameter, run search immediately
+          var urlQuery = getUrlQuery();
+          if (urlQuery) {
+            var input = document.getElementById('global-search-input');
+            input.value = urlQuery;
+            toggleClearButton(urlQuery);
+            runSearch(urlQuery);
+            // Scroll to search section
+            var searchSection = document.getElementById('search');
+            if (searchSection) {
+              searchSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }
+        } catch (err) {
+          showState('hint');
+          var status = document.getElementById('search-status');
+          status.textContent = 'Error loading data: ' + err.message;
+        }
+      }
+
+      /* ── Fuse.js init ──────────────────────────────────────────────────── */
+      function initFuse() {
+        if (typeof Fuse === 'undefined') return;
+        fuseInstance = new Fuse(allItems, {
+          keys: ['title', 'subtitle', 'tags'],
+          threshold: 0.35,
+          includeScore: true,
+          includeMatches: true,
+          minMatchCharLength: 2
+        });
+      }
+
+      /* Rebuild Fuse after language change (article titles change) */
+      function rebuildForLanguage() {
+        var lang = getCurrentLang();
+        if (!allItems.length) return;
+        fetch('data/artigos.json')
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            allItems = allItems.filter(function (i) { return i._type !== 'article'; });
+            allItems = allItems.concat(normalizeArticles(data, lang));
+            initFuse();
+            var q = document.getElementById('global-search-input').value.trim();
+            if (q.length >= 2) runSearch(q);
+          })
+          .catch(function () {});
+      }
+
+      /* ── URL helpers ───────────────────────────────────────────────────── */
+      function getUrlQuery() {
+        var params = new URLSearchParams(window.location.search);
+        return (params.get('q') || '').trim();
+      }
+
+      function pushUrlQuery(query) {
+        if (!window.history || !window.history.replaceState) return;
+        var url = new URL(window.location.href);
+        if (query) {
+          url.searchParams.set('q', query);
+        } else {
+          url.searchParams.delete('q');
+        }
+        window.history.replaceState(null, '', url.toString());
+      }
+
+      /* ── Clear button visibility ───────────────────────────────────────── */
+      function toggleClearButton(value) {
+        var btn = document.getElementById('search-clear-btn');
+        if (value && value.length > 0) {
+          btn.classList.add('visible');
+        } else {
+          btn.classList.remove('visible');
+        }
+      }
+
+      /* ── Main search logic ─────────────────────────────────────────────── */
+      function runSearch(query) {
+        var statusEl = document.getElementById('search-status');
+        var groupedEl = document.getElementById('search-grouped-results');
+
+        if (!query || query.length < 2) {
+          showState('hint');
+          statusEl.textContent = '';
+          pushUrlQuery('');
+          return;
+        }
+
+        pushUrlQuery(query);
+
+        if (!fuseInstance) {
+          showState('loading');
+          return;
+        }
+
+        var raw = fuseInstance.search(query);
+
+        if (!raw.length) {
+          showState('no-results');
+          statusEl.textContent = '';
+          return;
+        }
+
+        // Group by _type
+        var groups = {
+          certificate: [],
+          project: [],
+          article: [],
+          career: []
+        };
+        var typeOrder = ['project', 'certificate', 'article', 'career'];
+
+        raw.forEach(function (r) {
+          var type = r.item._type;
+          if (groups[type]) {
+            groups[type].push(r);
+          }
+        });
+
+        var totalCount = raw.length;
+        var lang = getCurrentLang();
+        var countWord = totalCount === 1 ? t('pages.search.result') : t('pages.search.results');
+        statusEl.textContent = totalCount + ' ' + countWord;
+
+        // Build DOM
+        groupedEl.innerHTML = '';
+        var hasAny = false;
+
+        typeOrder.forEach(function (type) {
+          var items = groups[type];
+          if (!items || !items.length) return;
+          hasAny = true;
+          groupedEl.appendChild(buildGroup(type, items, lang));
+        });
+
+        showState(hasAny ? 'results' : 'no-results');
+      }
+
+      /* ── Build a result group ──────────────────────────────────────────── */
+      function buildGroup(type, items, lang) {
+        var groupKeyMap = {
+          project:     'pages.search.groups.projects',
+          certificate: 'pages.search.groups.certificates',
+          article:     'pages.search.groups.articles',
+          career:      'pages.search.groups.career'
+        };
+
+        var section = document.createElement('section');
+        section.className = 'result-group';
+
+        var header = document.createElement('div');
+        header.className = 'result-group-header';
+
+        var h2 = document.createElement('h2');
+        h2.textContent = t(groupKeyMap[type]);
+        header.appendChild(h2);
+
+        var countBadge = document.createElement('span');
+        countBadge.className = 'result-group-count';
+        countBadge.textContent = String(items.length);
+        header.appendChild(countBadge);
+
+        section.appendChild(header);
+
+        var list = document.createElement('div');
+        list.className = 'result-list';
+
+        items.forEach(function (r) {
+          list.appendChild(buildCard(r, lang));
+        });
+
+        section.appendChild(list);
+        return section;
+      }
+
+      /* ── Build a single result card ────────────────────────────────────── */
+      function buildCard(fuseResult, lang) {
+        var item = fuseResult.item;
+        var matches = fuseResult.matches || [];
+
+        var titleIndices    = getIndicesForKey(matches, 'title');
+        var subtitleIndices = getIndicesForKey(matches, 'subtitle');
+
+        var card = document.createElement('article');
+        card.className = 'result-card';
+
+        /* Top row: type pill + title */
+        var topRow = document.createElement('div');
+        topRow.className = 'result-card-top';
+
+        var pill = document.createElement('span');
+        var pillClassMap = {
+          project:     'result-type-pill type-project',
+          certificate: 'result-type-pill type-certificate',
+          article:     'result-type-pill type-article',
+          career:      'result-type-pill type-career'
+        };
+        var pillTextMap = {
+          project:     'pages.search.groups.projects',
+          certificate: 'pages.search.groups.certificates',
+          article:     'pages.search.groups.articles',
+          career:      'pages.search.groups.career'
+        };
+        pill.className = pillClassMap[item._type] || 'result-type-pill';
+        pill.textContent = t(pillTextMap[item._type] || item._type);
+        topRow.appendChild(pill);
+
+        var titleEl = document.createElement('h3');
+        titleEl.className = 'result-title';
+        // Safe: buildHighlight escapes content, only wraps in <mark>
+        titleEl.innerHTML = buildHighlight(item.title, titleIndices);
+        topRow.appendChild(titleEl);
+
+        card.appendChild(topRow);
+
+        /* Subtitle */
+        if (item.subtitle) {
+          var subtitleEl = document.createElement('p');
+          subtitleEl.className = 'result-subtitle';
+          subtitleEl.innerHTML = buildHighlight(item.subtitle, subtitleIndices);
+          card.appendChild(subtitleEl);
+        }
+
+        /* Bottom row: date + tags + link */
+        var bottomRow = document.createElement('div');
+        bottomRow.className = 'result-card-bottom';
+
+        if (item.date) {
+          var dateEl = document.createElement('span');
+          dateEl.className = 'result-date';
+          dateEl.textContent = formatDate(item.date, lang);
+          bottomRow.appendChild(dateEl);
+        }
+
+        if (Array.isArray(item.tags) && item.tags.length) {
+          var tagsWrap = document.createElement('div');
+          tagsWrap.className = 'result-tags';
+          item.tags.slice(0, 4).forEach(function (tag) {
+            var s = document.createElement('span');
+            s.className = 'result-tag';
+            s.textContent = tag;
+            tagsWrap.appendChild(s);
+          });
+          bottomRow.appendChild(tagsWrap);
+        }
+
+        if (item.url) {
+          var link = document.createElement('a');
+          link.href = item.url;
+          link.className = 'result-link';
+          link.textContent = t('pages.search.viewItem') + ' →';
+          link.setAttribute('rel', 'noopener noreferrer');
+          bottomRow.appendChild(link);
+        }
+
+        card.appendChild(bottomRow);
+
+        return card;
+      }
+
+      /* ── Event listeners ───────────────────────────────────────────────── */
+      document.addEventListener('DOMContentLoaded', function () {
+        var input = document.getElementById('global-search-input');
+        var clearBtn = document.getElementById('search-clear-btn');
+
+        // Debounced input handler
+        input.addEventListener('input', function () {
+          var value = input.value;
+          toggleClearButton(value);
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(function () {
+            runSearch(value.trim());
+          }, 300);
+        });
+
+        // Esc key clears search
+        input.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') {
+            input.value = '';
+            toggleClearButton('');
+            runSearch('');
+            input.focus();
+          }
+        });
+
+        // Clear button
+        clearBtn.addEventListener('click', function () {
+          input.value = '';
+          toggleClearButton('');
+          runSearch('');
+          input.focus();
+        });
+
+        // Load data
+        loadData();
+      });
+
+      // Re-index on language change
+      document.addEventListener('languageChanged', function () {
+        rebuildForLanguage();
+      });
+
+    })();
+  </script>
 </body>
 </html>
