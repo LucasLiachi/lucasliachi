@@ -221,15 +221,7 @@ Anti-FOUC, CSS tokens unificados, WCAG 2.5.5 touch targets, `prefers-reduced-mot
 - O viewer deve detectar o idioma e carregar o arquivo correspondente
 - **Agente:** `content-writer`
 
-#### Fase 14 — PWA e Experiência Offline
-**Objetivo:** permitir acesso offline ao portfólio.
-- `manifest.json` com nome, ícones e cores do tema
-- Service Worker para cache de páginas HTML e JSONs (Cache-First para estáticos, Network-First para GitHub API)
-- Ícone de instalação no mobile
-- Sem push notifications (sem servidor)
-- **Agente:** `page-builder`
-
-#### Fase 15 — Modo de impressão / PDF do currículo
+#### Fase 14 — Modo de impressão / PDF do currículo
 **Objetivo:** permitir que recrutadores imprimam o currículo diretamente do site.
 - `@media print` em `css/main.css` ocultando navbar, footer, filtros e botões
 - Página `pages/career/` formatada para impressão A4
