@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artigo — Blog Técnico — Lucas Liachi</title>
+  <meta name="description" content="Artigo técnico do blog de Lucas Liachi sobre tecnologia, governança de TI, estatística aplicada, Python e data science.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Lucas Liachi">
+  <link rel="canonical" href="https://lucasliachi.github.io/lucasliachi/pages/articles/post.html">
+
+  <!-- Open Graph (static fallback — overwritten by JS after article loads) -->
+  <meta property="og:title" content="Artigo — Blog Técnico — Lucas Liachi">
+  <meta property="og:description" content="Artigo técnico do blog de Lucas Liachi sobre tecnologia, governança de TI, estatística aplicada, Python e data science.">
+  <meta property="og:image" content="https://lucasliachi.github.io/lucasliachi/assets/perfil.jpeg">
+  <meta property="og:url" content="https://lucasliachi.github.io/lucasliachi/pages/articles/post.html">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:locale:alternate" content="en_US">
+
+  <!-- Twitter Card (static fallback — overwritten by JS after article loads) -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Artigo — Blog Técnico — Lucas Liachi">
+  <meta name="twitter:description" content="Artigo técnico do blog de Lucas Liachi sobre tecnologia, governança de TI, estatística aplicada, Python e data science.">
+  <meta name="twitter:image" content="https://lucasliachi.github.io/lucasliachi/assets/perfil.jpeg">
+
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+  <style>
+    /* ── Post-specific styles ───────────────────────────────────────── */
+    .post-header {
+      padding: 2.5rem 0 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .post-back {
+      display: inline-block;
+      font-size: 0.875rem;
+      color: var(--accent);
+      text-decoration: none;
+      margin-bottom: 1.25rem;
+      transition: color 0.15s;
+    }
+
+    .post-back:hover {
+      color: var(--foreground);
+    }
+
+    .post-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .post-category-pill {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .post-date,
+    .post-read-time {
+      font-size: 0.8rem;
+      color: var(--muted-foreground);
+    }
+
+    .post-title {
+      font-size: clamp(1.5rem, 4vw, 2.25rem);
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--foreground);
+      margin: 0;
+    }
+
+    .post-body {
+      padding: 2.5rem 0 3rem;
+    }
+
+    .post-body .container {
+      max-width: 760px;
+    }
+
+    .post-content {
+      /* inherits .markdown-content styles from components.css */
+    }
+
+    .post-content h1 { font-size: 1.85rem; margin-top: 0; margin-bottom: 1rem; }
+    .post-content h2 { font-size: 1.45rem; margin-top: 2rem; margin-bottom: 0.75rem; color: var(--foreground); border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+    .post-content h3 { font-size: 1.15rem; margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--foreground); }
+    .post-content p  { margin-bottom: 1rem; color: var(--muted-foreground); line-height: 1.8; }
+    .post-content ul,
+    .post-content ol { margin: 0.75rem 0 1rem 1.5rem; }
+    .post-content li { margin-bottom: 0.4rem; color: var(--muted-foreground); line-height: 1.7; }
+    .post-content code { background: var(--secondary); padding: 0.15rem 0.4rem; border-radius: 4px; font-family: monospace; font-size: 0.88em; }
+    .post-content pre { background: var(--secondary); padding: 1.1rem 1.25rem; border-radius: var(--radius); overflow-x: auto; margin: 1.25rem 0; }
+    .post-content pre code { background: transparent; padding: 0; font-size: 0.875rem; }
+    .post-content blockquote { border-left: 3px solid var(--accent); padding: 0.5rem 1rem; margin: 1rem 0; background: var(--secondary); border-radius: 0 var(--radius) var(--radius) 0; }
+    .post-content blockquote p { color: var(--muted-foreground); margin: 0; }
+    .post-content table { width: 100%; border-collapse: collapse; margin: 1.25rem 0; font-size: 0.9rem; }
+    .post-content th, .post-content td { padding: 0.5rem 0.75rem; border: 1px solid var(--border); text-align: left; }
+    .post-content th { background: var(--secondary); font-weight: 600; }
+    .post-content img { max-width: 100%; height: auto; border-radius: var(--radius); margin: 1rem 0; }
+    .post-content a { color: var(--accent); }
+    .post-content a:hover { color: var(--foreground); text-decoration: underline; }
+    .post-content strong { color: var(--foreground); font-weight: 600; }
+
+    .post-loading,
+    .post-error {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--muted-foreground);
+    }
+
+    .post-error { color: var(--destructive); }
+
+    /* Category colour map */
+    .cat-Estatística  { background: #6366f1; }
+    .cat-Python       { background: #3b82f6; }
+    .cat-Dados        { background: #06b6d4; }
+    .cat-Inteligência-Artificial { background: #8b5cf6; }
+    .cat-Processos    { background: #10b981; }
+    .cat-Governança   { background: #f59e0b; }
+    .cat-ITIL         { background: #ef4444; }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
+
+  <header>
+    <div class="container header-container">
+      <div class="logo-section">
+        <div class="logo">
+          <a href="../../index.html">Lucas Liachi</a>
+        </div>
+        <div class="header-social-links">
+          <a href="https://www.linkedin.com/in/lucasliachi/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <img src="../../assets/linkedin.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
+          </a>
+          <a href="https://medium.com/@lucasliachi" target="_blank" rel="noopener noreferrer" aria-label="Medium">
+            <img src="../../assets/medium.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
+          </a>
+          <a href="https://github.com/LucasLiachi" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <img src="../../assets/github.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
+          </a>
+        </div>
+      </div>
+      <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <span class="menu-icon">&#9776;</span>
+        <span class="close-icon">&#x2715;</span>
+      </button>
+      <nav id="main-nav">
+        <ul id="nav-links" role="menubar">
+          <li role="none"><a href="../../index.html#hero" data-i18n="navbar.home" role="menuitem">Home</a></li>
+          <li role="none"><a href="../about/" data-i18n="navbar.about" role="menuitem">About</a></li>
+          <li role="none"><a href="../career/" data-i18n="navbar.career" role="menuitem">Career</a></li>
+          <li role="none"><a href="../projects/" data-i18n="navbar.projects" role="menuitem">Projects</a></li>
+          <li role="none"><a href="../certificate/" data-i18n="navbar.certificates" role="menuitem">Certificates</a></li>
+          <li role="none"><a href="../articles/" data-i18n="navbar.blog" role="menuitem" class="active">Blog</a></li>
+          <li role="none"><a href="../academic/" data-i18n="navbar.library" role="menuitem">Library</a></li>
+          <li role="none"><a href="../dashboard/" data-i18n="navbar.dashboard" role="menuitem">Dashboard</a></li>
+          <li role="none"><a href="../../index.html#contact" data-i18n="navbar.contact" role="menuitem">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="right-section">
+        <div class="language-selector">
+          <button class="language-option" data-language="en">EN</button>
+          <button class="language-option" data-language="pt">PT</button>
+          <button class="language-option" data-language="es">ES</button>
+        </div>
+        <button id="dark-mode-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+          <span class="sun-icon">&#9728;&#65039;</span>
+          <span class="moon-icon">&#127769;</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Breadcrumb: updated dynamically once article loads -->
+  <nav class="breadcrumb" aria-label="breadcrumb">
+    <div class="container">
+      <ol id="post-breadcrumb">
+        <li><a href="../../index.html" data-i18n="breadcrumb.home">Home</a></li>
+        <li><a href="../articles/" data-i18n="navbar.blog">Blog</a></li>
+        <li id="breadcrumb-title" aria-current="page">Article</li>
+      </ol>
+    </div>
+  </nav>
+
+  <main id="main-content">
+    <!-- Post header (populated by JS) -->
+    <div class="post-header" id="post-header">
+      <div class="container">
+        <a href="../articles/" class="post-back" id="post-back-link" data-i18n="articles.backToBlog">← Back to Blog</a>
+        <div class="post-meta" id="post-meta" aria-live="polite">
+          <p class="post-loading" data-i18n="articles.loading">Loading...</p>
+        </div>
+        <h1 class="post-title" id="post-title"></h1>
+      </div>
+    </div>
+
+    <!-- Post body -->
+    <div class="post-body">
+      <div class="container">
+        <div id="post-content" class="post-content" aria-live="polite">
+          <!-- Markdown rendered here -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <p data-i18n="footer.copyright">&#169; 2025 Lucas Liachi.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/main.js"></script>
+
+  <!-- SEO: dynamic JSON-LD Article schema + canonical + OG update after article loads -->
+  <script>
+    (function () {
+      'use strict';
+
+      var BASE_URL = 'https://lucasliachi.github.io/lucasliachi/';
+
+      function getArticleId() {
+        return new URLSearchParams(window.location.search).get('id') || '';
+      }
+
+      function injectOrUpdateMeta(property, content, isName) {
+        var attr = isName ? 'name' : 'property';
+        var sel = 'meta[' + attr + '="' + property + '"]';
+        var el = document.querySelector(sel);
+        if (!el) {
+          el = document.createElement('meta');
+          el.setAttribute(attr, property);
+          document.head.appendChild(el);
+        }
+        el.setAttribute('content', content);
+      }
+
+      function injectJsonLd(article, lang) {
+        /* Remove any previously injected Article schema */
+        var existing = document.getElementById('seo-article-jsonld');
+        if (existing) existing.parentNode.removeChild(existing);
+
+        var title = (article.titulo && article.titulo[lang]) || article.titulo.en || '';
+        var description = (article.resumo && article.resumo[lang]) || article.resumo.en || '';
+        var articleUrl = BASE_URL + 'pages/articles/post.html?id=' + encodeURIComponent(article.id);
+
+        var schema = {
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          'headline': title,
+          'description': description,
+          'datePublished': article.data || '',
+          'url': articleUrl,
+          'author': {
+            '@type': 'Person',
+            'name': 'Lucas Liachi',
+            'url': BASE_URL,
+            'sameAs': [
+              'https://www.linkedin.com/in/lucasliachi/',
+              'https://github.com/LucasLiachi'
+            ]
+          },
+          'publisher': {
+            '@type': 'Person',
+            'name': 'Lucas Liachi',
+            'url': BASE_URL
+          }
+        };
+
+        var script = document.createElement('script');
+        script.id = 'seo-article-jsonld';
+        script.type = 'application/ld+json';
+        script.textContent = JSON.stringify(schema, null, 2);
+        document.head.appendChild(script);
+
+        /* Update Open Graph and canonical to reflect actual article */
+        injectOrUpdateMeta('og:title', title + ' — Lucas Liachi', false);
+        injectOrUpdateMeta('og:description', description, false);
+        injectOrUpdateMeta('og:url', articleUrl, false);
+        injectOrUpdateMeta('twitter:title', title + ' — Lucas Liachi', true);
+        injectOrUpdateMeta('twitter:description', description, true);
+
+        var canonical = document.querySelector('link[rel="canonical"]');
+        if (canonical) canonical.setAttribute('href', articleUrl);
+      }
+
+      async function buildArticleSchema() {
+        var id = getArticleId();
+        if (!id) return;
+
+        try {
+          var res = await fetch('../../data/artigos.json');
+          if (!res.ok) return;
+          var data = await res.json();
+          var article = data.find(function (a) { return a.id === id && a.publicado === true; });
+          if (!article) return;
+
+          var lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toLowerCase();
+          injectJsonLd(article, lang);
+        } catch (e) {
+          /* Silent — SEO enhancement only; must not break the page */
+        }
+      }
+
+      /* Run after the existing DOMContentLoaded handler has fired */
+      document.addEventListener('DOMContentLoaded', function () {
+        /* Small delay ensures the primary loadArticle() has started its fetch */
+        buildArticleSchema();
+      });
+
+      /* Re-inject on language change so headline/description match the displayed language */
+      document.addEventListener('languageChanged', function () {
+        buildArticleSchema();
+      });
+    })();
+  </script>
+
+  <script>
+    (function () {
+      'use strict';
+
+      /* ── Helpers ──────────────────────────────────────────────────── */
+      function t(key) {
+        return (window.Translations && window.Translations.get(key)) || key;
+      }
+
+      function getCurrentLang() {
+        return (window.currentLanguage || localStorage.getItem('language') || 'en').toLowerCase();
+      }
+
+      function getArticleId() {
+        var params = new URLSearchParams(window.location.search);
+        return params.get('id') || '';
+      }
+
+      function formatDate(iso, lang) {
+        if (!iso) return '';
+        try {
+          var localeMap = { pt: 'pt-BR', es: 'es-ES', en: 'en-US' };
+          var locale = localeMap[lang] || 'en-US';
+          return new Date(iso + 'T00:00:00').toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' });
+        } catch (e) {
+          return iso;
+        }
+      }
+
+      function catClass(cat) {
+        return 'cat-' + (cat || '').replace(/\s+/g, '-');
+      }
+
+      function sanitizeMarkdownHtml(html) {
+        /* Marked.js renders static repo content; safe for trusted source.
+           Nonetheless strip <script> tags as a precaution. */
+        return html.replace(/<script[\s\S]*?<\/script>/gi, '');
+      }
+
+      /* ── State ────────────────────────────────────────────────────── */
+      var currentArticle = null;
+
+      /* ── Load article metadata from JSON ─────────────────────────── */
+      async function loadArticle() {
+        var id = getArticleId();
+        if (!id) {
+          showError(t('articles.error'));
+          return;
+        }
+
+        try {
+          var res = await fetch('../../data/artigos.json');
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          var data = await res.json();
+          var article = data.find(function (a) { return a.id === id && a.publicado === true; });
+          if (!article) throw new Error('Article not found: ' + id);
+          currentArticle = article;
+          renderHeader(article);
+          await loadMarkdown(article);
+        } catch (e) {
+          showError(t('articles.error'));
+        }
+      }
+
+      /* ── Render header section ────────────────────────────────────── */
+      function renderHeader(article) {
+        var lang = getCurrentLang();
+        var title = (article.titulo && article.titulo[lang]) || article.titulo.en || '';
+
+        /* Page title */
+        document.title = title + ' — Lucas Liachi';
+        document.querySelector('meta[name="description"]').setAttribute('content', (article.resumo && article.resumo[lang]) || '');
+
+        /* Breadcrumb */
+        var bcTitle = document.getElementById('breadcrumb-title');
+        if (bcTitle) bcTitle.textContent = title;
+
+        /* Meta row */
+        var metaDiv = document.getElementById('post-meta');
+        metaDiv.innerHTML = '';
+
+        var catSpan = document.createElement('span');
+        catSpan.className = 'post-category-pill ' + catClass(article.categoria);
+        catSpan.textContent = article.categoria || '';
+        metaDiv.appendChild(catSpan);
+
+        var pubLabel = document.createElement('span');
+        pubLabel.className = 'post-date';
+        pubLabel.textContent = t('articles.publishedOn') + ' ' + formatDate(article.data, lang);
+        metaDiv.appendChild(pubLabel);
+
+        if (article.tempoLeitura) {
+          var rtSpan = document.createElement('span');
+          rtSpan.className = 'post-read-time';
+          rtSpan.textContent = article.tempoLeitura + ' ' + t('articles.readTime');
+          metaDiv.appendChild(rtSpan);
+        }
+
+        /* Title */
+        var titleEl = document.getElementById('post-title');
+        titleEl.textContent = title;
+      }
+
+      /* ── Fetch and render Markdown ────────────────────────────────── */
+      async function loadMarkdown(article) {
+        var contentEl = document.getElementById('post-content');
+        if (!article.arquivo) {
+          contentEl.innerHTML = '<p class="post-error">' + t('articles.error') + '</p>';
+          return;
+        }
+
+        var mdPath = '../../' + article.arquivo;
+
+        try {
+          var res = await fetch(mdPath);
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          var mdText = await res.text();
+
+          if (typeof marked !== 'undefined') {
+            marked.setOptions({ gfm: true, breaks: false });
+            var rawHtml = marked.parse(mdText);
+            contentEl.innerHTML = sanitizeMarkdownHtml(rawHtml);
+          } else {
+            /* Fallback: wrap plain text in a pre */
+            var pre = document.createElement('pre');
+            pre.textContent = mdText;
+            contentEl.innerHTML = '';
+            contentEl.appendChild(pre);
+          }
+        } catch (e) {
+          contentEl.innerHTML = '<p class="post-error">' + t('articles.error') + '</p>';
+        }
+      }
+
+      /* ── Show error state ─────────────────────────────────────────── */
+      function showError(msg) {
+        var metaDiv = document.getElementById('post-meta');
+        metaDiv.innerHTML = '';
+        var p = document.createElement('p');
+        p.className = 'post-error';
+        p.textContent = msg;
+        metaDiv.appendChild(p);
+      }
+
+      /* ── Init ─────────────────────────────────────────────────────── */
+      document.addEventListener('DOMContentLoaded', function () {
+        loadArticle();
+      });
+
+      /* Re-render on language change */
+      document.addEventListener('languageChanged', function () {
+        if (currentArticle) {
+          renderHeader(currentArticle);
+          /* Markdown content itself stays the same (stored in a fixed language per file);
+             only meta labels and title update. */
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

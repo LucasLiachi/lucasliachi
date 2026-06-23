@@ -1,0 +1,97 @@
+[
+  {
+    "id": "guia-anova",
+    "titulo": {
+      "en": "Complete ANOVA Guide with Python Examples",
+      "pt": "Guia Completo de ANOVA com Exemplos em Python",
+      "es": "Guía Completa de ANOVA con Ejemplos en Python"
+    },
+    "resumo": {
+      "en": "Understand when and how to use Analysis of Variance (ANOVA) to compare group means, with step-by-step Python implementation.",
+      "pt": "Entenda quando e como usar a Análise de Variância (ANOVA) para comparar médias entre grupos, com implementação passo a passo em Python.",
+      "es": "Entiende cuándo y cómo usar el Análisis de Varianza (ANOVA) para comparar medias entre grupos, con implementación paso a paso en Python."
+    },
+    "categoria": "Estatística",
+    "tags": ["anova", "testes de hipótese", "variância", "scipy", "statsmodels", "análise de dados"],
+    "data": "2026-06-23",
+    "arquivo": "blog/posts/guia-anova.md",
+    "tempoLeitura": 10,
+    "publicado": true
+  },
+  {
+    "id": "testes-hipoteses",
+    "titulo": {
+      "en": "Hypothesis Tests: z-test, t-test and Chi-Square",
+      "pt": "Testes de Hipóteses: z-test, t-test e Qui-Quadrado",
+      "es": "Pruebas de Hipótesis: z-test, t-test y Chi-Cuadrado"
+    },
+    "resumo": {
+      "en": "Practical guide to the main parametric and non-parametric hypothesis tests, with selection criteria and Python examples.",
+      "pt": "Guia prático sobre os principais testes de hipótese paramétricos e não paramétricos, com critérios de escolha e exemplos em Python.",
+      "es": "Guía práctica sobre las principales pruebas de hipótesis paramétricas y no paramétricas, con criterios de selección y ejemplos en Python."
+    },
+    "categoria": "Estatística",
+    "tags": ["testes de hipótese", "z-test", "t-test", "qui-quadrado", "scipy", "inferência estatística"],
+    "data": "2026-06-23",
+    "arquivo": "blog/posts/testes-hipoteses.md",
+    "tempoLeitura": 9,
+    "publicado": true
+  },
+  {
+    "id": "probabilidade-bayesiana",
+    "titulo": {
+      "en": "Introduction to Bayesian Probability",
+      "pt": "Introdução à Probabilidade Bayesiana",
+      "es": "Introducción a la Probabilidad Bayesiana"
+    },
+    "resumo": {
+      "en": "Understand the difference between frequentist and Bayesian probability, Bayes' Theorem and how to apply it to real problems with Python.",
+      "pt": "Entenda a diferença entre probabilidade frequentista e bayesiana, o Teorema de Bayes e como aplicá-lo a problemas reais com Python.",
+      "es": "Entiende la diferencia entre probabilidad frecuentista y bayesiana, el Teorema de Bayes y cómo aplicarlo a problemas reales con Python."
+    },
+    "categoria": "Estatística",
+    "tags": ["bayes", "probabilidade condicional", "teorema de bayes", "inferência bayesiana", "python"],
+    "data": "2026-06-23",
+    "arquivo": "blog/posts/probabilidade-bayesiana.md",
+    "tempoLeitura": 9,
+    "publicado": true
+  },
+  {
+    "id": "introducao-itil",
+    "titulo": {
+      "en": "What is ITIL and Why It Still Matters in 2026",
+      "pt": "O que é ITIL e por que ainda importa em 2026",
+      "es": "Qué es ITIL y por qué sigue importando en 2026"
+    },
+    "resumo": {
+      "en": "An objective introduction to the ITIL 4 framework, its core concepts and how it integrates with modern Agile and DevOps environments.",
+      "pt": "Uma introdução objetiva ao framework ITIL 4, seus conceitos centrais e como ele se integra a ambientes ágeis e DevOps modernos.",
+      "es": "Una introducción objetiva al framework ITIL 4, sus conceptos centrales y cómo se integra con entornos ágiles y DevOps modernos."
+    },
+    "categoria": "ITIL",
+    "tags": ["itil", "itil4", "gestão de serviços de ti", "itsm", "devops", "sla", "governança de ti"],
+    "data": "2026-06-23",
+    "arquivo": "blog/posts/introducao-itil.md",
+    "tempoLeitura": 8,
+    "publicado": true
+  },
+  {
+    "id": "github-pages-portfolio",
+    "titulo": {
+      "en": "How to Build a Professional Portfolio with GitHub Pages",
+      "pt": "Como Criar um Portfólio Profissional com GitHub Pages",
+      "es": "Cómo Crear un Portafolio Profesional con GitHub Pages"
+    },
+    "resumo": {
+      "en": "Step-by-step guide to publishing a static technical portfolio on GitHub Pages, with custom domain, file structure and content best practices.",
+      "pt": "Guia passo a passo para publicar um portfólio técnico estático no GitHub Pages, com domínio customizado, estrutura de arquivos e boas práticas de conteúdo.",
+      "es": "Guía paso a paso para publicar un portafolio técnico estático en GitHub Pages, con dominio personalizado, estructura de archivos y buenas prácticas de contenido."
+    },
+    "categoria": "Processos",
+    "tags": ["github pages", "portfólio", "html", "css", "javascript", "github", "carreira", "site estático"],
+    "data": "2026-06-23",
+    "arquivo": "blog/posts/github-pages-portfolio.md",
+    "tempoLeitura": 8,
+    "publicado": true
+  }
+]

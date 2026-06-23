@@ -111,11 +111,22 @@ const Translations = (() => {
         local: 'Local Project'
       },
       articles: {
-        title: 'Articles',
+        title: 'Blog',
+        description: 'Technical articles and insights on technology, governance and data.',
+        search: { placeholder: 'Search articles...' },
+        filterAll: 'All',
+        readTime: 'min read',
         readArticle: 'Read Article',
         loading: 'Loading articles...',
-        noResults: 'No articles available.',
-        error: 'Unable to load articles.'
+        noResults: 'No articles found.',
+        error: 'Unable to load articles.',
+        backToBlog: '← Back to Blog',
+        publishedOn: 'Published on',
+        category: 'Category',
+        count: {
+          singular: 'article',
+          plural: 'articles'
+        }
       },
       certificates: {
         title: 'Certificates'
@@ -278,11 +289,22 @@ const Translations = (() => {
         local: 'Projeto Local'
       },
       articles: {
-        title: 'Artigos',
+        title: 'Blog',
+        description: 'Artigos técnicos sobre tecnologia, governança e dados.',
+        search: { placeholder: 'Pesquisar artigos...' },
+        filterAll: 'Todos',
+        readTime: 'min de leitura',
         readArticle: 'Ler Artigo',
         loading: 'Carregando artigos...',
-        noResults: 'Nenhum artigo disponível.',
-        error: 'Não foi possível carregar os artigos.'
+        noResults: 'Nenhum artigo encontrado.',
+        error: 'Não foi possível carregar os artigos.',
+        backToBlog: '← Voltar ao Blog',
+        publishedOn: 'Publicado em',
+        category: 'Categoria',
+        count: {
+          singular: 'artigo',
+          plural: 'artigos'
+        }
       },
       certificates: {
         title: 'Certificados'
@@ -445,11 +467,22 @@ const Translations = (() => {
         local: 'Proyecto Local'
       },
       articles: {
-        title: 'Artículos',
+        title: 'Blog',
+        description: 'Artículos técnicos sobre tecnología, gobernanza y datos.',
+        search: { placeholder: 'Buscar artículos...' },
+        filterAll: 'Todos',
+        readTime: 'min de lectura',
         readArticle: 'Leer Artículo',
         loading: 'Cargando artículos...',
-        noResults: 'No hay artículos disponíveis.',
-        error: 'No se pudieron cargar los artículos.'
+        noResults: 'No se encontraron artículos.',
+        error: 'No se pudieron cargar los artículos.',
+        backToBlog: '← Volver al Blog',
+        publishedOn: 'Publicado el',
+        category: 'Categoría',
+        count: {
+          singular: 'artículo',
+          plural: 'artículos'
+        }
       },
       certificates: {
         title: 'Certificados'

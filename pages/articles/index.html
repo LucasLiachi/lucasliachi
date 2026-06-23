@@ -3,13 +3,260 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-i18n="pages.blog.title">Blog — Lucas Liachi</title>
-  <meta name="description" content="Technical articles and insights on technology, governance and data.">
+  <title data-i18n="pages.blog.title">Blog Técnico — Lucas Liachi</title>
+  <meta name="description" content="Artigos técnicos de Lucas Liachi sobre estatística aplicada, Python, dados, ITIL e governança de TI. Conteúdo para profissionais de tecnologia.">
+  <meta name="keywords" content="technology governance, IT management, estatística aplicada, Python data science, governança de TI, ITIL, dados, portfólio profissional, Lucas Liachi">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Lucas Liachi">
+  <link rel="canonical" href="https://lucasliachi.github.io/lucasliachi/pages/articles/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Blog Técnico — Lucas Liachi">
+  <meta property="og:description" content="Artigos técnicos de Lucas Liachi sobre estatística aplicada, Python, dados, ITIL e governança de TI. Conteúdo para profissionais de tecnologia.">
+  <meta property="og:image" content="https://lucasliachi.github.io/lucasliachi/assets/perfil.jpeg">
+  <meta property="og:url" content="https://lucasliachi.github.io/lucasliachi/pages/articles/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:locale:alternate" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Blog Técnico — Lucas Liachi">
+  <meta name="twitter:description" content="Artigos técnicos sobre estatística aplicada, Python, dados, ITIL e governança de TI por Lucas Liachi.">
+  <meta name="twitter:image" content="https://lucasliachi.github.io/lucasliachi/assets/perfil.jpeg">
+
+  <!-- Schema.org Blog -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Blog Técnico — Lucas Liachi",
+    "description": "Artigos técnicos sobre estatística aplicada, Python, dados, ITIL e governança de TI.",
+    "url": "https://lucasliachi.github.io/lucasliachi/pages/articles/",
+    "author": {
+      "@type": "Person",
+      "name": "Lucas Liachi",
+      "url": "https://lucasliachi.github.io/lucasliachi/",
+      "sameAs": [
+        "https://www.linkedin.com/in/lucasliachi/",
+        "https://github.com/LucasLiachi"
+      ]
+    }
+  }
+  </script>
+
   <link rel="stylesheet" href="../../css/main.css">
   <link rel="stylesheet" href="../../css/components.css">
   <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+  <style>
+    /* ── Blog-specific styles ───────────────────────────────────────────── */
+    .blog-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .blog-search-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .blog-search-wrap input {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.9rem;
+      background: var(--card);
+      color: var(--foreground);
+      transition: border-color 0.2s;
+    }
+
+    .blog-search-wrap input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+    }
+
+    .blog-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .blog-filter-btn {
+      padding: 0.3rem 0.85rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--card);
+      color: var(--muted-foreground);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+
+    .blog-filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .blog-filter-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .blog-count {
+      font-size: 0.85rem;
+      color: var(--muted-foreground);
+      margin-left: auto;
+      white-space: nowrap;
+    }
+
+    /* Article grid */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .article-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      transition: box-shadow 0.15s, transform 0.15s;
+    }
+
+    .article-card:hover {
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .article-category-pill {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.18rem 0.6rem;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .article-date {
+      font-size: 0.78rem;
+      color: var(--muted-foreground);
+    }
+
+    .article-read-time {
+      font-size: 0.78rem;
+      color: var(--muted-foreground);
+      margin-left: auto;
+    }
+
+    .article-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--foreground);
+      margin: 0;
+      line-height: 1.35;
+    }
+
+    .article-summary {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      line-height: 1.6;
+      margin: 0;
+      flex-grow: 1;
+    }
+
+    .article-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+
+    .article-tag {
+      font-size: 0.7rem;
+      padding: 0.12rem 0.5rem;
+      border-radius: 999px;
+      background: var(--secondary);
+      color: var(--muted-foreground);
+    }
+
+    .article-actions {
+      margin-top: auto;
+      padding-top: 0.5rem;
+    }
+
+    .btn-read-article {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 0.4rem 0.9rem;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .btn-read-article:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .blog-no-results,
+    .blog-loading,
+    .blog-error {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--muted-foreground);
+      font-size: 1rem;
+    }
+
+    .blog-error {
+      color: var(--destructive);
+    }
+
+    /* Category colour map */
+    .cat-Estatística  { background: #6366f1; }
+    .cat-Python       { background: #3b82f6; }
+    .cat-Dados        { background: #06b6d4; }
+    .cat-Inteligência-Artificial { background: #8b5cf6; }
+    .cat-Processos    { background: #10b981; }
+    .cat-Governança   { background: #f59e0b; }
+    .cat-ITIL         { background: #ef4444; }
+
+    @media (max-width: 640px) {
+      .blog-controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .blog-count {
+        margin-left: 0;
+      }
+      .blog-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <a href="#main-content" class="skip-to-content">Skip to content</a>
@@ -75,18 +322,36 @@
   <main id="main-content">
     <div class="page-hero">
       <div class="container">
-        <h1 data-i18n="pages.blog.title">Blog</h1>
-        <p data-i18n="pages.blog.description">Technical articles and insights on technology, governance and data.</p>
+        <h1 data-i18n="articles.title">Blog</h1>
+        <p data-i18n="articles.description">Technical articles and insights on technology, governance and data.</p>
       </div>
     </div>
 
     <div class="page-content">
       <div class="container">
-        <div class="coming-soon-box">
-          <span class="coming-soon-icon" aria-hidden="true">&#128679;</span>
-          <h2 data-i18n="pages.blog.title">Blog</h2>
-          <p data-i18n="pages.blog.description">Technical articles and insights on technology, governance and data.</p>
+
+        <!-- Controls: search + category filters + count -->
+        <div class="blog-controls">
+          <div class="blog-search-wrap">
+            <input
+              type="search"
+              id="blog-search"
+              data-i18n-placeholder="articles.search.placeholder"
+              placeholder="Search articles..."
+              autocomplete="off"
+              aria-label="Search articles">
+          </div>
+          <div id="blog-filter-btns" class="blog-filters" role="group" aria-label="Filter by category">
+            <!-- populated by JS -->
+          </div>
+          <div id="blog-count" class="blog-count" aria-live="polite"></div>
         </div>
+
+        <!-- Article grid -->
+        <div id="blog-grid" class="blog-grid" aria-live="polite">
+          <p class="blog-loading" data-i18n="articles.loading">Loading articles...</p>
+        </div>
+
       </div>
     </div>
   </main>
@@ -99,7 +364,252 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/main.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      var allArticles = [];
+      var filteredArticles = [];
+      var fuseInstance = null;
+      var activeCategory = '';
+
+      /* ── Category colour class ──────────────────────────────────────── */
+      function catClass(cat) {
+        return 'cat-' + (cat || '').replace(/\s+/g, '-');
+      }
+
+      /* ── 1. Fetch JSON ─────────────────────────────────────────────── */
+      async function loadArticles() {
+        var grid = document.getElementById('blog-grid');
+        try {
+          var res = await fetch('../../data/artigos.json');
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          var data = await res.json();
+          allArticles = data.filter(function (a) { return a.publicado === true; });
+          initFuse();
+          populateCategoryFilters();
+          applyFiltersAndRender();
+        } catch (e) {
+          grid.innerHTML = '';
+          var p = document.createElement('p');
+          p.className = 'blog-error';
+          p.textContent = t('articles.error');
+          grid.appendChild(p);
+        }
+      }
+
+      /* ── 2. Fuse.js setup ──────────────────────────────────────────── */
+      function initFuse() {
+        if (typeof Fuse === 'undefined') return;
+        var indexed = allArticles.map(function (a) {
+          var lang = getCurrentLang();
+          return {
+            _ref: a,
+            title: (a.titulo && a.titulo[lang]) || a.titulo.en || '',
+            summary: (a.resumo && a.resumo[lang]) || a.resumo.en || '',
+            tags: Array.isArray(a.tags) ? a.tags.join(' ') : ''
+          };
+        });
+        fuseInstance = new Fuse(indexed, {
+          keys: ['title', 'tags'],
+          threshold: 0.3,
+          includeScore: false
+        });
+      }
+
+      /* ── 3. Category filter buttons ────────────────────────────────── */
+      function populateCategoryFilters() {
+        var cats = [];
+        allArticles.forEach(function (a) {
+          if (a.categoria && cats.indexOf(a.categoria) === -1) {
+            cats.push(a.categoria);
+          }
+        });
+        cats.sort();
+
+        var wrap = document.getElementById('blog-filter-btns');
+        wrap.innerHTML = '';
+
+        var allBtn = document.createElement('button');
+        allBtn.className = 'blog-filter-btn active';
+        allBtn.textContent = t('articles.filterAll');
+        allBtn.dataset.cat = '';
+        allBtn.addEventListener('click', function () { setCategory(''); });
+        wrap.appendChild(allBtn);
+
+        cats.forEach(function (cat) {
+          var btn = document.createElement('button');
+          btn.className = 'blog-filter-btn';
+          btn.textContent = cat;
+          btn.dataset.cat = cat;
+          btn.addEventListener('click', function () { setCategory(cat); });
+          wrap.appendChild(btn);
+        });
+      }
+
+      function setCategory(cat) {
+        activeCategory = cat;
+        document.querySelectorAll('.blog-filter-btn').forEach(function (b) {
+          b.classList.toggle('active', b.dataset.cat === cat);
+        });
+        applyFiltersAndRender();
+      }
+
+      /* ── 4. Filter + search + render ───────────────────────────────── */
+      function applyFiltersAndRender() {
+        var query = document.getElementById('blog-search').value.trim();
+        var lang = getCurrentLang();
+        var results;
+
+        if (query && fuseInstance) {
+          results = fuseInstance.search(query).map(function (r) { return r.item._ref; });
+        } else {
+          results = allArticles.slice();
+        }
+
+        if (activeCategory) {
+          results = results.filter(function (a) { return a.categoria === activeCategory; });
+        }
+
+        filteredArticles = results;
+        renderGrid(filteredArticles, lang);
+      }
+
+      /* ── 5. Build a single card ────────────────────────────────────── */
+      function buildCard(article, lang) {
+        var title = (article.titulo && article.titulo[lang]) || article.titulo.en || '';
+        var summary = (article.resumo && article.resumo[lang]) || article.resumo.en || '';
+        var postUrl = 'post.html?id=' + encodeURIComponent(article.id);
+
+        var card = document.createElement('article');
+        card.className = 'article-card';
+
+        /* meta: category pill + date + read time */
+        var metaDiv = document.createElement('div');
+        metaDiv.className = 'article-meta';
+
+        var catSpan = document.createElement('span');
+        catSpan.className = 'article-category-pill ' + catClass(article.categoria);
+        catSpan.textContent = article.categoria || '';
+        metaDiv.appendChild(catSpan);
+
+        var dateSpan = document.createElement('span');
+        dateSpan.className = 'article-date';
+        dateSpan.textContent = formatDate(article.data, lang);
+        metaDiv.appendChild(dateSpan);
+
+        if (article.tempoLeitura) {
+          var rtSpan = document.createElement('span');
+          rtSpan.className = 'article-read-time';
+          rtSpan.textContent = article.tempoLeitura + ' ' + t('articles.readTime');
+          metaDiv.appendChild(rtSpan);
+        }
+
+        card.appendChild(metaDiv);
+
+        /* title */
+        var h3 = document.createElement('h3');
+        h3.className = 'article-title';
+        h3.textContent = title;
+        card.appendChild(h3);
+
+        /* summary */
+        var p = document.createElement('p');
+        p.className = 'article-summary';
+        p.textContent = summary;
+        card.appendChild(p);
+
+        /* tags */
+        if (Array.isArray(article.tags) && article.tags.length) {
+          var tagsDiv = document.createElement('div');
+          tagsDiv.className = 'article-tags';
+          article.tags.slice(0, 5).forEach(function (tag) {
+            var s = document.createElement('span');
+            s.className = 'article-tag';
+            s.textContent = tag;
+            tagsDiv.appendChild(s);
+          });
+          card.appendChild(tagsDiv);
+        }
+
+        /* read button */
+        var actionsDiv = document.createElement('div');
+        actionsDiv.className = 'article-actions';
+        var a = document.createElement('a');
+        a.href = postUrl;
+        a.className = 'btn-read-article';
+        a.textContent = t('articles.readArticle');
+        actionsDiv.appendChild(a);
+        card.appendChild(actionsDiv);
+
+        return card;
+      }
+
+      /* ── 6. Render grid ────────────────────────────────────────────── */
+      function renderGrid(articles, lang) {
+        var grid = document.getElementById('blog-grid');
+        var countEl = document.getElementById('blog-count');
+        grid.innerHTML = '';
+
+        if (!articles || !articles.length) {
+          var p = document.createElement('p');
+          p.className = 'blog-no-results';
+          p.textContent = t('articles.noResults');
+          grid.appendChild(p);
+          if (countEl) countEl.textContent = '';
+          return;
+        }
+
+        if (countEl) {
+          var label = articles.length === 1 ? t('articles.count.singular') : t('articles.count.plural');
+          countEl.textContent = articles.length + ' ' + label;
+        }
+
+        articles.forEach(function (a) {
+          grid.appendChild(buildCard(a, lang));
+        });
+      }
+
+      /* ── 7. Helpers ────────────────────────────────────────────────── */
+      function t(key) {
+        return (window.Translations && window.Translations.get(key)) || key;
+      }
+
+      function getCurrentLang() {
+        return (window.currentLanguage || localStorage.getItem('language') || 'en').toLowerCase();
+      }
+
+      function formatDate(iso, lang) {
+        if (!iso) return '';
+        try {
+          var localeMap = { pt: 'pt-BR', es: 'es-ES', en: 'en-US' };
+          var locale = localeMap[lang] || 'en-US';
+          return new Date(iso + 'T00:00:00').toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' });
+        } catch (e) {
+          return iso;
+        }
+      }
+
+      /* ── 8. Event listeners ────────────────────────────────────────── */
+      document.addEventListener('DOMContentLoaded', function () {
+        loadArticles();
+        document.getElementById('blog-search').addEventListener('input', applyFiltersAndRender);
+      });
+
+      /* Re-render on language change */
+      document.addEventListener('languageChanged', function () {
+        initFuse(); /* rebuild index for new language */
+        populateCategoryFilters();
+        /* restore active category */
+        document.querySelectorAll('.blog-filter-btn').forEach(function (b) {
+          b.classList.toggle('active', b.dataset.cat === activeCategory);
+        });
+        applyFiltersAndRender();
+      });
+    })();
+  </script>
 </body>
 </html>
