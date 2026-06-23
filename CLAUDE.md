@@ -30,149 +30,210 @@ Transformar o portfólio atual em uma plataforma profissional completa, centrali
 
 **Limite de performance:** carregamento < 3 segundos. Imagens ≤ 500 KB. Sem vídeos autoplay. Sem frameworks excessivamente grandes ou bibliotecas desnecessárias.
 
+**URL base do GitHub Pages:** `https://lucasliachi.github.io/lucasliachi/`
+(repositório `github.com/LucasLiachi/lucasliachi` — project page, não user page)
+
 ---
 
-## Estrutura de Arquivos
+## Estrutura de Arquivos (estado atual)
 
 ```
 lucasliachi/
 ├── index.html                  # Home — ponto de entrada
+├── sitemap.xml                 # Sitemap para crawlers
+├── robots.txt                  # Diretivas para crawlers
 ├── pages/
-│   ├── about/                  # Sobre (EN.md, PT.md, ES.md)
-│   ├── career/                 # Timeline profissional (EN.md, PT.md, ES.md)
-│   ├── certificate/            # Biblioteca de certificações (EN.md, PT.md, ES.md)
-│   ├── Projects/               # Catálogo de projetos
-│   ├── articles/               # Blog técnico (EN.md, PT.md, ES.md)
-│   ├── academic/               # Biblioteca de conhecimento (EN.md, PT.md, ES.md)
-│   ├── dashboard/              # Dashboard profissional (a criar)
-│   └── search/                 # Busca global (a criar)
+│   ├── about/                  # Sobre
+│   ├── career/                 # Timeline profissional
+│   ├── certificate/            # Biblioteca de certificações
+│   ├── Projects/               # Catálogo de projetos (GitHub API + local)
+│   ├── articles/               # Blog técnico
+│   │   └── post.html           # Leitor de artigo individual
+│   ├── academic/               # Histórico de formação acadêmica
+│   ├── library/                # Biblioteca de conhecimento (materiais de estudo)
+│   │   ├── viewer.html         # Leitor de material individual
+│   │   └── content/            # Arquivos Markdown dos materiais
+│   ├── dashboard/              # Dashboard profissional
+│   └── search/                 # Busca global
 ├── assets/
 │   ├── pdf/                    # PDFs de certificados e materiais
-│   └── (imagens, ícones)
+│   ├── perfil.jpeg             # Foto de perfil (og:image)
+│   └── (ícones: linkedin.png, medium.png, github.png, favicon.ico)
 ├── css/
-│   ├── main.css                # Estilos globais
+│   ├── main.css                # Estilos globais + CSS variables + tema .dark
 │   └── components.css          # Componentes reutilizáveis
 ├── js/
-│   ├── main.js                 # Lógica principal + sistema de tradução (Translations)
+│   ├── main.js                 # Sistema de tradução (Translations) + i18n
 │   ├── modules.js              # Módulos de funcionalidade
-│   └── utils.js                # Utilitários + tema claro/escuro
+│   ├── utils.js                # Utilitários + DarkMode (localStorage key: 'theme')
+│   └── fuse.min.js             # Fuse.js local (busca fuzzy)
 ├── data/                       # Banco de dados estático (JSON)
-│   ├── carreira.json
-│   ├── projetos.json
-│   ├── certificados.json
-│   └── artigos.json
+│   ├── carreira.json           # Experiências profissionais
+│   ├── projetos.json           # Projetos locais (merge com GitHub API)
+│   ├── certificados.json       # Certificados (49 entradas)
+│   ├── artigos.json            # Índice do blog (5 artigos)
+│   └── biblioteca.json         # Índice da biblioteca de conhecimento (7 materiais)
 └── blog/
-    └── posts/                  # Artigos em Markdown
+    └── posts/                  # Artigos em Markdown (5 posts)
 ```
 
-**Convenções:** novos dados → JSON em `data/`. Novas páginas → pasta em `pages/` com `index.html`. Conteúdo de blog → `.md` em `blog/posts/`. Certificados em PDF → `assets/pdf/`. Novos certificados, artigos e projetos são adicionados **via commits no GitHub**, nunca por upload ou formulário online.
+**Convenções:**
+- Novos dados → JSON em `data/`
+- Novas páginas → pasta em `pages/` com `index.html`
+- Conteúdo de blog → `.md` em `blog/posts/`
+- Materiais da biblioteca → `.md` em `pages/library/content/`
+- Certificados em PDF → `assets/pdf/`
+- Novos conteúdos são adicionados **via commits no GitHub**, nunca por upload ou formulário online
+
+---
+
+## Bibliotecas CDN em uso (versões fixadas)
+
+| Biblioteca | Uso | CDN |
+|---|---|---|
+| Fuse.js | Busca fuzzy | local `js/fuse.min.js` |
+| Marked.js 9.1.6 | Renderização Markdown | `cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js` |
+| Chart.js 4.4.9 | Gráficos do dashboard | `cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js` |
+
+Regra: sempre pinar versão no CDN. Nunca usar `latest` ou sem versão.
+
+---
+
+## Sistema de Temas (Dark Mode)
+
+- Classe aplicada: `.dark` no `<html>` (seletor CSS: `.dark { ... }`)
+- **Não usar** `[data-theme="dark"]` — o sistema inteiro usa `.dark`
+- Persistência: `localStorage` com chave `'theme'`
+- Detecção automática: `prefers-color-scheme: dark` via `window.matchMedia`
+- Anti-FOUC: script inline logo após `<meta charset>` em TODAS as páginas:
+  ```html
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='dark'||(t==null&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}}());</script>
+  ```
+- Módulo: `DarkMode` em `js/utils.js` — não duplicar lógica
 
 ---
 
 ## Roadmap de Implementação
 
-### Prioridade Alta
+### ✅ Concluídas
 
-#### Fase 1 — Reestruturação da Navegação
-**Objetivo:** melhorar a experiência do usuário e facilitar a navegação para recrutadores.
-- Menu principal com as seções: Home, Sobre, Carreira, Projetos, Certificações, Blog, Biblioteca, Dashboard, Contato
-- URLs amigáveis (subpastas com `index.html`, sem `.html` exposto)
-- Breadcrumbs em todas as páginas internas
-- Layout responsivo (mobile-first)
-- **Agente:** `page-builder`
+#### Fase 1 — Reestruturação da Navegação ✓
+Menu 9 seções, URLs amigáveis, breadcrumbs, layout responsivo.
 
-#### Fase 2 — Timeline Profissional
-**Objetivo:** apresentar a trajetória profissional de forma visual.
-- Linha do tempo vertical lida de `data/carreira.json`
-- Alternância esquerda/direita em desktop, coluna única em mobile
-- Cada entrada exibe: empresa, cargo, período, tecnologias (pills), principais entregas
-- **Agente:** `page-builder`
+#### Fase 2 — Timeline Profissional ✓
+Linha do tempo vertical de `carreira.json`, alternância esquerda/direita.
 
-#### Fase 3 — Biblioteca de Certificações
-**Objetivo:** transformar a seção de certificados em uma biblioteca pesquisável.
-- Grid de cards carregados de `data/certificados.json`
-- Pesquisa por palavra-chave (Fuse.js nos campos título, emissor, tags)
-- Filtros por categoria: Dados, Estatística, Python, Inteligência Artificial, Gestão, ITIL, Desenvolvimento, Cloud
-- Ordenação por data (mais recente primeiro)
-- Tags de conhecimento em cada card
-- Botão "Ver PDF" abrindo `assets/pdf/arquivo.pdf` em nova aba
-- **Agente:** `page-builder` + `data-manager`
+#### Fase 3 — Biblioteca de Certificações ✓
+49 certificados em grid, busca Fuse.js, filtros por categoria, botão PDF.
 
-#### Fase 4 — Catálogo Inteligente de Projetos
-**Objetivo:** automatizar a exibição dos projetos do GitHub.
-- Fetch para GitHub API (`https://api.github.com/users/lucasliachi/repos`) com cache em `sessionStorage`
-- Merge com dados locais de `data/projetos.json` para projetos não no GitHub
-- Exibição de: nome, descrição, tecnologias, última atualização, links para repositório e demo
-- Filtros por categoria: Dados, Estatística, Python, Desenvolvimento Web, Inteligência Artificial, MVP/GOAT Basketball
-- **Agente:** `page-builder` + `data-manager`
+#### Fase 4 — Catálogo de Projetos ✓
+GitHub API + merge com `projetos.json`, cache `sessionStorage`, filtros por categoria.
+
+#### Fase 5 — Blog Técnico ✓
+5 artigos em Markdown, Marked.js, filtros por categoria, Fuse.js, Schema.org Article dinâmico.
+
+#### Fase 6 — Dashboard Profissional ✓
+6 KPIs animados, doughnut (certificados/categoria), bar (top 8 tecnologias), Chart.js 4.4.9.
+
+#### Fase 7 — Busca Global ✓
+Fuse.js indexando todos os JSONs, resultados agrupados por tipo, highlight, URL `?q=`.
+
+#### Fase 8 — Biblioteca de Conhecimento ✓
+7 materiais em `pages/library/`, viewer com Marked.js, filtros tipo/nível, Schema.org LearningResource.
+
+#### Fase 9 — SEO e Presença Profissional ✓
+`sitemap.xml`, `robots.txt`, Open Graph + Twitter Card + Schema.org em todas as páginas.
+
+#### Fase 10 — Modernização Visual ✓
+Anti-FOUC, CSS tokens unificados, WCAG 2.5.5 touch targets, `prefers-reduced-motion`.
 
 ---
 
-### Prioridade Média
+### 🔧 Em andamento
 
-#### Fase 5 — Blog Técnico
-**Objetivo:** construir autoridade profissional através de conteúdo técnico.
-- Índice lido de `data/artigos.json`; conteúdo dos posts em Markdown renderizado via Marked.js
-- Categorias: Estatística, Python, Dados, Inteligência Artificial, Processos, Governança, ITIL
-- Filtros por categoria e busca por título/tag
-- Artigos iniciais a criar:
-  - Guia de ANOVA
-  - Testes de Hipóteses
-  - Probabilidade Bayesiana
-  - Introdução ao ITIL
-  - GitHub Pages para Portfólio Profissional
-- Sem comentários, curtidas, usuários ou publicação online — novos posts via commit
-- **Agente:** `content-writer` + `page-builder`
+#### Fase 11 — Correções e Manutenção
+**Objetivo:** corrigir bugs visuais e funcionais identificados na revisão do site ao vivo.
+**Agente:** `page-builder` + `data-manager`
 
-#### Fase 6 — Dashboard Profissional
-**Objetivo:** apresentar indicadores da carreira em tempo real calculados localmente.
-- Indicadores calculados dos JSONs e GitHub API:
-  - Total de projetos
-  - Total de certificados
-  - Total de artigos
-  - Tecnologias dominadas
-  - Anos de experiência
-  - Repositórios públicos
-- Visualizações: cards com contadores animados, gráficos Chart.js (bar ou doughnut)
-- Sem indicadores de sistemas corporativos externos
-- **Agente:** `page-builder` + `data-manager`
+##### Bugs de alta prioridade
 
-#### Fase 7 — Busca Global
-**Objetivo:** permitir pesquisa unificada em todo o portal, 100% no browser.
-- Fuse.js indexando todos os JSONs ao carregar a página de busca
-- Busca em: projetos, certificados, experiências, artigos e materiais de estudo
-- Resultados agrupados por tipo com highlight do termo buscado
-- Sem busca em banco de dados, sistemas externos ou conteúdo privado
-- **Agente:** `page-builder`
+**Bug 1 — Footer fundo branco em tema escuro**
+- **Problema:** o `<footer>` em todas as páginas mantém fundo branco quando `.dark` está ativo
+- **Causa:** `css/main.css` não tem override `.dark footer { background: var(--background); color: var(--foreground); }`
+- **Correção:** adicionar regra `.dark footer` em `css/main.css`
+- **Páginas afetadas:** todas
+
+**Bug 2 — Projetos trava em "Loading..." quando GitHub API falha**
+- **Problema:** `pages/Projects/index.html` fica em skeleton infinito se a API falhar ou demorar
+- **Causa:** o fallback para `data/projetos.json` não exibe os projetos locais quando a API retorna erro
+- **Correção:** garantir que `projetos.json` seja exibido como fallback imediato; a API deve enriquecer os dados, não substituí-los
+- **Critério:** a página deve mostrar projetos em até 3s mesmo sem internet
+
+**Bug 3 — Dashboard: contadores ficam em zero quando GitHub API falha**
+- **Problema:** indicadores "Total de Projetos" e "Repositórios Públicos" ficam vazios/skeleton
+- **Causa:** os valores dependem exclusivamente da API; sem resposta, não há fallback
+- **Correção:** calcular Total de Projetos só com `projetos.json` como base; "Repositórios Públicos" mostrar `--` quando API indisponível (não skeleton)
+
+**Bug 4 — Busca Global inacessível pela navbar**
+- **Problema:** nenhuma página tem link para `pages/search/` na navbar principal
+- **Causa:** o item "Search/Busca" não foi adicionado ao menu global durante a Fase 7
+- **Correção:** adicionar ícone de lupa (🔍) ou item "Busca" na navbar de todas as páginas, linkando para `../../pages/search/` (ou `pages/search/` da raiz)
+
+##### Bugs de prioridade média
+
+**Bug 5 — Tags da carreira sem espaços**
+- **Problema:** tags como `ProcessosE2E`, `GestãoDeMudanças`, `TransformaçãoDigital` aparecem sem espaços
+- **Causa:** campo `technologies` em `data/carreira.json` tem strings concatenadas sem espaço
+- **Correção:** editar `carreira.json` para separar com espaços ou hífens (`Processos E2E`, `Gestão de Mudanças`)
+
+**Bug 6 — Dashboard: seção "Dashboard" duplicada**
+- **Problema:** aparece "Dashboard" como título H1 da página e novamente como título H2 da seção de KPIs
+- **Causa:** o título da seção `<h2 data-i18n="...">Dashboard</h2>` repete o título da página
+- **Correção:** renomear o H2 interno para "Indicadores" / "Indicators" via chave i18n
+
+**Bug 7 — Certificates: category pills em branco em alguns cards**
+- **Problema:** alguns cards mostram pills de categoria sem texto
+- **Causa provável:** campo `categories` vazio ou `undefined` em entradas de `certificados.json`
+- **Correção:** adicionar verificação `if (categories && categories.length)` antes de renderizar pills; ou auditar e completar as entradas sem categoria no JSON
+
+##### Bugs de baixa prioridade
+
+**Bug 8 — Copyright fixo em 2025**
+- **Problema:** footer exibe "© 2025 Lucas Liachi" — ano desatualizado
+- **Causa:** string hardcoded no HTML em vez de gerada por JS
+- **Correção:** substituir por `<span id="footer-year"></span>` + `document.getElementById('footer-year').textContent = new Date().getFullYear()`
 
 ---
 
-### Prioridade Baixa
+### 🆕 Próximas melhorias (pós-fase 11)
 
-#### Fase 8 — Biblioteca de Conhecimento
-**Objetivo:** centralizar materiais de estudo e consulta.
-- Seções: Estatística, Álgebra Linear, Probabilidade, Python, Inteligência Artificial, Processos, Governança
-- Tipos de conteúdo: resumos, cheatsheets, fórmulas, PDFs, guias de estudo
+#### Fase 12 — Página de Contato
+**Objetivo:** criar página de contato funcional sem backend.
+- Formulário com link `mailto:` ou integração com Formspree (serviço externo permitido — não requer backend próprio)
+- Links para LinkedIn, GitHub, Medium e email
+- Mapa de localização via Google Maps embed (iframe)
+- **Agente:** `page-builder`
+
+#### Fase 13 — Internacionalização completa do conteúdo
+**Objetivo:** traduzir os Markdowns do blog e da biblioteca para EN e ES.
+- Para cada post em `blog/posts/`: criar versão `{slug}-en.md` e `{slug}-es.md`
+- Para cada material em `pages/library/content/`: criar versão EN e ES
+- O viewer deve detectar o idioma e carregar o arquivo correspondente
 - **Agente:** `content-writer`
 
-#### Fase 9 — SEO e Presença Profissional
-**Objetivo:** melhorar posicionamento no Google, Bing e LinkedIn.
-- Sitemap XML (`sitemap.xml` na raiz)
-- `robots.txt` na raiz
-- Open Graph em todas as páginas (og:title, og:description, og:image, og:url)
-- LinkedIn preview (og:locale, og:type)
-- Schema.org Person (Home) e Article (posts do blog)
-- Meta tags estruturadas (description, keywords, canonical, author)
-- **Agente:** `seo-optimizer`
+#### Fase 14 — PWA e Experiência Offline
+**Objetivo:** permitir acesso offline ao portfólio.
+- `manifest.json` com nome, ícones e cores do tema
+- Service Worker para cache de páginas HTML e JSONs (Cache-First para estáticos, Network-First para GitHub API)
+- Ícone de instalação no mobile
+- Sem push notifications (sem servidor)
+- **Agente:** `page-builder`
 
-#### Fase 10 — Modernização Visual
-**Objetivo:** atualizar a identidade visual do portal.
-- Toggle tema claro/escuro (persistido em `localStorage`)
-- Respeitar `prefers-color-scheme` como padrão inicial
-- CSS variables em `:root` e `[data-theme="dark"]`
-- Layout responsivo aprimorado
-- Cards modernos e animações suaves
-- Acessibilidade WCAG AA
+#### Fase 15 — Modo de impressão / PDF do currículo
+**Objetivo:** permitir que recrutadores imprimam o currículo diretamente do site.
+- `@media print` em `css/main.css` ocultando navbar, footer, filtros e botões
+- Página `pages/career/` formatada para impressão A4
+- Botão "Imprimir currículo" acionando `window.print()`
 - **Agente:** `page-builder`
 
 ---
@@ -213,10 +274,11 @@ O portal suporta **três idiomas**: `en` (inglês, padrão), `pt` (português), 
 ### Regras obrigatórias para toda nova página
 
 1. Carregar `main.js` e `utils.js` como últimos scripts do `<body>`
-2. Todo texto visível usar `data-i18n="chave"` — nunca hardcodar strings em nenhum idioma
-3. Inputs com placeholder usar `data-i18n-placeholder="chave"`
-4. Registrar novas chaves em `js/main.js` nos três idiomas (`en`, `pt`, `es`)
-5. Incluir botões de idioma na navbar:
+2. Adicionar script anti-FOUC logo após `<meta charset>` (ver seção "Sistema de Temas")
+3. Todo texto visível usar `data-i18n="chave"` — nunca hardcodar strings em nenhum idioma
+4. Inputs com placeholder usar `data-i18n-placeholder="chave"`
+5. Registrar novas chaves em `js/main.js` nos três idiomas (`en`, `pt`, `es`)
+6. Incluir botões de idioma na navbar:
    ```html
    <div class="language-selector">
      <button class="language-option" data-language="en">EN</button>
@@ -224,8 +286,15 @@ O portal suporta **três idiomas**: `en` (inglês, padrão), `pt` (português), 
      <button class="language-option" data-language="es">ES</button>
    </div>
    ```
-6. Para conteúdo Markdown: criar `EN.md`, `PT.md`, `ES.md` na pasta da página; se não houver tradução, copiar `EN.md` com `<!-- TODO: translate -->` no topo
-7. `<html lang="">` não fixar — é gerenciado dinamicamente por `applyLanguageToDocument()`
+7. Incluir botão de tema na navbar (após os botões de idioma):
+   ```html
+   <button id="dark-mode-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+     <span class="sun-icon">☀</span>
+     <span class="moon-icon">☾</span>
+   </button>
+   ```
+8. Para conteúdo Markdown: criar `EN.md`, `PT.md`, `ES.md` na pasta da página; se não houver tradução, copiar `EN.md` com `<!-- TODO: translate -->` no topo
+9. `<html lang="">` não fixar — é gerenciado dinamicamente por `applyLanguageToDocument()`
 
 ### Padrão de fetch localizado
 
@@ -250,26 +319,32 @@ es: { nomePagina: { title: 'Título', noResults: 'Sin resultados' } }
 ### HTML
 - `lang` do `<html>` gerenciado dinamicamente pelo sistema i18n
 - Meta charset, viewport e description em todas as páginas
+- Script anti-FOUC imediatamente após `<meta charset>`
 - Schema.org em páginas de conteúdo
 - Navegação consistente com breadcrumb em páginas internas
+- Copyright dinâmico: `new Date().getFullYear()` — nunca hardcodar o ano
 
 ### CSS
 - Mobile-first. Breakpoints: `sm 640px`, `md 768px`, `lg 1024px`, `xl 1280px`
-- Variáveis CSS em `:root` para cores e fontes
+- Variáveis CSS em `:root` para cores e fontes; overrides em `.dark { ... }`
+- Seletor de tema escuro: `.dark` (não `[data-theme]`)
+- Todos os tokens de cor devem existir em `:root` — nunca usar `--color-*` inexistente
 - Sem `!important` desnecessário
 
 ### JavaScript
 - ES6+ (`const`, `let`, arrow functions, `async/await`, `fetch`)
-- Sem dependências NPM em runtime — apenas CDN ou arquivos locais em `js/`
+- Sem dependências NPM em runtime — apenas CDN (versão pinada) ou arquivos locais em `js/`
 - Fetch de JSON: sempre tratar erro com `try/catch`
-- GitHub API: respeitar rate limit, cachear resposta em `sessionStorage`
-- Sem `innerHTML` com dados externos não sanitizados
+- GitHub API: respeitar rate limit, cachear em `sessionStorage` com chave `'github_repos_cache'` (TTL 5min)
+- APIs externas: sempre ter fallback para dados locais quando a API falha
+- Sem `innerHTML` com dados externos não sanitizados (usar `textContent` ou `escapeHtml()`)
 
 ### JSON (dados)
 - Datas no formato `YYYY-MM-DD`
 - IDs únicos, kebab-case (`"id": "cert-itil-2024"`)
 - Arrays ordenados do mais recente para o mais antigo
 - `null` explícito para campos opcionais ausentes
+- Tags: strings com espaços naturais (`"Gestão de Mudanças"`, não `"GestãoDeMudanças"`)
 
 ---
 
@@ -282,6 +357,7 @@ es: { nomePagina: { title: 'Título', noResults: 'Sin resultados' } }
 | Catálogo de Projetos | Nome, descrição, tecnologias, links, última atualização | Edição online, cadastro de projetos pelo browser |
 | Busca Global | Busca em JSON, Markdown e conteúdo local (browser) | Busca em banco de dados, sistemas externos, conteúdo privado |
 | Dashboard | Indicadores calculados de JSON e GitHub API | Indicadores em tempo real de sistemas corporativos |
+| Biblioteca | Materiais Markdown, filtros, busca local | Upload de arquivos, edição online |
 
 ---
 
@@ -290,9 +366,12 @@ es: { nomePagina: { title: 'Título', noResults: 'Sin resultados' } }
 ```
 feat(fase-N): descrição curta
 fix(componente): descrição curta
+fix(bug-N): descrição do bug corrigido
 content(blog): título do artigo
+content(library): título do material
 data(certificados): nome do certificado adicionado
 i18n(chave): chave de tradução adicionada
+chore: descrição de tarefa de manutenção
 ```
 
 ---
@@ -308,3 +387,8 @@ i18n(chave): chave de tradução adicionada
 - Não carregar vídeos automaticamente (autoplay)
 - Não adicionar frameworks que tornem o build obrigatório (Next.js, Vite em produção, etc.)
 - Não incluir bibliotecas desnecessárias que prejudiquem performance
+- Não usar CDN sem versão pinada (sempre `@x.y.z`)
+- Não hardcodar o ano no copyright — sempre `new Date().getFullYear()`
+- Não usar `--color-surface`, `--color-border`, `--color-primary` ou qualquer token fora do sistema definido em `css/main.css`
+- Não mudar o seletor de tema de `.dark` para `[data-theme]` — o sistema inteiro depende de `.dark`
+- Não omitir o script anti-FOUC em páginas novas
