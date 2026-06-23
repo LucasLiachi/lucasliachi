@@ -87,9 +87,9 @@
     .viewer-level-intermedirio { background: #fef3c7; color: #92400e; }
     .viewer-level-avancado     { background: #fee2e2; color: #991b1b; }
 
-    [data-theme="dark"] .viewer-level-iniciante    { background: #064e3b; color: #6ee7b7; }
-    [data-theme="dark"] .viewer-level-intermedirio { background: #451a03; color: #fcd34d; }
-    [data-theme="dark"] .viewer-level-avancado     { background: #450a0a; color: #fca5a5; }
+    .dark .viewer-level-iniciante    { background: #064e3b; color: #6ee7b7; }
+    .dark .viewer-level-intermedirio { background: #451a03; color: #fcd34d; }
+    .dark .viewer-level-avancado     { background: #450a0a; color: #fca5a5; }
 
     .viewer-updated {
       font-size: 0.8rem;
@@ -451,25 +451,41 @@
           return;
         }
 
-        var mdPath = '../../' + item.arquivo;
+        var basePath = '../../' + item.arquivo;
+        var lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toUpperCase();
+        var candidates = lang === 'PT'
+          ? [basePath]
+          : [
+              basePath.replace(/\.md$/, '-' + lang + '.md'),
+              basePath.replace(/\.md$/, '-EN.md'),
+              basePath
+            ];
 
-        try {
-          var res = await fetch(mdPath);
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          var mdText = await res.text();
+        var mdText = null;
+        for (var i = 0; i < candidates.length; i++) {
+          try {
+            var res = await fetch(candidates[i]);
+            if (res.ok) {
+              mdText = await res.text();
+              break;
+            }
+          } catch (e) { /* try next candidate */ }
+        }
 
-          if (typeof marked !== 'undefined') {
-            marked.setOptions({ gfm: true, breaks: false });
-            var rawHtml = marked.parse(mdText);
-            contentEl.innerHTML = sanitizeHtml(rawHtml);
-          } else {
-            var pre = document.createElement('pre');
-            pre.textContent = mdText;
-            contentEl.innerHTML = '';
-            contentEl.appendChild(pre);
-          }
-        } catch (e) {
+        if (mdText === null) {
           contentEl.innerHTML = '<p class="viewer-error">' + t('library.error') + '</p>';
+          return;
+        }
+
+        if (typeof marked !== 'undefined') {
+          marked.setOptions({ gfm: true, breaks: false });
+          var rawHtml = marked.parse(mdText);
+          contentEl.innerHTML = sanitizeHtml(rawHtml);
+        } else {
+          var pre = document.createElement('pre');
+          pre.textContent = mdText;
+          contentEl.innerHTML = '';
+          contentEl.appendChild(pre);
         }
       }
 
@@ -488,10 +504,11 @@
         loadItem();
       });
 
-      /* Re-render header labels and schema on language change */
+      /* Re-render header labels, schema and Markdown on language change */
       document.addEventListener('languageChanged', function () {
         if (currentItem) {
           renderHeader(currentItem);
+          loadMarkdown(currentItem);
         }
       });
     })();

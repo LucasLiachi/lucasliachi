@@ -225,7 +225,7 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/main.js"></script>
 
@@ -443,26 +443,42 @@
           return;
         }
 
-        var mdPath = '../../' + article.arquivo;
+        var basePath = '../../' + article.arquivo;
+        var lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toUpperCase();
+        var candidates = lang === 'PT'
+          ? [basePath]
+          : [
+              basePath.replace(/\.md$/, '-' + lang + '.md'),
+              basePath.replace(/\.md$/, '-EN.md'),
+              basePath
+            ];
 
-        try {
-          var res = await fetch(mdPath);
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          var mdText = await res.text();
+        var mdText = null;
+        for (var i = 0; i < candidates.length; i++) {
+          try {
+            var res = await fetch(candidates[i]);
+            if (res.ok) {
+              mdText = await res.text();
+              break;
+            }
+          } catch (e) { /* try next candidate */ }
+        }
 
-          if (typeof marked !== 'undefined') {
-            marked.setOptions({ gfm: true, breaks: false });
-            var rawHtml = marked.parse(mdText);
-            contentEl.innerHTML = sanitizeMarkdownHtml(rawHtml);
-          } else {
-            /* Fallback: wrap plain text in a pre */
-            var pre = document.createElement('pre');
-            pre.textContent = mdText;
-            contentEl.innerHTML = '';
-            contentEl.appendChild(pre);
-          }
-        } catch (e) {
+        if (mdText === null) {
           contentEl.innerHTML = '<p class="post-error">' + t('articles.error') + '</p>';
+          return;
+        }
+
+        if (typeof marked !== 'undefined') {
+          marked.setOptions({ gfm: true, breaks: false });
+          var rawHtml = marked.parse(mdText);
+          contentEl.innerHTML = sanitizeMarkdownHtml(rawHtml);
+        } else {
+          /* Fallback: wrap plain text in a pre */
+          var pre = document.createElement('pre');
+          pre.textContent = mdText;
+          contentEl.innerHTML = '';
+          contentEl.appendChild(pre);
         }
       }
 
@@ -485,8 +501,7 @@
       document.addEventListener('languageChanged', function () {
         if (currentArticle) {
           renderHeader(currentArticle);
-          /* Markdown content itself stays the same (stored in a fixed language per file);
-             only meta labels and title update. */
+          loadMarkdown(currentArticle);
         }
       });
     })();
