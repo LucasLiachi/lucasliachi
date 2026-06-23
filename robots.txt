@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lucasliachi.github.io/lucasliachi/sitemap.xml
