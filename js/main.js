@@ -130,7 +130,26 @@ const Translations = (() => {
       pages: {
         about: { title: 'About', description: 'Learn more about Lucas Liachi, his background and professional profile.' },
         career: { title: 'Career', description: 'Professional timeline with experiences, roles and achievements.', loading: 'Loading timeline...' },
-        certificate: { title: 'Certificates', description: 'Library of professional certifications and specialized training.' },
+        certificate: {
+          title: 'Certificates',
+          description: 'Professional certifications, courses and training programs.',
+          loading: 'Loading certificates...',
+          noResults: 'No certificates found.',
+          viewFile: 'View Certificate',
+          search: { placeholder: 'Search certificates...' },
+          filter: {
+            all: 'All Categories',
+            placeholder: 'Filter by category'
+          },
+          sort: {
+            newest: 'Newest first',
+            oldest: 'Oldest first',
+            nameAsc: 'Name (A–Z)',
+            nameDesc: 'Name (Z–A)'
+          },
+          countSingular: 'certificate',
+          countPlural: 'certificates'
+        },
         blog: { title: 'Blog', description: 'Technical articles and insights on technology, governance and data.' },
         library: { title: 'Library', description: 'Study materials, cheatsheets and reference guides.' },
         dashboard: { title: 'Dashboard', description: 'Professional indicators and career metrics.' }
@@ -269,7 +288,26 @@ const Translations = (() => {
       pages: {
         about: { title: 'Sobre', description: 'Conheça Lucas Liachi, sua trajetória e perfil profissional.' },
         career: { title: 'Carreira', description: 'Linha do tempo profissional com experiências, cargos e conquistas.', loading: 'Carregando linha do tempo...' },
-        certificate: { title: 'Certificações', description: 'Biblioteca de certificações profissionais e treinamentos especializados.' },
+        certificate: {
+          title: 'Certificados',
+          description: 'Certificações profissionais, cursos e treinamentos.',
+          loading: 'Carregando certificados...',
+          noResults: 'Nenhum certificado encontrado.',
+          viewFile: 'Ver Certificado',
+          search: { placeholder: 'Pesquisar certificados...' },
+          filter: {
+            all: 'Todas as Categorias',
+            placeholder: 'Filtrar por categoria'
+          },
+          sort: {
+            newest: 'Mais recentes',
+            oldest: 'Mais antigos',
+            nameAsc: 'Nome (A–Z)',
+            nameDesc: 'Nome (Z–A)'
+          },
+          countSingular: 'certificado',
+          countPlural: 'certificados'
+        },
         blog: { title: 'Blog', description: 'Artigos técnicos sobre tecnologia, governança e dados.' },
         library: { title: 'Biblioteca', description: 'Materiais de estudo, cheatsheets e guias de referência.' },
         dashboard: { title: 'Dashboard', description: 'Indicadores profissionais e métricas de carreira.' }
@@ -408,7 +446,26 @@ const Translations = (() => {
       pages: {
         about: { title: 'Sobre', description: 'Conoce a Lucas Liachi, su trayectoria y perfil profesional.' },
         career: { title: 'Carrera', description: 'Línea de tiempo profesional con experiencias, cargos y logros.', loading: 'Cargando línea de tiempo...' },
-        certificate: { title: 'Certificados', description: 'Biblioteca de certificaciones profesionales y formación especializada.' },
+        certificate: {
+          title: 'Certificados',
+          description: 'Certificaciones profesionales, cursos y programas de formación.',
+          loading: 'Cargando certificados...',
+          noResults: 'No se encontraron certificados.',
+          viewFile: 'Ver Certificado',
+          search: { placeholder: 'Buscar certificados...' },
+          filter: {
+            all: 'Todas las Categorías',
+            placeholder: 'Filtrar por categoría'
+          },
+          sort: {
+            newest: 'Más recientes',
+            oldest: 'Más antiguos',
+            nameAsc: 'Nombre (A–Z)',
+            nameDesc: 'Nombre (Z–A)'
+          },
+          countSingular: 'certificado',
+          countPlural: 'certificados'
+        },
         blog: { title: 'Blog', description: 'Artículos técnicos sobre tecnología, gobernanza y datos.' },
         library: { title: 'Biblioteca', description: 'Materiales de estudio, cheatsheets y guías de referencia.' },
         dashboard: { title: 'Dashboard', description: 'Indicadores profesionales y métricas de carrera.' }

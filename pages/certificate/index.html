@@ -76,17 +76,45 @@
     <div class="page-hero">
       <div class="container">
         <h1 data-i18n="pages.certificate.title">Certificates</h1>
-        <p data-i18n="pages.certificate.description">Library of professional certifications and specialized training.</p>
+        <p data-i18n="pages.certificate.description">Professional certifications, courses and training programs.</p>
       </div>
     </div>
 
     <div class="page-content">
       <div class="container">
-        <div class="coming-soon-box">
-          <span class="coming-soon-icon" aria-hidden="true">&#128679;</span>
-          <h2 data-i18n="pages.certificate.title">Certificates</h2>
-          <p data-i18n="pages.certificate.description">Library of professional certifications and specialized training.</p>
+
+        <!-- Controls: search + category filter + sort + count -->
+        <div class="cert-controls">
+          <div class="cert-search-wrap">
+            <input
+              type="search"
+              id="cert-search"
+              data-i18n-placeholder="pages.certificate.search.placeholder"
+              placeholder="Search certificates..."
+              autocomplete="off"
+              aria-label="Search certificates">
+          </div>
+          <div class="cert-filter-wrap">
+            <select id="cert-category" aria-label="Filter by category">
+              <option value="" data-i18n="pages.certificate.filter.all">All Categories</option>
+            </select>
+          </div>
+          <div class="cert-sort-wrap">
+            <select id="cert-sort" aria-label="Sort certificates">
+              <option value="date-desc" data-i18n="pages.certificate.sort.newest">Newest first</option>
+              <option value="date-asc" data-i18n="pages.certificate.sort.oldest">Oldest first</option>
+              <option value="name-asc" data-i18n="pages.certificate.sort.nameAsc">Name (A&#8211;Z)</option>
+              <option value="name-desc" data-i18n="pages.certificate.sort.nameDesc">Name (Z&#8211;A)</option>
+            </select>
+          </div>
+          <div id="cert-count" class="cert-count" aria-live="polite"></div>
         </div>
+
+        <!-- Certificate grid -->
+        <div id="cert-grid" class="cert-grid" aria-live="polite">
+          <p class="cert-loading" data-i18n="pages.certificate.loading">Loading certificates...</p>
+        </div>
+
       </div>
     </div>
   </main>
@@ -101,5 +129,197 @@
 
   <script src="../../js/utils.js"></script>
   <script src="../../js/main.js"></script>
+  <script src="../../js/fuse.min.js"></script>
+  <script>
+    (function () {
+      var allCerts = [];
+      var filteredCerts = [];
+      var fuseInstance = null;
+
+      /* ── 1. Fetch JSON ─────────────────────────────────────────────── */
+      async function loadCerts() {
+        var grid = document.getElementById('cert-grid');
+        try {
+          var res = await fetch('../../data/certificados.json');
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          allCerts = await res.json();
+          initFuse();
+          populateCategoryFilter();
+          applyFiltersAndSort();
+        } catch (e) {
+          var msg = (window.Translations && window.Translations.get('pages.certificate.noResults')) || 'No certificates found.';
+          var p = document.createElement('p');
+          p.className = 'cert-error';
+          p.textContent = msg;
+          grid.innerHTML = '';
+          grid.appendChild(p);
+        }
+      }
+
+      /* ── 2. Fuse.js init ───────────────────────────────────────────── */
+      function initFuse() {
+        if (typeof Fuse === 'undefined') return;
+        fuseInstance = new Fuse(allCerts, {
+          keys: ['title', 'issuer', 'tags', 'categories'],
+          threshold: 0.35,
+          includeScore: false
+        });
+      }
+
+      /* ── 3. Populate category select ──────────────────────────────── */
+      function populateCategoryFilter() {
+        var cats = new Set();
+        allCerts.forEach(function (c) {
+          if (Array.isArray(c.categories)) {
+            c.categories.forEach(function (cat) { cats.add(cat); });
+          }
+        });
+        var sel = document.getElementById('cert-category');
+        Array.from(cats).sort().forEach(function (cat) {
+          var opt = document.createElement('option');
+          opt.value = cat;
+          opt.textContent = cat;
+          sel.appendChild(opt);
+        });
+      }
+
+      /* ── 4. Build a single card safely (no raw innerHTML for user data) */
+      function buildCard(c) {
+        var article = document.createElement('article');
+        article.className = 'cert-card';
+
+        var titleEl = document.createElement('h3');
+        titleEl.className = 'cert-title';
+        titleEl.textContent = c.title;
+        article.appendChild(titleEl);
+
+        var issuerEl = document.createElement('p');
+        issuerEl.className = 'cert-issuer';
+        issuerEl.textContent = c.issuer;
+        article.appendChild(issuerEl);
+
+        var dateEl = document.createElement('p');
+        dateEl.className = 'cert-date';
+        dateEl.textContent = c.issued || '';
+        article.appendChild(dateEl);
+
+        if (Array.isArray(c.categories) && c.categories.length) {
+          var catsDiv = document.createElement('div');
+          catsDiv.className = 'cert-categories';
+          c.categories.forEach(function (cat) {
+            var s = document.createElement('span');
+            s.className = 'cert-cat-pill';
+            s.textContent = cat;
+            catsDiv.appendChild(s);
+          });
+          article.appendChild(catsDiv);
+        }
+
+        if (Array.isArray(c.tags) && c.tags.length) {
+          var tagsDiv = document.createElement('div');
+          tagsDiv.className = 'cert-tags';
+          c.tags.slice(0, 5).forEach(function (tag) {
+            var s = document.createElement('span');
+            s.className = 'cert-tag-pill';
+            s.textContent = tag;
+            tagsDiv.appendChild(s);
+          });
+          article.appendChild(tagsDiv);
+        }
+
+        if (c.file) {
+          var actionsDiv = document.createElement('div');
+          actionsDiv.className = 'cert-actions';
+          var a = document.createElement('a');
+          a.href = '../../' + c.file;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.className = 'btn-cert-view';
+          a.textContent = (window.Translations && window.Translations.get('pages.certificate.viewFile')) || 'View Certificate';
+          actionsDiv.appendChild(a);
+          article.appendChild(actionsDiv);
+        }
+
+        return article;
+      }
+
+      /* ── 5. Render grid ────────────────────────────────────────────── */
+      function renderGrid(certs) {
+        var grid = document.getElementById('cert-grid');
+        var countEl = document.getElementById('cert-count');
+
+        grid.innerHTML = '';
+
+        if (!certs || !certs.length) {
+          var msg = (window.Translations && window.Translations.get('pages.certificate.noResults')) || 'No certificates found.';
+          var p = document.createElement('p');
+          p.className = 'cert-no-results';
+          p.textContent = msg;
+          grid.appendChild(p);
+          if (countEl) countEl.textContent = '';
+          return;
+        }
+
+        if (countEl) {
+          var label = (window.Translations && window.Translations.get(
+            certs.length !== 1 ? 'pages.certificate.countPlural' : 'pages.certificate.countSingular'
+          )) || (certs.length !== 1 ? 'certificates' : 'certificate');
+          countEl.textContent = certs.length + ' ' + label;
+        }
+
+        certs.forEach(function (c) {
+          grid.appendChild(buildCard(c));
+        });
+      }
+
+      /* ── 6. Filter + sort ──────────────────────────────────────────── */
+      function applyFiltersAndSort() {
+        var query = document.getElementById('cert-search').value.trim();
+        var category = document.getElementById('cert-category').value;
+        var sortVal = document.getElementById('cert-sort').value;
+
+        var results;
+        if (query && fuseInstance) {
+          results = fuseInstance.search(query).map(function (r) { return r.item; });
+        } else {
+          results = allCerts.slice();
+        }
+
+        if (category) {
+          results = results.filter(function (c) {
+            return Array.isArray(c.categories) && c.categories.includes(category);
+          });
+        }
+
+        results.sort(function (a, b) {
+          var ai = a.issued || '';
+          var bi = b.issued || '';
+          var at = a.title || '';
+          var bt = b.title || '';
+          if (sortVal === 'date-asc') return ai.localeCompare(bi);
+          if (sortVal === 'date-desc') return bi.localeCompare(ai);
+          if (sortVal === 'name-asc') return at.localeCompare(bt);
+          if (sortVal === 'name-desc') return bt.localeCompare(at);
+          return 0;
+        });
+
+        filteredCerts = results;
+        renderGrid(filteredCerts);
+      }
+
+      /* ── 7. Event listeners ────────────────────────────────────────── */
+      document.addEventListener('DOMContentLoaded', function () {
+        loadCerts();
+        document.getElementById('cert-search').addEventListener('input', applyFiltersAndSort);
+        document.getElementById('cert-category').addEventListener('change', applyFiltersAndSort);
+        document.getElementById('cert-sort').addEventListener('change', applyFiltersAndSort);
+      });
+
+      /* Re-render when language changes so "View Certificate" label updates */
+      document.addEventListener('languageChanged', function () {
+        renderGrid(filteredCerts.length ? filteredCerts : allCerts);
+      });
+    })();
+  </script>
 </body>
 </html>
