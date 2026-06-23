@@ -190,6 +190,23 @@ const Translations = (() => {
           },
           loading: 'Loading dashboard data...',
           error: 'Unable to load some data. Showing available information.'
+        },
+        search: {
+          title: 'Global Search',
+          description: 'Search across all projects, certificates, articles and career entries.',
+          placeholder: 'Search projects, certificates, articles...',
+          results: 'results',
+          result: 'result',
+          noResults: 'No results found for your search.',
+          loading: 'Loading...',
+          hint: 'Type to search across the entire portfolio',
+          groups: {
+            projects: 'Projects',
+            certificates: 'Certificates',
+            articles: 'Articles',
+            career: 'Career'
+          },
+          viewItem: 'View'
         }
       },
       footer: {
@@ -386,6 +403,23 @@ const Translations = (() => {
           },
           loading: 'Carregando dados do dashboard...',
           error: 'Não foi possível carregar alguns dados. Exibindo informações disponíveis.'
+        },
+        search: {
+          title: 'Busca Global',
+          description: 'Pesquise em todos os projetos, certificados, artigos e experiências profissionais.',
+          placeholder: 'Buscar projetos, certificados, artigos...',
+          results: 'resultados',
+          result: 'resultado',
+          noResults: 'Nenhum resultado encontrado para a sua busca.',
+          loading: 'Carregando...',
+          hint: 'Digite para buscar em todo o portfólio',
+          groups: {
+            projects: 'Projetos',
+            certificates: 'Certificados',
+            articles: 'Artigos',
+            career: 'Carreira'
+          },
+          viewItem: 'Ver'
         }
       },
       footer: {
@@ -582,6 +616,23 @@ const Translations = (() => {
           },
           loading: 'Cargando datos del dashboard...',
           error: 'No se pudieron cargar algunos datos. Mostrando información disponible.'
+        },
+        search: {
+          title: 'Búsqueda Global',
+          description: 'Busca en todos los proyectos, certificados, artículos y experiencias profesionales.',
+          placeholder: 'Buscar proyectos, certificados, artículos...',
+          results: 'resultados',
+          result: 'resultado',
+          noResults: 'No se encontraron resultados para tu búsqueda.',
+          loading: 'Cargando...',
+          hint: 'Escribe para buscar en todo el portafolio',
+          groups: {
+            projects: 'Proyectos',
+            certificates: 'Certificados',
+            articles: 'Artículos',
+            career: 'Carrera'
+          },
+          viewItem: 'Ver'
         }
       },
       footer: {
