@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="pages.about.title">About — Lucas Liachi</title>
+  <meta name="description" content="Learn more about Lucas Liachi, his background and professional profile.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Lucas Liachi">
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
+
+  <header>
+    <div class="container header-container">
+      <div class="logo-section">
+        <div class="logo">
+          <a href="../../index.html">Lucas Liachi</a>
+        </div>
+        <div class="header-social-links">
+          <a href="https://www.linkedin.com/in/lucasliachi/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <img src="../../assets/linkedin.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
+          </a>
+          <a href="https://medium.com/@lucasliachi" target="_blank" rel="noopener noreferrer" aria-label="Medium">
+            <img src="../../assets/medium.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
+          </a>
+          <a href="https://github.com/LucasLiachi" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <img src="../../assets/github.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
+          </a>
+        </div>
+      </div>
+      <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <span class="menu-icon">&#9776;</span>
+        <span class="close-icon">&#x2715;</span>
+      </button>
+      <nav id="main-nav">
+        <ul id="nav-links" role="menubar">
+          <li role="none"><a href="../../index.html#hero" data-i18n="navbar.home" role="menuitem">Home</a></li>
+          <li role="none"><a href="../about/" data-i18n="navbar.about" role="menuitem" class="active">About</a></li>
+          <li role="none"><a href="../career/" data-i18n="navbar.career" role="menuitem">Career</a></li>
+          <li role="none"><a href="../../index.html#projects" data-i18n="navbar.projects" role="menuitem">Projects</a></li>
+          <li role="none"><a href="../certificate/" data-i18n="navbar.certificates" role="menuitem">Certificates</a></li>
+          <li role="none"><a href="../articles/" data-i18n="navbar.blog" role="menuitem">Blog</a></li>
+          <li role="none"><a href="../academic/" data-i18n="navbar.library" role="menuitem">Library</a></li>
+          <li role="none"><a href="../dashboard/" data-i18n="navbar.dashboard" role="menuitem">Dashboard</a></li>
+          <li role="none"><a href="../../index.html#contact" data-i18n="navbar.contact" role="menuitem">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="right-section">
+        <div class="language-selector">
+          <button class="language-option" data-language="en">EN</button>
+          <button class="language-option" data-language="pt">PT</button>
+          <button class="language-option" data-language="es">ES</button>
+        </div>
+        <button id="dark-mode-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+          <span class="sun-icon">&#9728;&#65039;</span>
+          <span class="moon-icon">&#127769;</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="breadcrumb" aria-label="breadcrumb">
+    <div class="container">
+      <ol>
+        <li><a href="../../index.html" data-i18n="breadcrumb.home">Home</a></li>
+        <li aria-current="page" data-i18n="navbar.about">About</li>
+      </ol>
+    </div>
+  </nav>
+
+  <main id="main-content">
+    <div class="page-hero">
+      <div class="container">
+        <h1 data-i18n="pages.about.title">About</h1>
+        <p data-i18n="pages.about.description">Learn more about Lucas Liachi, his background and professional profile.</p>
+      </div>
+    </div>
+
+    <div class="page-content">
+      <div class="container">
+        <div id="about-content" class="markdown-content coming-soon-box">
+          <span class="coming-soon-icon" aria-hidden="true">&#128679;</span>
+          <h2 data-i18n="pages.about.title">About</h2>
+          <p data-i18n="pages.about.description">Learn more about Lucas Liachi, his background and professional profile.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <p data-i18n="footer.copyright">&#169; 2025 Lucas Liachi.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/main.js"></script>
+  <script>
+    (async function loadAboutContent() {
+      const lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toUpperCase();
+      const candidates = [
+        `../../pages/about/${lang}.md`,
+        '../../pages/about/EN.md'
+      ];
+      const container = document.getElementById('about-content');
+      if (!container) return;
+
+      for (const url of candidates) {
+        try {
+          const response = await fetch(url);
+          if (!response.ok) continue;
+          const text = await response.text();
+          if (window.marked) {
+            container.classList.remove('coming-soon-box');
+            container.innerHTML = window.marked.parse(text);
+          }
+          return;
+        } catch (_) {
+          continue;
+        }
+      }
+    })();
+
+    document.addEventListener('languageChanged', function (e) {
+      location.reload();
+    });
+  </script>
+</body>
+</html>

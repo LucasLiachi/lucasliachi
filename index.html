@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -79,20 +79,15 @@
       </button>
       <nav id="main-nav">
         <ul id="nav-links" role="menubar">
-          <!-- Home/Início -->
           <li role="none"><a href="#hero" id="nav-home" data-i18n="navbar.home" role="menuitem">Home</a></li>
-          
-          <!-- About - Primeiro na navegação de conteúdo -->
-          <li role="none"><a href="#about" id="nav-about" data-i18n="navbar.about" role="menuitem">About</a></li>
-
-          <!-- Projects - Depois do currículo -->
+          <li role="none"><a href="pages/about/" id="nav-about" data-i18n="navbar.about" role="menuitem">About</a></li>
+          <li role="none"><a href="pages/career/" id="nav-career" data-i18n="navbar.career" role="menuitem">Career</a></li>
           <li role="none"><a href="#projects" id="nav-projects" data-i18n="navbar.projects" role="menuitem">Projects</a></li>
-
-          <!-- Certificates -->
-          <li role="none"><a href="#certificates" id="nav-certificates" data-i18n="navbar.certificates" role="menuitem">Certificates</a></li>
-
-          <!-- Articles -->
-          <li role="none"><a href="#articles" id="nav-articles" data-i18n="navbar.articles" role="menuitem">Articles</a></li>
+          <li role="none"><a href="pages/certificate/" id="nav-certificates" data-i18n="navbar.certificates" role="menuitem">Certificates</a></li>
+          <li role="none"><a href="pages/articles/" id="nav-blog" data-i18n="navbar.blog" role="menuitem">Blog</a></li>
+          <li role="none"><a href="pages/academic/" id="nav-library" data-i18n="navbar.library" role="menuitem">Library</a></li>
+          <li role="none"><a href="pages/dashboard/" id="nav-dashboard" data-i18n="navbar.dashboard" role="menuitem">Dashboard</a></li>
+          <li role="none"><a href="#contact" id="nav-contact" data-i18n="navbar.contact" role="menuitem">Contact</a></li>
         </ul>
       </nav>
       <div class="right-section">
@@ -243,6 +238,32 @@
         <h2 class="section-title" id="articles-title" data-i18n="articles.title">Articles</h2>
         <div class="about-grid" id="articles-container">
           <!-- Articles will be populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact section -->
+    <section id="contact" class="section">
+      <div class="container">
+        <h2 class="section-title" data-i18n="contact.title">Contact</h2>
+        <p class="contact-description" data-i18n="contact.description">Get in touch via the platforms below.</p>
+        <div class="contact-links">
+          <a href="https://www.linkedin.com/in/lucasliachi/" target="_blank" rel="noopener noreferrer" class="contact-link">
+            <img src="assets/linkedin.png" alt="LinkedIn" class="contact-icon" width="24" height="24" loading="lazy">
+            <span>LinkedIn</span>
+          </a>
+          <a href="https://github.com/LucasLiachi" target="_blank" rel="noopener noreferrer" class="contact-link">
+            <img src="assets/github.png" alt="GitHub" class="contact-icon" width="24" height="24" loading="lazy">
+            <span>GitHub</span>
+          </a>
+          <a href="https://medium.com/@lucasliachi" target="_blank" rel="noopener noreferrer" class="contact-link">
+            <img src="assets/medium.png" alt="Medium" class="contact-icon" width="24" height="24" loading="lazy">
+            <span>Medium</span>
+          </a>
+          <a href="mailto:lucasliachi@gmail.com" class="contact-link">
+            <span class="contact-icon-text">@</span>
+            <span>lucasliachi@gmail.com</span>
+          </a>
         </div>
       </div>
     </section>
