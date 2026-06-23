@@ -268,8 +268,8 @@
       async function loadProfile() {
         var lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toUpperCase();
         var candidates = [
-          '../../pages/about/' + lang + '.md',
-          '../../pages/about/EN.md'
+          '../../pages/academic/' + lang + '.md',
+          '../../pages/academic/EN.md'
         ];
         var container = document.getElementById('about-profile');
         if (!container) return;
