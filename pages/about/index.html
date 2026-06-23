@@ -131,20 +131,11 @@
       white-space: nowrap;
     }
 
-    /* Tipo */
-    .pill-resumo     { background: #dbeafe; color: #1e40af; }
-    .pill-cheatsheet { background: #f3e8ff; color: #6b21a8; }
-    .pill-guia       { background: #dcfce7; color: #166534; }
-    .pill-estudo     { background: #fef9c3; color: #854d0e; }
-    .pill-formulas   { background: #fef3c7; color: #92400e; }
-    .pill-fórmulas   { background: #fef3c7; color: #92400e; }
-
-    /* Nível */
-    .pill-iniciante      { background: #d1fae5; color: #065f46; }
-    .pill-intermediario  { background: #fef3c7; color: #92400e; }
-    .pill-intermediário  { background: #fef3c7; color: #92400e; }
-    .pill-avancado       { background: #fee2e2; color: #991b1b; }
-    .pill-avançado       { background: #fee2e2; color: #991b1b; }
+    /* Tipo de formação */
+    .pill-graduacao     { background: #dbeafe; color: #1e40af; }
+    .pill-posgraduacao  { background: #f3e8ff; color: #6b21a8; }
+    .pill-mba           { background: #dcfce7; color: #166534; }
+    .pill-tecnico       { background: #fef9c3; color: #854d0e; }
 
     .academic-card-link {
       font-size: 0.8rem;
@@ -268,8 +259,8 @@
       async function loadProfile() {
         var lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toUpperCase();
         var candidates = [
-          '../../pages/academic/' + lang + '.md',
-          '../../pages/academic/EN.md'
+          '../../pages/about/' + lang + '.md',
+          '../../pages/about/EN.md'
         ];
         var container = document.getElementById('about-profile');
         if (!container) return;
@@ -284,30 +275,24 @@
         }
       }
 
-      // ── Carrega cards da biblioteca ──
+      // ── Carrega cards do histórico acadêmico ──
       async function loadAcademic() {
         var lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toLowerCase();
         var list = document.getElementById('about-academic-list');
         if (!list) return;
         try {
-          var r = await fetch('../../data/biblioteca.json');
+          var r = await fetch('../../data/academico.json');
           if (!r.ok) throw new Error();
           var items = await r.json();
           list.innerHTML = '';
           items.forEach(function (item) {
-            var title = (item.titulo && (item.titulo[lang] || item.titulo.en)) || '';
-            var desc  = (item.descricao && (item.descricao[lang] || item.descricao.en)) || '';
-            var tipo  = (item.tipo || '');
-            var tipoClass = tipo.toLowerCase()
-              .replace(/[áàâãä]/g, 'a').replace(/[éèêë]/g, 'e')
-              .replace(/[íìîï]/g, 'i').replace(/[óòôõö]/g, 'o')
-              .replace(/[úùûü]/g, 'u').replace(/[ç]/g, 'c');
-            var nivel = (item.nivel || '');
-            var nivelClass = nivel.toLowerCase()
-              .replace(/[áàâãä]/g, 'a').replace(/[éèêë]/g, 'e')
-              .replace(/[íìîï]/g, 'i').replace(/[óòôõö]/g, 'o')
-              .replace(/[úùûü]/g, 'u').replace(/[ç]/g, 'c');
-            var viewLabel = (window.Translations && window.Translations.get('pages.about.academic.viewMaterial')) || 'View material';
+            var instituicao = (item.instituicao && (item.instituicao[lang] || item.instituicao.en)) || '';
+            var grau        = (item.grau && (item.grau[lang] || item.grau.en)) || '';
+            var desc        = (item.descricao && (item.descricao[lang] || item.descricao.en)) || '';
+            var tipo        = (item.tipo || '');
+            var tipoClass   = tipo.replace(/[áàâãä]/g,'a').replace(/[éèêë]/g,'e')
+                                  .replace(/[íìîï]/g,'i').replace(/[óòôõö]/g,'o')
+                                  .replace(/[úùûü]/g,'u').replace(/ç/g,'c').replace(/-/g,'');
 
             var card = document.createElement('div');
             card.className = 'academic-card';
@@ -317,13 +302,13 @@
 
             var h3 = document.createElement('h3');
             h3.className = 'academic-card-title';
-            h3.textContent = title;
+            h3.textContent = grau;
             body.appendChild(h3);
 
-            var secao = document.createElement('p');
-            secao.className = 'academic-card-section';
-            secao.textContent = item.secao || '';
-            body.appendChild(secao);
+            var inst = document.createElement('p');
+            inst.className = 'academic-card-section';
+            inst.textContent = instituicao + (item.periodo ? '  ·  ' + item.periodo : '');
+            body.appendChild(inst);
 
             var descP = document.createElement('p');
             descP.className = 'academic-card-desc';
@@ -333,26 +318,20 @@
             var footer = document.createElement('div');
             footer.className = 'academic-card-footer';
 
-            var pillsWrap = document.createElement('div');
-            pillsWrap.style.cssText = 'display:flex;gap:0.4rem;flex-wrap:wrap;';
-
             var tipoPill = document.createElement('span');
             tipoPill.className = 'academic-pill pill-' + tipoClass;
             tipoPill.textContent = tipo;
-            pillsWrap.appendChild(tipoPill);
+            footer.appendChild(tipoPill);
 
-            var nivelPill = document.createElement('span');
-            nivelPill.className = 'academic-pill pill-' + nivelClass;
-            nivelPill.textContent = nivel;
-            pillsWrap.appendChild(nivelPill);
-
-            footer.appendChild(pillsWrap);
-
-            var link = document.createElement('a');
-            link.className = 'academic-card-link';
-            link.href = '../../pages/library/viewer.html?id=' + encodeURIComponent(item.id);
-            link.textContent = viewLabel;
-            footer.appendChild(link);
+            if (item.certificado) {
+              var certLink = document.createElement('a');
+              certLink.className = 'academic-card-link';
+              certLink.href = '../../' + item.certificado;
+              certLink.target = '_blank';
+              certLink.rel = 'noopener noreferrer';
+              certLink.textContent = (window.Translations && window.Translations.get('pages.about.academic.viewMaterial')) || 'View certificate';
+              footer.appendChild(certLink);
+            }
 
             body.appendChild(footer);
             card.appendChild(body);
@@ -360,10 +339,7 @@
           });
         } catch (_) {
           if (list) {
-            var errP = document.createElement('p');
-            errP.textContent = 'Unable to load materials.';
-            list.innerHTML = '';
-            list.appendChild(errP);
+            list.innerHTML = '<p>Unable to load academic profile.</p>';
           }
         }
       }

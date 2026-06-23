@@ -1,0 +1,127 @@
+[
+  {
+    "id": "2022-03-universidade-anhembi-morumbi",
+    "folder": "2022-03-Universidade-Anhembi-Morumbi",
+    "instituicao": {
+      "en": "Universidade Anhembi Morumbi",
+      "pt": "Universidade Anhembi Morumbi",
+      "es": "Universidade Anhembi Morumbi"
+    },
+    "grau": {
+      "en": "Bachelor's Degree, Statistics",
+      "pt": "Bacharelado, Estatística",
+      "es": "Licenciatura, Estadística"
+    },
+    "tipo": "graduacao",
+    "periodo": "Mar 2022 – Mar 2026",
+    "inicio": "2022-03",
+    "fim": null,
+    "descricao": {
+      "en": "Undergraduate degree in Statistics, developing skills in applied statistical analysis, data science and quantitative methods.",
+      "pt": "Graduação em Estatística, desenvolvendo competências em análise estatística aplicada, ciência de dados e métodos quantitativos.",
+      "es": "Grado en Estadística, desarrollando competencias en análisis estadístico aplicado, ciencia de datos y métodos cuantitativos."
+    },
+    "competencias": ["Análise estatística", "Microsoft Power BI", "Elaboração de documentos"],
+    "certificado": null
+  },
+  {
+    "id": "2022-02-fia-business-school",
+    "folder": "2022-02-FIA-Business-School",
+    "instituicao": {
+      "en": "FIA Business School",
+      "pt": "FIA Business School",
+      "es": "FIA Business School"
+    },
+    "grau": {
+      "en": "Postgraduate, Software Engineering and Architecture",
+      "pt": "Pós-graduação, Engenharia e Arquitetura de Software",
+      "es": "Posgrado, Ingeniería y Arquitectura de Software"
+    },
+    "tipo": "pos-graduacao",
+    "periodo": "Fev 2022 – Jul 2023",
+    "inicio": "2022-02",
+    "fim": "2023-07",
+    "descricao": {
+      "en": "Specialist in design, architecture and engineering of software solutions aligned with agility and business strategy.",
+      "pt": "Especialista em projeto, arquitetura e engenharia de soluções de software alinhadas com agilidade e estratégia do negócio.",
+      "es": "Especialista en diseño, arquitectura e ingeniería de soluciones de software alineadas con la agilidad y la estrategia de negocio."
+    },
+    "competencias": ["Arquitetura de soluções", "Microsoft Power BI", "Elaboração de documentos"],
+    "certificado": "pages/academic/2022-02-FIA-Business-School/certificate.pdf"
+  },
+  {
+    "id": "2018-01-uniara-mba-cmmi",
+    "folder": "2018-01-UNIARA-MBA-CMMI",
+    "instituicao": {
+      "en": "UNIARA",
+      "pt": "UNIARA",
+      "es": "UNIARA"
+    },
+    "grau": {
+      "en": "MBA in CMMI (Information Technology)",
+      "pt": "MBA em CMMI (Capability Maturity Model® Integration), Tecnologia da Informação",
+      "es": "MBA en CMMI (Capability Maturity Model® Integration), Tecnología de la Información"
+    },
+    "tipo": "mba",
+    "periodo": "2018 – 2020",
+    "inicio": "2018-01",
+    "fim": "2020-12",
+    "descricao": {
+      "en": "Specialization in Software Quality, covering CMMI maturity models and process improvement frameworks.",
+      "pt": "Especialização em Qualidade de Software, cobrindo modelos de maturidade CMMI e frameworks de melhoria de processos.",
+      "es": "Especialización en Calidad de Software, cubriendo modelos de madurez CMMI y marcos de mejora de procesos."
+    },
+    "competencias": ["Microsoft Power BI", "Elaboração de documentos"],
+    "certificado": "pages/academic/2018-01-UNIARA-MBA-CMMI/certificate.jpg"
+  },
+  {
+    "id": "2015-01-ufpr-tgq",
+    "folder": "2015-01-UFPR-TGQ",
+    "instituicao": {
+      "en": "Federal University of Paraná (UFPR)",
+      "pt": "Universidade Federal do Paraná (UFPR)",
+      "es": "Universidad Federal de Paraná (UFPR)"
+    },
+    "grau": {
+      "en": "Technology Degree, Quality Management",
+      "pt": "Tecnologia em Gestão da Qualidade",
+      "es": "Tecnología en Gestión de Calidad"
+    },
+    "tipo": "graduacao",
+    "periodo": "2015 – 2017",
+    "inicio": "2015-01",
+    "fim": "2017-12",
+    "descricao": {
+      "en": "Quality management degree with highlights in ISO 9001 implementation, academic council leadership and knowledge management projects.",
+      "pt": "Graduação em gestão da qualidade com destaques em implementação ISO 9001, liderança de conselho acadêmico e projetos de gestão do conhecimento.",
+      "es": "Grado en gestión de calidad con énfasis en implementación ISO 9001, liderazgo de consejo académico y proyectos de gestión del conocimiento."
+    },
+    "competencias": ["Elaboração de documentos", "Documentação técnica"],
+    "certificado": null
+  },
+  {
+    "id": "2014-01-tecpuc-controle-qualidade",
+    "folder": "2014-01-TECPUC-Controle-Qualidade",
+    "instituicao": {
+      "en": "TECPUC — Centro de Educação Profissional Irmão Mário Cristóvão",
+      "pt": "TECPUC — Centro de Educação Profissional Irmão Mário Cristóvão",
+      "es": "TECPUC — Centro de Educación Profesional Irmão Mário Cristóvão"
+    },
+    "grau": {
+      "en": "Technical Degree, Quality Control Technology",
+      "pt": "Técnico, Tecnologia em Controle de Qualidade",
+      "es": "Técnico, Tecnología en Control de Calidad"
+    },
+    "tipo": "tecnico",
+    "periodo": "2014 – 2015",
+    "inicio": "2014-01",
+    "fim": "2015-12",
+    "descricao": {
+      "en": "Technical program covering audit processes, documentary planning, quality-driven productivity and entrepreneurship.",
+      "pt": "Curso técnico com foco em auditoria, planejamento documental, qualidade e produtividade e empreendedorismo.",
+      "es": "Programa técnico con enfoque en auditoría, planificación documental, calidad y productividad y emprendimiento."
+    },
+    "competencias": ["Elaboração de documentos", "Documentação técnica"],
+    "certificado": "pages/academic/2014-01-TECPUC-Controle-Qualidade/certificate.pdf"
+  }
+]
