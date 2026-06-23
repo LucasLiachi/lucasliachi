@@ -190,7 +190,7 @@
       border: 1px solid #ffc107;
     }
 
-    [data-theme="dark"] .dash-status.error {
+    .dark .dash-status.error {
       background: #332a00;
       color: #ffd663;
       border-color: #665200;
@@ -246,7 +246,8 @@
           <li role="none"><a href="../articles/" data-i18n="navbar.blog" role="menuitem">Blog</a></li>
           <li role="none"><a href="../academic/" data-i18n="navbar.library" role="menuitem">Library</a></li>
           <li role="none"><a href="../dashboard/" data-i18n="navbar.dashboard" role="menuitem" class="active">Dashboard</a></li>
-          <li role="none"><a href="../../index.html#contact" data-i18n="navbar.contact" role="menuitem">Contact</a></li>
+          <li role="none"><a href="../search/" data-i18n="navbar.search" role="menuitem">Search</a></li>
+          <li role="none"><a href="../contact/" data-i18n="navbar.contact" role="menuitem">Contact</a></li>
         </ul>
       </nav>
       <div class="right-section">
@@ -290,7 +291,7 @@
 
         <!-- ── Indicator cards ── -->
         <section class="dash-section" aria-labelledby="dash-indicators-heading">
-          <h2 id="dash-indicators-heading" class="dash-section-title" data-i18n="pages.dashboard.title">Dashboard</h2>
+          <h2 id="dash-indicators-heading" class="dash-section-title" data-i18n="pages.dashboard.indicators">Indicators</h2>
           <div class="dash-cards">
 
             <div class="dash-card" id="card-projects">
@@ -334,7 +335,7 @@
 
         <!-- ── Charts ── -->
         <section class="dash-section" aria-labelledby="dash-charts-heading">
-          <h2 id="dash-charts-heading" class="dash-section-title" data-i18n="pages.dashboard.title">Charts</h2>
+          <h2 id="dash-charts-heading" class="dash-section-title" data-i18n="pages.dashboard.chartsTitle">Charts</h2>
           <div class="dash-charts">
 
             <div class="dash-chart-card">
@@ -529,6 +530,10 @@
         var el = document.getElementById(id);
         if (!el) return;
         el.classList.remove('skeleton');
+        if (typeof value !== 'number') {
+          el.textContent = value;
+          return;
+        }
         animateCountUp(el, value);
       }
 
@@ -733,7 +738,7 @@
 
         var totalTech = collectUniqueTechnologies(carreira, projetos, certificados);
 
-        var publicRepos = ghUser ? (ghUser.public_repos || 0) : 0;
+        var publicRepos = ghUser ? (ghUser.public_repos || 0) : '--';
 
         /* ── Populate cards ── */
         setCardValue('val-projects',     totalProjects);

@@ -10,6 +10,7 @@ const Translations = (() => {
         blog: 'Blog',
         library: 'Library',
         dashboard: 'Dashboard',
+        search: 'Search',
         contact: 'Contact'
       },
       hero: {
@@ -204,6 +205,8 @@ const Translations = (() => {
         dashboard: {
           title: 'Dashboard',
           description: 'Professional indicators and career metrics.',
+          indicators: 'Indicators',
+          chartsTitle: 'Charts',
           cards: {
             projects: 'Total Projects',
             certificates: 'Certificates',
@@ -236,10 +239,30 @@ const Translations = (() => {
             career: 'Career'
           },
           viewItem: 'View'
+        },
+        contact: {
+          title: 'Contact',
+          description: 'Get in touch with me through the form or direct channels below.',
+          form: {
+            title: 'Send a message',
+            name: 'Name',
+            email: 'Email',
+            subject: 'Subject',
+            message: 'Message',
+            send: 'Send',
+            success: 'Message sent successfully!',
+            error: 'Failed to send. Try again.'
+          },
+          links: {
+            title: 'Direct contact'
+          },
+          map: {
+            title: 'Location'
+          }
         }
       },
       footer: {
-        copyright: '© 2025 Lucas Liachi.'
+        copyright: '© ' + new Date().getFullYear() + ' Lucas Liachi.'
       }
     },
     pt: {
@@ -252,6 +275,7 @@ const Translations = (() => {
         blog: 'Blog',
         library: 'Biblioteca',
         dashboard: 'Dashboard',
+        search: 'Busca',
         contact: 'Contato'
       },
       hero: {
@@ -446,6 +470,8 @@ const Translations = (() => {
         dashboard: {
           title: 'Dashboard',
           description: 'Indicadores profissionais e métricas de carreira.',
+          indicators: 'Indicadores',
+          chartsTitle: 'Gráficos',
           cards: {
             projects: 'Total de Projetos',
             certificates: 'Certificados',
@@ -478,10 +504,30 @@ const Translations = (() => {
             career: 'Carreira'
           },
           viewItem: 'Ver'
+        },
+        contact: {
+          title: 'Contato',
+          description: 'Entre em contato pelo formulário ou pelos canais diretos abaixo.',
+          form: {
+            title: 'Envie uma mensagem',
+            name: 'Nome',
+            email: 'E-mail',
+            subject: 'Assunto',
+            message: 'Mensagem',
+            send: 'Enviar',
+            success: 'Mensagem enviada com sucesso!',
+            error: 'Erro ao enviar. Tente novamente.'
+          },
+          links: {
+            title: 'Contato direto'
+          },
+          map: {
+            title: 'Localização'
+          }
         }
       },
       footer: {
-        copyright: '© 2025 Lucas Liachi.'
+        copyright: '© ' + new Date().getFullYear() + ' Lucas Liachi.'
       }
     },
     es: {
@@ -494,6 +540,7 @@ const Translations = (() => {
         blog: 'Blog',
         library: 'Biblioteca',
         dashboard: 'Dashboard',
+        search: 'Buscar',
         contact: 'Contacto'
       },
       hero: {
@@ -688,6 +735,8 @@ const Translations = (() => {
         dashboard: {
           title: 'Dashboard',
           description: 'Indicadores profesionales y métricas de carrera.',
+          indicators: 'Indicadores',
+          chartsTitle: 'Gráficos',
           cards: {
             projects: 'Total de Proyectos',
             certificates: 'Certificados',
@@ -720,10 +769,30 @@ const Translations = (() => {
             career: 'Carrera'
           },
           viewItem: 'Ver'
+        },
+        contact: {
+          title: 'Contacto',
+          description: 'Ponte en contacto a través del formulario o los canales directos a continuación.',
+          form: {
+            title: 'Enviar un mensaje',
+            name: 'Nombre',
+            email: 'Correo electrónico',
+            subject: 'Asunto',
+            message: 'Mensaje',
+            send: 'Enviar',
+            success: '¡Mensaje enviado con éxito!',
+            error: 'Error al enviar. Inténtalo de nuevo.'
+          },
+          links: {
+            title: 'Contacto directo'
+          },
+          map: {
+            title: 'Ubicación'
+          }
         }
       },
       footer: {
-        copyright: '© 2025 Lucas Liachi.'
+        copyright: '© ' + new Date().getFullYear() + ' Lucas Liachi.'
       }
     }
   };

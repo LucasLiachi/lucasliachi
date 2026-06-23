@@ -85,7 +85,8 @@
           <li role="none"><a href="../articles/" data-i18n="navbar.blog" role="menuitem">Blog</a></li>
           <li role="none"><a href="../academic/" data-i18n="navbar.library" role="menuitem">Library</a></li>
           <li role="none"><a href="../dashboard/" data-i18n="navbar.dashboard" role="menuitem">Dashboard</a></li>
-          <li role="none"><a href="../../index.html#contact" data-i18n="navbar.contact" role="menuitem">Contact</a></li>
+          <li role="none"><a href="../search/" data-i18n="navbar.search" role="menuitem">Search</a></li>
+          <li role="none"><a href="../contact/" data-i18n="navbar.contact" role="menuitem">Contact</a></li>
         </ul>
       </nav>
       <div class="right-section">
@@ -409,17 +410,8 @@
           localProjects = [];
         }
 
-        var githubRepos = await fetchGitHubRepos();
-
-        if (!githubRepos && statusEl) {
-          statusEl.style.display = 'block';
-          var msg = document.createElement('p');
-          msg.textContent = (window.Translations && window.Translations.get('projects.github.unavailable'))
-            || 'GitHub repositories temporarily unavailable.';
-          statusEl.appendChild(msg);
-        }
-
-        allProjects = mergeProjects(localProjects, githubRepos);
+        /* Render local projects immediately so the page is never stuck in skeleton */
+        allProjects = mergeProjects(localProjects, null);
         populateCategoryFilter(allProjects);
         renderGrid(allProjects);
 
@@ -427,6 +419,23 @@
         var categoryEl = document.getElementById('proj-category');
         if (searchEl) searchEl.addEventListener('input', applyFilters);
         if (categoryEl) categoryEl.addEventListener('change', applyFilters);
+
+        /* Enrich with GitHub data in background */
+        fetchGitHubRepos().then(function (githubRepos) {
+          if (!githubRepos) {
+            if (statusEl) {
+              statusEl.style.display = 'block';
+              var msg = document.createElement('p');
+              msg.textContent = (window.Translations && window.Translations.get('projects.github.unavailable'))
+                || 'GitHub repositories temporarily unavailable.';
+              statusEl.appendChild(msg);
+            }
+            return;
+          }
+          allProjects = mergeProjects(localProjects, githubRepos);
+          populateCategoryFilter(allProjects);
+          applyFilters();
+        });
       });
 
       /* Re-render labels when language changes */

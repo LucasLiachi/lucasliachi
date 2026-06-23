@@ -85,7 +85,8 @@
           <li role="none"><a href="../articles/" data-i18n="navbar.blog" role="menuitem">Blog</a></li>
           <li role="none"><a href="../academic/" data-i18n="navbar.library" role="menuitem">Library</a></li>
           <li role="none"><a href="../dashboard/" data-i18n="navbar.dashboard" role="menuitem">Dashboard</a></li>
-          <li role="none"><a href="../../index.html#contact" data-i18n="navbar.contact" role="menuitem">Contact</a></li>
+          <li role="none"><a href="../search/" data-i18n="navbar.search" role="menuitem">Search</a></li>
+          <li role="none"><a href="../contact/" data-i18n="navbar.contact" role="menuitem">Contact</a></li>
         </ul>
       </nav>
       <div class="right-section">
@@ -245,7 +246,7 @@
         if (Array.isArray(c.categories) && c.categories.length) {
           var catsDiv = document.createElement('div');
           catsDiv.className = 'cert-categories';
-          c.categories.forEach(function (cat) {
+          c.categories.filter(function (cat) { return cat && cat.trim(); }).forEach(function (cat) {
             var s = document.createElement('span');
             s.className = 'cert-cat-pill';
             s.textContent = cat;
