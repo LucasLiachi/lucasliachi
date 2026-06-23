@@ -30,5 +30,11 @@ Compartilho artigos alinhados com os temas em:
 
 ![](https://github-readme-stats.vercel.app/api/top-langs/?username=lucasliachi&theme=blue-green)
 
+## DevTolls AI
+Site desenvolvido com apoio da inteligência Artificial. Mais detalhes em [CLAUDE.md](CLAUDE.md)
+
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+
+
