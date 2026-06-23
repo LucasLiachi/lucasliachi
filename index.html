@@ -61,6 +61,38 @@
       padding: 2rem 0 3rem;
     }
 
+    /* Hero social buttons */
+    .hero-social-links {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 1.25rem;
+    }
+
+    .hero-social-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--foreground);
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: border-color var(--transition-fast), background var(--transition-fast);
+    }
+
+    .hero-social-btn:hover {
+      border-color: var(--accent);
+      background: var(--secondary);
+      color: var(--foreground);
+    }
+
+    .hero-social-btn img {
+      display: block;
+      opacity: 0.8;
+    }
+
     /* Search box */
     .search-box-wrap {
       position: relative;
@@ -335,17 +367,6 @@
         <div class="logo">
           <a href="index.html">Lucas Liachi</a>
         </div>
-        <div class="header-social-links">
-          <a href="https://www.linkedin.com/in/lucasliachi/" target="_blank" rel="noopener noreferrer" aria-label="Visit Lucas Liachi's LinkedIn profile">
-            <img src="assets/linkedin.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
-          </a>
-          <a href="https://medium.com/@lucasliachi" target="_blank" rel="noopener noreferrer" aria-label="Visit Lucas Liachi's Medium blog">
-            <img src="assets/medium.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
-          </a>
-          <a href="https://github.com/LucasLiachi" target="_blank" rel="noopener noreferrer" aria-label="Visit Lucas Liachi's GitHub profile">
-            <img src="assets/github.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
-          </a>
-        </div>
       </div>
       <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
         <span class="menu-icon">☰</span>
@@ -385,6 +406,20 @@
         <div class="hero-content">
           <h1 id="hero-title" data-i18n="hero.title">Technology Governance Specialist</h1>
           <p id="hero-subtitle" data-i18n="hero.welcome">Hello! I'm Lucas Liachi and welcome to my professional space. Here, I share my journey through the projects I'm most proud of and the study materials that drive my knowledge. Explore my work to learn about my skills and, if you like what you see, let's connect on <a href='https://www.linkedin.com/in/lucasliachi/' target='_blank' rel='noopener noreferrer'>LinkedIn</a>!</p>
+          <div class="hero-social-links">
+            <a href="https://www.linkedin.com/in/lucasliachi/" target="_blank" rel="noopener noreferrer" class="hero-social-btn">
+              <img src="assets/linkedin.png" alt="LinkedIn" width="18" height="18" loading="lazy">
+              LinkedIn
+            </a>
+            <a href="https://medium.com/@lucasliachi" target="_blank" rel="noopener noreferrer" class="hero-social-btn">
+              <img src="assets/medium.png" alt="Medium" width="18" height="18" loading="lazy">
+              Medium
+            </a>
+            <a href="https://github.com/LucasLiachi" target="_blank" rel="noopener noreferrer" class="hero-social-btn">
+              <img src="assets/github.png" alt="GitHub" width="18" height="18" loading="lazy">
+              GitHub
+            </a>
+          </div>
         </div>
         <div class="hero-image">
           <img src="assets/perfil.jpeg" alt="Lucas Liachi - Technology Governance Specialist" id="hero-image" width="300" height="300" fetchpriority="high">
