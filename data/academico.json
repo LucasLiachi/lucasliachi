@@ -47,7 +47,7 @@
       "es": "Especialista en diseño, arquitectura e ingeniería de soluciones de software alineadas con la agilidad y la estrategia de negocio."
     },
     "competencias": ["Arquitetura de soluções", "Microsoft Power BI", "Elaboração de documentos"],
-    "certificado": "pages/academic/2022-02-FIA-Business-School/certificate.pdf"
+    "certificado": "pages/about/2022-02-FIA-Business-School/certificate.pdf"
   },
   {
     "id": "2018-01-uniara-mba-cmmi",
@@ -72,7 +72,7 @@
       "es": "Especialización en Calidad de Software, cubriendo modelos de madurez CMMI y marcos de mejora de procesos."
     },
     "competencias": ["Microsoft Power BI", "Elaboração de documentos"],
-    "certificado": "pages/academic/2018-01-UNIARA-MBA-CMMI/certificate.jpg"
+    "certificado": "pages/about/2018-01-UNIARA-MBA-CMMI/certificate.jpg"
   },
   {
     "id": "2015-01-ufpr-tgq",
@@ -122,6 +122,6 @@
       "es": "Programa técnico con enfoque en auditoría, planificación documental, calidad y productividad y emprendimiento."
     },
     "competencias": ["Elaboração de documentos", "Documentação técnica"],
-    "certificado": "pages/academic/2014-01-TECPUC-Controle-Qualidade/certificate.pdf"
+    "certificado": "pages/about/2014-01-TECPUC-Controle-Qualidade/certificate.pdf"
   }
 ]
