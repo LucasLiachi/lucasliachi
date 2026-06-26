@@ -178,7 +178,7 @@ const Translations = (() => {
       },
       pages: {
         about: { title: 'About', description: 'Learn more about Lucas Liachi, his background and professional profile.', profile: { title: 'Professional Profile' }, academic: { title: 'Academic Profile', viewMaterial: 'View material' } },
-        career: { title: 'Career', description: 'Professional timeline with experiences, roles and achievements.', loading: 'Loading timeline...', printResume: 'Print Resume' },
+        career: { title: 'Career', description: 'Professional timeline with experiences, roles and achievements.', loading: 'Loading timeline...', printResume: 'Print Resume', viewDetails: 'View details →', backToCareer: '← Back to Career', viewer: { pageTitle: 'Career Detail — Lucas Liachi', notFound: 'Career entry not found.', noContent: 'Detailed content not available.' } },
         certificate: {
           title: 'Certificates',
           description: 'Professional certifications, courses and training programs.',
@@ -444,7 +444,7 @@ const Translations = (() => {
       },
       pages: {
         about: { title: 'Sobre', description: 'Conheça Lucas Liachi, sua trajetória e perfil profissional.', profile: { title: 'Perfil Profissional' }, academic: { title: 'Perfil Acadêmico', viewMaterial: 'Ver material' } },
-        career: { title: 'Carreira', description: 'Linha do tempo profissional com experiências, cargos e conquistas.', loading: 'Carregando linha do tempo...', printResume: 'Imprimir Currículo' },
+        career: { title: 'Carreira', description: 'Linha do tempo profissional com experiências, cargos e conquistas.', loading: 'Carregando linha do tempo...', printResume: 'Imprimir Currículo', viewDetails: 'Ver detalhes →', backToCareer: '← Voltar à Carreira', viewer: { pageTitle: 'Career Detail — Lucas Liachi', notFound: 'Experiência não encontrada.', noContent: 'Conteúdo detalhado não disponível.' } },
         certificate: {
           title: 'Certificados',
           description: 'Certificações profissionais, cursos e treinamentos.',
@@ -710,7 +710,7 @@ const Translations = (() => {
       },
       pages: {
         about: { title: 'Sobre', description: 'Conoce a Lucas Liachi, su trayectoria y perfil profesional.', profile: { title: 'Perfil Profesional' }, academic: { title: 'Perfil Académico', viewMaterial: 'Ver material' } },
-        career: { title: 'Carrera', description: 'Línea de tiempo profesional con experiencias, cargos y logros.', loading: 'Cargando línea de tiempo...', printResume: 'Imprimir Currículum' },
+        career: { title: 'Carrera', description: 'Línea de tiempo profesional con experiencias, cargos y logros.', loading: 'Cargando línea de tiempo...', printResume: 'Imprimir Currículum', viewDetails: 'Ver detalles →', backToCareer: '← Volver a Carrera', viewer: { pageTitle: 'Career Detail — Lucas Liachi', notFound: 'Experiencia no encontrada.', noContent: 'Contenido detallado no disponible.' } },
         certificate: {
           title: 'Certificados',
           description: 'Certificaciones profesionales, cursos y programas de formación.',

@@ -13,6 +13,19 @@
     "supplement": "pages/certificate/2025-04-ITIL-4-Foundation/supplement_peoplecert_itil4_foundation_relatorio_score.pdf"
   },
   {
+    "id": "2025-03-isaca-membership",
+    "folder": "2025-03-ISACA-Membership",
+    "title": "ISACA Membership",
+    "issuer": "ISACA",
+    "issued": "2025-03",
+    "expires": null,
+    "credentialId": null,
+    "categories": ["Compliance", "Gestão"],
+    "tags": ["isaca", "it governance", "cobit", "risk management", "information security", "membership"],
+    "file": "pages/certificate/2025-03-ISACA-Membership/certificate.pdf",
+    "supplement": null
+  },
+  {
     "id": "2021-12-kanban-customer-experience-professional",
     "folder": "2021-12-Kanban-Customer-Experience-Professional",
     "title": "Customer Experience Professional - Fit for Purpose",
@@ -291,6 +304,19 @@
     "supplement": null
   },
   {
+    "id": "2020-08-devops-certificate",
+    "folder": "2020-08-DevOps-Certificate",
+    "title": "DevOps Certificate",
+    "issuer": null,
+    "issued": "2020-08",
+    "expires": null,
+    "credentialId": null,
+    "categories": ["Desenvolvimento", "Cloud"],
+    "tags": ["devops", "continuous integration", "continuous delivery", "automation", "agile infrastructure"],
+    "file": "pages/certificate/2020-08-DevOps-Certificate/certificate.pdf",
+    "supplement": null
+  },
+  {
     "id": "2020-05-escola-conquer-inteligencia-emocional",
     "folder": "2020-05-Escola-Conquer-Inteligencia-Emocional",
     "title": "Emotional Intelligence Course Certificate",
@@ -340,6 +366,45 @@
     "categories": ["Processo", "Gestão"],
     "tags": ["process transformation", "bpm", "digital transformation", "business process management"],
     "file": "pages/certificate/2020-05-ABPMP-Global-Transformation/certificate.pdf",
+    "supplement": null
+  },
+  {
+    "id": "2019-05-euax-mapeamento-processos-e2e",
+    "folder": "2019-05-EUAX-Mapeamento-Processos-E2E",
+    "title": "End-to-End Process Mapping",
+    "issuer": "EUAX Consulting",
+    "issued": "2019-05",
+    "expires": null,
+    "credentialId": null,
+    "categories": ["Processo"],
+    "tags": ["process mapping", "e2e", "bpm", "business analysis", "process design", "euax"],
+    "file": "pages/certificate/2019-05-EUAX-Mapeamento-Processos-E2E/certificate.pdf",
+    "supplement": null
+  },
+  {
+    "id": "2018-04-qaninja-qa-experience",
+    "folder": "2018-04-QANinja-QA-Experience",
+    "title": "QA Experience",
+    "issuer": "QANinja",
+    "issued": "2018-04",
+    "expires": null,
+    "credentialId": null,
+    "categories": ["Desenvolvimento", "Processo"],
+    "tags": ["qa", "quality assurance", "testing", "software quality", "qaninja"],
+    "file": "pages/certificate/2018-04-QANinja-QA-Experience/certificate.pdf",
+    "supplement": null
+  },
+  {
+    "id": "2018-03-ead-summit",
+    "folder": "2018-03-EAD-Summit",
+    "title": "EAD Summit - Distance Learning Summit",
+    "issuer": "EAD Summit",
+    "issued": "2018-03",
+    "expires": null,
+    "credentialId": null,
+    "categories": ["Gestão"],
+    "tags": ["ead", "distance learning", "e-learning", "online education", "summit", "event"],
+    "file": "pages/certificate/2018-03-EAD-Summit/certificate.pdf",
     "supplement": null
   },
   {
@@ -424,13 +489,13 @@
     "id": "2017-07-instituto-engenharia-profissional-do-futuro",
     "folder": "2017-07-Instituto-Engenharia-Profissional-do-Futuro",
     "title": "The Professional of the Future",
-    "issuer": "Instituto de Engenharia do Paraná",
-    "issued": "2017-07",
+    "issuer": "Instituto de Engenharia do Paraná / CREA-PR",
+    "issued": "2017-06",
     "expires": null,
     "credentialId": null,
     "categories": ["Gestão"],
     "tags": ["future of work", "professional development", "innovation", "industry trends"],
-    "file": null,
+    "file": "pages/certificate/2017-07-Instituto-Engenharia-Profissional-do-Futuro/certificate.png",
     "supplement": null
   },
   {
@@ -629,6 +694,32 @@
     "supplement": null
   },
   {
+    "id": "2016-00-pinho-auditor-lider",
+    "folder": "2016-00-PINHO-Auditor-Lider",
+    "title": "Lead Auditor Course",
+    "issuer": "PINHO",
+    "issued": "2016",
+    "expires": null,
+    "credentialId": null,
+    "categories": ["Compliance", "Processo"],
+    "tags": ["lead auditor", "auditor líder", "quality audit", "iso 9001", "internal audit"],
+    "file": "pages/certificate/2016-00-PINHO-Auditor-Lider/certificate.pdf",
+    "supplement": null
+  },
+  {
+    "id": "2015-00-pinho-auditor-lider",
+    "folder": "2015-00-PINHO-Auditor-Lider",
+    "title": "Lead Auditor Course",
+    "issuer": "PINHO",
+    "issued": "2015",
+    "expires": null,
+    "credentialId": null,
+    "categories": ["Compliance", "Processo"],
+    "tags": ["lead auditor", "auditor líder", "quality audit", "iso 9001", "internal audit"],
+    "file": "pages/certificate/2015-00-PINHO-Auditor-Lider/certificate.pdf",
+    "supplement": null
+  },
+  {
     "id": "2007-07-grupo-voitto-qp-summit-2017",
     "folder": "2007-07-Grupo-Voitto-QP-SUMMIT-2017",
     "title": "QP SUMMIT 2017",
@@ -639,6 +730,19 @@
     "categories": ["Gestão", "Processo"],
     "tags": ["quality management", "summit", "process improvement", "event", "lean"],
     "file": null,
+    "supplement": null
+  },
+  {
+    "id": "2007-00-concurso-literario",
+    "folder": "2007-00-Concurso-Literario",
+    "title": "Literary Competition",
+    "issuer": null,
+    "issued": "2007",
+    "expires": null,
+    "credentialId": null,
+    "categories": ["Gestão"],
+    "tags": ["literary competition", "writing", "concurso literário"],
+    "file": "pages/certificate/2007-00-Concurso-Literario/certificate.pdf",
     "supplement": null
   }
 ]

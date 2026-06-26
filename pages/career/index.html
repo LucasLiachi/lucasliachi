@@ -75,6 +75,10 @@
     .btn-print-resume:hover {
       opacity: 0.85;
     }
+
+    @media print {
+      .jt-detail-btn { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -86,17 +90,6 @@
         <div class="logo">
           <a href="../../index.html">Lucas Liachi</a>
         </div>
-        <div class="header-social-links">
-          <a href="https://www.linkedin.com/in/lucasliachi/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-            <img src="../../assets/linkedin.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
-          </a>
-          <a href="https://medium.com/@lucasliachi" target="_blank" rel="noopener noreferrer" aria-label="Medium">
-            <img src="../../assets/medium.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
-          </a>
-          <a href="https://github.com/LucasLiachi" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-            <img src="../../assets/github.png" alt="" class="header-social-icon" width="20" height="20" loading="lazy">
-          </a>
-        </div>
       </div>
       <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
         <span class="menu-icon">&#9776;</span>
@@ -104,16 +97,11 @@
       </button>
       <nav id="main-nav">
         <ul id="nav-links" role="menubar">
-          <li role="none"><a href="../../index.html#hero" data-i18n="navbar.home" role="menuitem">Home</a></li>
           <li role="none"><a href="../about/" data-i18n="navbar.about" role="menuitem">About</a></li>
           <li role="none"><a href="../career/" data-i18n="navbar.career" role="menuitem" class="active">Career</a></li>
-          <li role="none"><a href="../projects/" data-i18n="navbar.projects" role="menuitem">Projects</a></li>
           <li role="none"><a href="../certificate/" data-i18n="navbar.certificates" role="menuitem">Certificates</a></li>
           <li role="none"><a href="../articles/" data-i18n="navbar.blog" role="menuitem">Blog</a></li>
-          <li role="none"><a href="../about/#academic" data-i18n="navbar.library" role="menuitem">Library</a></li>
-          <li role="none"><a href="../dashboard/" data-i18n="navbar.dashboard" role="menuitem">Dashboard</a></li>
-          <li role="none"><a href="../../index.html#search" data-i18n="navbar.search" role="menuitem">Search</a></li>
-          <li role="none"><a href="../contact/" data-i18n="navbar.contact" role="menuitem">Contact</a></li>
+          <li role="none"><a href="../projects/" data-i18n="navbar.projects" role="menuitem">Projects</a></li>
         </ul>
       </nav>
       <div class="right-section">
@@ -180,47 +168,39 @@
         return entry.end ? (entry.start + ' — ' + entry.end) : (entry.start + ' — ' + presentLabel);
       }
 
+      function escapeHtml(str) {
+        var d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+      }
+
       function buildTimelineHTML(entries) {
+        var lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toLowerCase();
+        var detailLabel = lang === 'pt' ? 'Ver detalhes →' : lang === 'es' ? 'Ver detalles →' : 'View details →';
+
         return entries.map(function (entry, index) {
           var period = getPeriodLabel(entry);
-          var side = entry.side || (index % 2 === 0 ? 'right' : 'left');
 
           var techPills = entry.technologies.map(function (t) {
-            var span = document.createElement('span');
-            span.className = 'jt-tech-pill';
-            span.textContent = t;
-            return span.outerHTML;
+            return '<span class="jt-tech-pill">' + escapeHtml(t) + '</span>';
           }).join('');
 
           var highlights = entry.highlights.map(function (h) {
-            var li = document.createElement('li');
-            li.textContent = h;
-            return li.outerHTML;
+            return '<li>' + escapeHtml(h) + '</li>';
           }).join('');
 
-          var periodEl = document.createElement('div');
-          periodEl.className = 'jt-period';
-          periodEl.textContent = period;
-
-          var roleEl = document.createElement('h3');
-          roleEl.className = 'jt-role';
-          roleEl.textContent = entry.role;
-
-          var companyEl = document.createElement('p');
-          companyEl.className = 'jt-company';
-          companyEl.textContent = entry.company;
-
-          var card = '<div class="jt-card">'
-            + periodEl.outerHTML
-            + roleEl.outerHTML
-            + companyEl.outerHTML
-            + '<ul class="jt-highlights">' + highlights + '</ul>'
-            + '<div class="jt-tech">' + techPills + '</div>'
-            + '</div>';
-
-          return '<div class="jt-item ' + side + '" style="animation-delay:' + (index * 0.07) + 's">'
+          return '<div class="jt-item" style="animation-delay:' + (index * 0.07) + 's">'
             + '<div class="jt-marker" aria-hidden="true"></div>'
-            + card
+            + '<div class="jt-card">'
+            + '<span class="jt-period">' + escapeHtml(period) + '</span>'
+            + '<h3 class="jt-role">' + escapeHtml(entry.role) + '</h3>'
+            + '<p class="jt-company">' + escapeHtml(entry.company) + '</p>'
+            + '<ul class="jt-highlights">' + highlights + '</ul>'
+            + '<div class="jt-card-footer">'
+            + '<div class="jt-tech">' + techPills + '</div>'
+            + '<a class="jt-detail-btn" href="viewer.html?id=' + encodeURIComponent(entry.id) + '">' + escapeHtml(detailLabel) + '</a>'
+            + '</div>'
+            + '</div>'
             + '</div>';
         }).join('');
       }
@@ -230,7 +210,7 @@
         if (!container) return;
 
         container.setAttribute('aria-busy', 'true');
-        container.innerHTML = '<div class="career-loading">' + (window.Translations && window.Translations.get('pages.career.loading') || 'Loading timeline...') + '</div>';
+        container.innerHTML = '<div class="career-loading">' + escapeHtml(window.Translations && window.Translations.get('pages.career.loading') || 'Loading timeline...') + '</div>';
 
         try {
           var res = await fetch('../../data/carreira.json');

@@ -1,8 +1,7 @@
-# UNIARA — MBA en CMMI (Tecnologías de la Información)
+﻿# UNIARA â€” MBA en CMMI (TecnologÃ­as de la InformaciÃ³n)
 
-- Attachment: pages/academic/2018-01-UNIARA-MBA-CMMI/certificate.jpg
-- Institución: UNIARA
-- Título: MBA en CMMI, Tecnologías de la Información
-- Período: 2018 – 2020
-- Descripción: Especialización en Calidad de Software y prácticas de madurez de procesos.
-- Competencias: Elaboración de documentos, Microsoft Power BI
+- InstituciÃ³n: UNIARA
+- TÃ­tulo: MBA en CMMI, TecnologÃ­as de la InformaciÃ³n
+- PerÃ­odo: 2018 â€“ 2020
+- DescripciÃ³n: EspecializaciÃ³n en Calidad de Software y prÃ¡cticas de madurez de procesos.
+- Competencias: ElaboraciÃ³n de documentos, Microsoft Power BI

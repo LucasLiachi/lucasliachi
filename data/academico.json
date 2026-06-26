@@ -1,5 +1,30 @@
 [
   {
+    "id": "2026-03-especialista-psicopedagogia",
+    "folder": "2026-03-Especialista-Psicopedagogia",
+    "instituicao": {
+      "en": "",
+      "pt": "",
+      "es": ""
+    },
+    "grau": {
+      "en": "Specialization, Educational Psychology and Development with Emphasis on Giftedness",
+      "pt": "Especialização, Psicopedagogia do Desenvolvimento com Ênfase em Altas Habilidades",
+      "es": "Especialización, Psicopedagogía del Desarrollo con Énfasis en Altas Capacidades"
+    },
+    "tipo": "especializacao",
+    "periodo": "Mar 2026",
+    "inicio": "2026-03",
+    "fim": "2026-03",
+    "descricao": {
+      "en": "Post-graduate specialization in educational psychology focused on the development and support of gifted and high-ability individuals.",
+      "pt": "Especialização em psicopedagogia voltada ao desenvolvimento e apoio de pessoas com altas habilidades e superdotação.",
+      "es": "Especialización en psicopedagogía orientada al desarrollo y apoyo de personas con altas capacidades y superdotación."
+    },
+    "competencias": ["Psicopedagogia", "Altas habilidades", "Desenvolvimento humano"],
+    "certificado": null
+  },
+  {
     "id": "2022-03-universidade-anhembi-morumbi",
     "folder": "2022-03-Universidade-Anhembi-Morumbi",
     "instituicao": {
@@ -47,7 +72,7 @@
       "es": "Especialista en diseño, arquitectura e ingeniería de soluciones de software alineadas con la agilidad y la estrategia de negocio."
     },
     "competencias": ["Arquitetura de soluções", "Microsoft Power BI", "Elaboração de documentos"],
-    "certificado": "pages/about/2022-02-FIA-Business-School/certificate.pdf"
+    "certificado": null
   },
   {
     "id": "2018-01-uniara-mba-cmmi",
@@ -72,7 +97,7 @@
       "es": "Especialización en Calidad de Software, cubriendo modelos de madurez CMMI y marcos de mejora de procesos."
     },
     "competencias": ["Microsoft Power BI", "Elaboração de documentos"],
-    "certificado": "pages/about/2018-01-UNIARA-MBA-CMMI/certificate.jpg"
+    "certificado": null
   },
   {
     "id": "2015-01-ufpr-tgq",
@@ -122,6 +147,6 @@
       "es": "Programa técnico con enfoque en auditoría, planificación documental, calidad y productividad y emprendimiento."
     },
     "competencias": ["Elaboração de documentos", "Documentação técnica"],
-    "certificado": "pages/about/2014-01-TECPUC-Controle-Qualidade/certificate.pdf"
+    "certificado": null
   }
 ]

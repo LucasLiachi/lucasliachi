@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="UTF-8">
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='dark'||(t==null&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}}());</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="pages.career.viewer.pageTitle">Career Detail — Lucas Liachi</title>
+  <meta name="description" content="Experiência profissional detalhada de Lucas Liachi: cargo, empresa, período, responsabilidades e tecnologias utilizadas em cada posição da carreira.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Lucas Liachi">
+  <link rel="canonical" href="https://lucasliachi.github.io/lucasliachi/pages/career/viewer.html">
+
+  <meta property="og:title" content="Career Detail — Lucas Liachi">
+  <meta property="og:description" content="Experiência profissional detalhada de Lucas Liachi: cargo, empresa, período, responsabilidades e tecnologias utilizadas em cada posição da carreira.">
+  <meta property="og:image" content="https://lucasliachi.github.io/lucasliachi/assets/perfil.jpeg">
+  <meta property="og:url" content="https://lucasliachi.github.io/lucasliachi/pages/career/viewer.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:locale:alternate" content="en_US">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Career Detail — Lucas Liachi">
+  <meta name="twitter:description" content="Experiência profissional detalhada de Lucas Liachi: cargo, empresa, período, responsabilidades e tecnologias utilizadas em cada posição da carreira.">
+  <meta name="twitter:image" content="https://lucasliachi.github.io/lucasliachi/assets/perfil.jpeg">
+
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+  <style>
+    .cv-back {
+      display: inline-block;
+      font-size: 0.875rem;
+      color: var(--accent);
+      text-decoration: none;
+      margin-bottom: 1.5rem;
+      transition: opacity 0.15s;
+    }
+    .cv-back:hover { opacity: 0.75; }
+
+    .cv-header {
+      padding: 2rem 0 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+
+    .cv-period-badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--muted);
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+    }
+
+    .cv-title {
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 700;
+      color: var(--foreground);
+      margin: 0 0 0.35rem 0;
+      line-height: 1.25;
+    }
+
+    .cv-company {
+      font-size: 1rem;
+      color: var(--muted-foreground);
+      margin: 0 0 1.25rem 0;
+    }
+
+    .cv-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .cv-tech-pill {
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: var(--muted);
+      color: var(--muted-foreground);
+    }
+
+
+    .cv-body .markdown-content h1 { font-size: 1.5rem; margin: 0 0 0.75rem; }
+    .cv-body .markdown-content h2 { font-size: 1.2rem; margin: 1.5rem 0 0.5rem; }
+    .cv-body .markdown-content h3 { font-size: 1rem; margin: 1.25rem 0 0.4rem; }
+    .cv-body .markdown-content p  { margin: 0 0 0.9rem; line-height: 1.7; }
+    .cv-body .markdown-content ul,
+    .cv-body .markdown-content ol  { padding-left: 1.4rem; margin: 0 0 0.9rem; }
+    .cv-body .markdown-content li  { margin-bottom: 0.3rem; line-height: 1.6; }
+    .cv-body .markdown-content strong { font-weight: 700; }
+    .cv-body .markdown-content em { font-style: italic; color: var(--muted-foreground); }
+    .cv-body .markdown-content code { font-family: monospace; font-size: 0.875em; background: var(--muted); padding: 0.1em 0.35em; border-radius: 4px; }
+
+    .cv-error {
+      color: var(--muted-foreground);
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+    .cv-error a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
+
+  <header>
+    <div class="container header-container">
+      <div class="logo-section">
+        <div class="logo">
+          <a href="../../index.html">Lucas Liachi</a>
+        </div>
+      </div>
+      <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <span class="menu-icon">&#9776;</span>
+        <span class="close-icon">&#x2715;</span>
+      </button>
+      <nav id="main-nav">
+        <ul id="nav-links" role="menubar">
+          <li role="none"><a href="../about/" data-i18n="navbar.about" role="menuitem">About</a></li>
+          <li role="none"><a href="../career/" data-i18n="navbar.career" role="menuitem" class="active">Career</a></li>
+          <li role="none"><a href="../certificate/" data-i18n="navbar.certificates" role="menuitem">Certificates</a></li>
+          <li role="none"><a href="../articles/" data-i18n="navbar.blog" role="menuitem">Blog</a></li>
+          <li role="none"><a href="../projects/" data-i18n="navbar.projects" role="menuitem">Projects</a></li>
+        </ul>
+      </nav>
+      <div class="right-section">
+        <div class="language-selector">
+          <button class="language-option" data-language="en">EN</button>
+          <button class="language-option" data-language="pt">PT</button>
+          <button class="language-option" data-language="es">ES</button>
+        </div>
+        <button id="dark-mode-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+          <span class="sun-icon">&#9728;&#65039;</span>
+          <span class="moon-icon">&#127769;</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="breadcrumb" aria-label="breadcrumb">
+    <div class="container">
+      <ol>
+        <li><a href="../../index.html" data-i18n="breadcrumb.home">Home</a></li>
+        <li><a href="../career/" data-i18n="navbar.career">Career</a></li>
+        <li aria-current="page" id="breadcrumb-role">—</li>
+      </ol>
+    </div>
+  </nav>
+
+  <main id="main-content">
+    <div class="page-content">
+      <div class="container">
+        <a href="../career/" class="cv-back" id="cv-back-link" data-i18n="pages.career.backToCareer">← Back to Career</a>
+        <div id="cv-main-content">
+          <div class="cv-error" data-i18n="pages.career.loading">Loading...</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <p id="footer-copyright" data-i18n="footer.copyright"></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/modules.js"></script>
+  <script src="../../js/main.js"></script>
+  <script>
+    (function () {
+      var _currentLang = null;
+      var _currentEntry = null;
+
+      function escapeHtml(str) {
+        var d = document.createElement('div');
+        d.textContent = str || '';
+        return d.innerHTML;
+      }
+
+      function getPeriodLabel(entry) {
+        var lang = (window.currentLanguage || localStorage.getItem('language') || 'en').toLowerCase();
+        var presentLabel = lang === 'pt' ? 'Presente' : lang === 'es' ? 'Presente' : 'Present';
+        return entry.end ? (entry.start + ' — ' + entry.end) : (entry.start + ' — ' + presentLabel);
+      }
+
+      function getEntryId() {
+        return new URLSearchParams(window.location.search).get('id');
+      }
+
+      function renderError(msg, showBack) {
+        var container = document.getElementById('cv-main-content');
+        var backHtml = showBack
+          ? '<p style="margin-top:1rem"><a href="../career/" data-i18n="pages.career.backToCareer">← Back to Career</a></p>'
+          : '';
+        container.innerHTML = '<div class="cv-error"><p>' + escapeHtml(msg) + '</p>' + backHtml + '</div>';
+      }
+
+      function updateSchemaOrg(entry) {
+        var existing = document.getElementById('schema-career-viewer');
+        if (existing) existing.remove();
+        var script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.id = 'schema-career-viewer';
+        script.textContent = JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "name": "Lucas Liachi",
+          "url": "https://lucasliachi.github.io/lucasliachi/",
+          "jobTitle": entry.role,
+          "worksFor": { "@type": "Organization", "name": entry.company }
+        });
+        document.head.appendChild(script);
+      }
+
+      async function loadContent() {
+        var id = getEntryId();
+        var lang = (window.currentLanguage || localStorage.getItem('language') || 'en');
+        var container = document.getElementById('cv-main-content');
+        var notFoundMsg = (window.Translations && window.Translations.get('pages.career.viewer.notFound')) || 'Career entry not found.';
+        var noContentMsg = (window.Translations && window.Translations.get('pages.career.viewer.noContent')) || 'Detailed content not available.';
+
+        if (!id) {
+          renderError(notFoundMsg, true);
+          return;
+        }
+
+        container.innerHTML = '<div class="cv-error">' + escapeHtml((window.Translations && window.Translations.get('pages.career.loading')) || 'Loading...') + '</div>';
+
+        var entry;
+        try {
+          var res = await fetch('../../data/carreira.json');
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          var entries = await res.json();
+          entry = entries.find(function (e) { return e.id === id; });
+        } catch (e) {
+          renderError(notFoundMsg, true);
+          return;
+        }
+
+        if (!entry) {
+          renderError(notFoundMsg, true);
+          return;
+        }
+
+        _currentEntry = entry;
+        document.title = entry.role + ' — ' + entry.company + ' — Lucas Liachi';
+
+        var breadcrumbRole = document.getElementById('breadcrumb-role');
+        if (breadcrumbRole) breadcrumbRole.textContent = entry.role;
+
+        updateSchemaOrg(entry);
+
+        var langUpper = lang.toUpperCase();
+        var mdUrl = '../../pages/career/' + entry.folder + '/' + langUpper + '.md';
+        var fallbackUrl = '../../pages/career/' + entry.folder + '/EN.md';
+
+        var mdText = null;
+        try {
+          var mdRes = await fetch(mdUrl);
+          if (mdRes.ok) {
+            mdText = await mdRes.text();
+          } else if (langUpper !== 'EN') {
+            var fbRes = await fetch(fallbackUrl);
+            if (fbRes.ok) mdText = await fbRes.text();
+          }
+        } catch (e) { /* fall through */ }
+
+        var period = getPeriodLabel(entry);
+
+        var techPills = entry.technologies.map(function (t) {
+          return '<span class="cv-tech-pill">' + escapeHtml(t) + '</span>';
+        }).join('');
+
+        var bodyHtml = mdText
+          ? '<div class="cv-body"><div class="markdown-content">' + marked.parse(mdText) + '</div></div>'
+          : '<p class="cv-error">' + escapeHtml(noContentMsg) + '</p>';
+
+        container.innerHTML =
+          '<div class="cv-header">'
+          + '<span class="cv-period-badge">' + escapeHtml(period) + '</span>'
+          + '<h1 class="cv-title">' + escapeHtml(entry.role) + '</h1>'
+          + '<p class="cv-company">' + escapeHtml(entry.company) + '</p>'
+          + '<div class="cv-tech">' + techPills + '</div>'
+          + '</div>'
+          + bodyHtml;
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        _currentLang = window.currentLanguage || localStorage.getItem('language') || 'en';
+        loadContent();
+      });
+
+      document.addEventListener('languageChanged', function () {
+        var newLang = window.currentLanguage || localStorage.getItem('language') || 'en';
+        if (newLang !== _currentLang) {
+          _currentLang = newLang;
+          loadContent();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

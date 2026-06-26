@@ -1,8 +1,7 @@
-# FIA Business School — Posgrado, Ingeniería y Arquitectura de Software
+﻿# FIA Business School â€” Posgrado, IngenierÃ­a y Arquitectura de Software
 
-- Attachment: pages/academic/2022-02-FIA-Business-School/certificate.pdf
-- Institución: FIA Business School
-- Título: Posgrado, Ingeniería y Arquitectura de Software
-- Período: Feb 2022 – Jul 2023
-- Descripción: Especialización en diseño, arquitectura e ingeniería de soluciones de software alineadas con agilidad y la estrategia del negocio.
-- Competencias: Elaboración de documentos, Microsoft Power BI, Arquitectura de soluciones
+- InstituciÃ³n: FIA Business School
+- TÃ­tulo: Posgrado, IngenierÃ­a y Arquitectura de Software
+- PerÃ­odo: Feb 2022 â€“ Jul 2023
+- DescripciÃ³n: EspecializaciÃ³n en diseÃ±o, arquitectura e ingenierÃ­a de soluciones de software alineadas con agilidad y la estrategia del negocio.
+- Competencias: ElaboraciÃ³n de documentos, Microsoft Power BI, Arquitectura de soluciones
