@@ -219,6 +219,99 @@ Verificar se `hero` já existe como namespace em `Translations` e apenas adicion
 
 ---
 
+#### Fase 3 — Redesign da homepage: tema claro padrão, indicadores com links e dois gráficos de competências
+
+**Objetivo:** Fechar o portfólio com uma homepage profissional e orientada a dados, estabelecendo o tema claro como padrão visual, substituindo os indicadores genéricos por métricas reais com hiperlinks para as seções correspondentes, e adicionando dois gráficos Chart.js que comunicam o DNA de competências e os ramos de atuação do profissional.
+
+**Parte 1 — Definir tema claro como padrão do site**
+O site deve abrir em tema claro por padrão para qualquer visitante novo. O modo escuro continua existindo e completamente funcional — apenas deixa de ser ativado automaticamente pela preferência do sistema operacional (`prefers-color-scheme: dark`).
+
+Regra de inicialização desejada:
+- Se `localStorage` tiver `'theme' = 'dark'` → aplica `.dark` (usuário escolheu escuro explicitamente)
+- Se `localStorage` tiver `'theme' = 'light'` → não aplica `.dark`
+- Se não houver nada salvo (visitante novo) → não aplica `.dark` (tema claro é o padrão)
+
+Atualizar o script anti-FOUC em **todas as páginas HTML** para refletir essa regra:
+```html
+<script>(function(){var t=localStorage.getItem('theme');if(t==='dark'){document.documentElement.classList.add('dark');}}());</script>
+```
+Atualizar também o módulo `DarkMode` em `js/utils.js` para remover a detecção automática de `prefers-color-scheme` na inicialização (mantendo apenas a leitura do `localStorage`). O botão de alternância de tema (`#dark-mode-toggle`) deve continuar funcionando normalmente — ao clicar, persiste a escolha em `localStorage` e alterna a classe `.dark` no `<html>`, exatamente como hoje.
+
+**Parte 2 — Substituir os indicadores (cards de métricas) com links**
+Na seção de indicadores do `index.html`, substituir os cards existentes pelos seis abaixo, cada um com `href` apontando para a seção correspondente e valor numérico hardcoded (dados estáticos, sem fetch):
+
+| Indicador | Valor | Link |
+|-----------|-------|------|
+| Anos de Experiência | 20 | `pages/about/` |
+| Pontos de Graduação | 8,0 (média) | `pages/about/` |
+| Histórico de Trabalho | N projetos implementados / entregas otimizadas | `pages/career/` |
+| Certificações | Total de certificações (buscar em `data/certificados.json`) | `pages/certificate/` |
+| Projetos | Total de projetos (buscar em `data/projetos.json`) | `pages/Projects/` |
+| Artigos | Total de artigos (buscar em `data/artigos.json`) | `pages/articles/` |
+
+Os três últimos (Certificações, Projetos, Artigos) devem carregar o total dinamicamente via `fetch()` dos JSON respectivos ao inicializar a página, com fallback para o último valor conhecido se o fetch falhar. Os três primeiros (Anos, Graduação, Trabalho) são valores fixos definidos diretamente no HTML via `data-i18n`.
+
+Cada card deve ser um elemento `<a>` (link clicável) com:
+- Número em destaque (classe `metric-value`)
+- Rótulo traduzido via `data-i18n` (classe `metric-label`)
+- Ícone SVG ou emoji contextual
+- Hover com sublinhado ou elevação visual (consistente com `components.css`)
+
+**Parte 3 — Gráfico 1: Rosca "DNA de Competências"**
+Adicionar um `<canvas id="chart-competencias">` na seção de gráficos do `index.html`. Configurar via Chart.js (já carregado com SRI) como `type: 'doughnut'` com os seguintes dados fixos:
+
+```js
+labels: ['Gestão de Processos', 'Tecnologia', 'Governança', 'Gestão de Projetos', 'Organização'],
+data:   [30, 25, 20, 15, 10],  // percentuais somando 100
+```
+
+- Texto central: "Perfil Multidisciplinar" (plugin nativo via `beforeDraw` no Chart.js, sem dependência extra)
+- Paleta de cores consistente com as CSS variables do projeto (`--color-primary`, `--color-secondary`, etc.)
+- Legenda posicionada abaixo do gráfico (`position: 'bottom'`)
+- Responsivo: `responsive: true`, `maintainAspectRatio: true`
+- Tradução do título e labels via `data-i18n` (registrar chaves em `js/main.js` nos três idiomas)
+
+**Parte 4 — Gráfico 2: Barras horizontais "Ramos de Atuação"**
+Adicionar um `<canvas id="chart-ramos">` na mesma seção. Configurar como `type: 'bar'` com `indexAxis: 'y'` (barras horizontais). Dados fixos em ordem decrescente por valor:
+
+```js
+labels: ['Logística', 'Saúde', 'Varejo', 'Agronegócio', 'Gestão Pública', 'Indústria Mecânica', 'Auditoria de Qualidade', 'Importação'],
+data:   [36, 24, 18, 15, 12, 10, 8, 6],  // meses de experiência por setor
+```
+
+- Eixo X: escala numérica com sufixo "meses" no tooltip
+- Eixo Y: nomes dos setores (legíveis, sem truncamento)
+- Sem legenda (desnecessária para gráfico de barras com labels no eixo)
+- Cor das barras: variação de intensidade da cor primária do projeto
+- Responsivo e adaptado para mobile (altura mínima de 320px em telas pequenas)
+- Título traduzível via `data-i18n`
+
+**Parte 5 — i18n dos novos elementos**
+Registrar todas as chaves novas em `js/main.js` nos três idiomas (`en`, `pt`, `es`):
+- Rótulos dos 6 indicadores
+- Títulos e subtítulos das duas seções de gráficos
+- Labels dos gráficos (competências e setores)
+- Tooltip do eixo X do gráfico de barras ("months" / "meses" / "meses")
+
+**Parte 6 — Layout e responsividade**
+- Os 6 cards de indicadores devem ficar em grid: 3 colunas em desktop, 2 em tablet, 1 em mobile
+- Os dois gráficos devem ficar lado a lado em desktop (50% / 50%) e empilhados em mobile
+- Garantir que o `css/main.css` ou `index.html` (style inline) tenha as regras necessárias sem quebrar outras seções da homepage
+
+**Critérios de aceitação:**
+- Homepage carrega em tema claro por padrão; alternância manual de tema continua funcionando
+- 6 cards de indicadores visíveis, clicáveis, com valores corretos e links funcionando
+- Totais dinâmicos (certificações, projetos, artigos) carregados via fetch com fallback gracioso
+- Gráfico de rosca renderizado com 5 fatias, texto central e legenda
+- Gráfico de barras horizontais renderizado em ordem decrescente com 8 setores
+- Ambos os gráficos responsivos e sem erro de CSP ou SRI no console
+- Todas as strings traduzidas nos três idiomas
+- Nenhuma dependência nova além do Chart.js já existente
+
+**Agentes:** `[architect]` para validação inicial; `[data-manager]` para verificar totais nos JSONs; `[page-builder]` para HTML/CSS/JS da homepage; `[architect]` para validação final
+
+---
+
 ## Roadmap de Segurança
 
 Fases dedicadas a hardening do site estático. Aplicáveis independentemente das fases de funcionalidade. **Todas as fases passam nas 6 perguntas da regra de ouro** — são exclusivamente HTML, meta tags, atributos, arquivos estáticos e JS client-side. Nenhuma fase exige servidor, build step, variável de ambiente ou configuração externa ao repositório.

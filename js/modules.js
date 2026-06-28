@@ -441,33 +441,29 @@ function loadExperienceContent() {
             return response.text();
           })
           .then(text => {
-            {
-              const html = safeHtml(text);
-              const contentEl = document.createElement('div');
-              contentEl.classList.add('markdown-content');
-              contentEl.innerHTML = html;
-              const modal = document.createElement('div');
-              modal.classList.add('modal');
-              const modalContent = document.createElement('div');
-              modalContent.classList.add('modal-content');
-              const closeBtn = document.createElement('span');
-              closeBtn.classList.add('close-modal');
-              closeBtn.innerHTML = '&times;';
-              closeBtn.addEventListener('click', () => {
+            const html = safeHtml(text);
+            const contentEl = document.createElement('div');
+            contentEl.classList.add('markdown-content');
+            contentEl.innerHTML = html;
+            const modal = document.createElement('div');
+            modal.classList.add('modal');
+            const modalContent = document.createElement('div');
+            modalContent.classList.add('modal-content');
+            const closeBtn = document.createElement('span');
+            closeBtn.classList.add('close-modal');
+            closeBtn.innerHTML = '&times;';
+            closeBtn.addEventListener('click', () => {
+              document.body.removeChild(modal);
+            });
+            modalContent.appendChild(closeBtn);
+            modalContent.appendChild(contentEl);
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+            modal.addEventListener('click', (e) => {
+              if (e.target === modal) {
                 document.body.removeChild(modal);
-              });
-              modalContent.appendChild(closeBtn);
-              modalContent.appendChild(contentEl);
-              modal.appendChild(modalContent);
-              document.body.appendChild(modal);
-              modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                  document.body.removeChild(modal);
-                }
-              });
-            } else {
-              console.error('marked library not found');
-            }
+              }
+            });
           })
           .catch(error => {
             console.error('Error loading Markdown:', error);
@@ -523,31 +519,29 @@ function openCareerDetail(folder) {
       return response.text();
     })
     .then(text => {
-      {
-        const html = safeHtml(text);
-        const contentEl = document.createElement('div');
-        contentEl.classList.add('markdown-content');
-        contentEl.innerHTML = html;
-        const modal = document.createElement('div');
-        modal.classList.add('modal');
-        const modalContent = document.createElement('div');
-        modalContent.classList.add('modal-content');
-        const closeBtn = document.createElement('span');
-        closeBtn.classList.add('close-modal');
-        closeBtn.innerHTML = '&times;';
-        closeBtn.addEventListener('click', () => {
+      const html = safeHtml(text);
+      const contentEl = document.createElement('div');
+      contentEl.classList.add('markdown-content');
+      contentEl.innerHTML = html;
+      const modal = document.createElement('div');
+      modal.classList.add('modal');
+      const modalContent = document.createElement('div');
+      modalContent.classList.add('modal-content');
+      const closeBtn = document.createElement('span');
+      closeBtn.classList.add('close-modal');
+      closeBtn.innerHTML = '&times;';
+      closeBtn.addEventListener('click', () => {
+        document.body.removeChild(modal);
+      });
+      modalContent.appendChild(closeBtn);
+      modalContent.appendChild(contentEl);
+      modal.appendChild(modalContent);
+      document.body.appendChild(modal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
           document.body.removeChild(modal);
-        });
-        modalContent.appendChild(closeBtn);
-        modalContent.appendChild(contentEl);
-        modal.appendChild(modalContent);
-        document.body.appendChild(modal);
-        modal.addEventListener('click', (e) => {
-          if (e.target === modal) {
-            document.body.removeChild(modal);
-          }
-        });
-      }
+        }
+      });
     })
     .catch(error => {
       console.error('Error loading career detail:', error);

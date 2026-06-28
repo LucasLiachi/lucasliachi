@@ -209,17 +209,18 @@ const Translations = (() => {
           indicators: 'Indicators',
           chartsTitle: 'Charts',
           cards: {
-            projects: 'Total Projects',
-            certificates: 'Certificates',
-            articles: 'Published Articles',
             experience: 'Years of Experience',
-            technologies: 'Technologies Mastered',
-            repos: 'Public Repositories',
-            years: 'years'
+            graduation: 'GPA Score',
+            work: 'Projects Delivered',
+            certificates: 'Certifications',
+            projects: 'Projects',
+            articles: 'Articles'
           },
           charts: {
-            certsByCategory: 'Certificates by Category',
-            projectsByTech: 'Top Technologies in Projects'
+            competencias: 'Competency DNA',
+            ramos: 'Industry Sectors',
+            centerText: 'Multidisciplinary\nProfile',
+            months: 'months'
           },
           loading: 'Loading dashboard data...',
           error: 'Unable to load some data. Showing available information.'
@@ -476,17 +477,18 @@ const Translations = (() => {
           indicators: 'Indicadores',
           chartsTitle: 'Gráficos',
           cards: {
-            projects: 'Total de Projetos',
-            certificates: 'Certificados',
-            articles: 'Artigos Publicados',
             experience: 'Anos de Experiência',
-            technologies: 'Tecnologias Dominadas',
-            repos: 'Repositórios Públicos',
-            years: 'anos'
+            graduation: 'Pontos de Graduação',
+            work: 'Projetos Entregues',
+            certificates: 'Certificações',
+            projects: 'Projetos',
+            articles: 'Artigos'
           },
           charts: {
-            certsByCategory: 'Certificados por Categoria',
-            projectsByTech: 'Top Tecnologias em Projetos'
+            competencias: 'DNA de Competências',
+            ramos: 'Ramos de Atuação',
+            centerText: 'Perfil\nMultidisciplinar',
+            months: 'meses'
           },
           loading: 'Carregando dados do dashboard...',
           error: 'Não foi possível carregar alguns dados. Exibindo informações disponíveis.'
@@ -743,17 +745,18 @@ const Translations = (() => {
           indicators: 'Indicadores',
           chartsTitle: 'Gráficos',
           cards: {
-            projects: 'Total de Proyectos',
-            certificates: 'Certificados',
-            articles: 'Artículos Publicados',
             experience: 'Años de Experiencia',
-            technologies: 'Tecnologías Dominadas',
-            repos: 'Repositorios Públicos',
-            years: 'años'
+            graduation: 'Promedio de Graduación',
+            work: 'Proyectos Entregados',
+            certificates: 'Certificaciones',
+            projects: 'Proyectos',
+            articles: 'Artículos'
           },
           charts: {
-            certsByCategory: 'Certificados por Categoría',
-            projectsByTech: 'Top Tecnologías en Proyectos'
+            competencias: 'ADN de Competencias',
+            ramos: 'Sectores de Actuación',
+            centerText: 'Perfil\nMultidisciplinario',
+            months: 'meses'
           },
           loading: 'Cargando datos del dashboard...',
           error: 'No se pudieron cargar algunos datos. Mostrando información disponible.'

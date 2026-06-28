@@ -48,7 +48,6 @@ function safeHtml(markdownText) {
 const DarkMode = (() => {
   const STORAGE_KEY = 'theme';
   const DARK_CLASS = 'dark';
-  let mediaQuery = null;
   let bound = false;
 
   function getStoredTheme() {
@@ -56,16 +55,8 @@ const DarkMode = (() => {
     return value === 'dark' || value === 'light' ? value : null;
   }
 
-  function getSystemTheme() {
-    if (!window.matchMedia) {
-      return 'light';
-    }
-
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  }
-
   function getPreferredTheme() {
-    return getStoredTheme() || getSystemTheme();
+    return getStoredTheme() || 'light';
   }
 
   function updateThemeButtons(theme) {
@@ -112,31 +103,9 @@ const DarkMode = (() => {
     });
   }
 
-  function watchSystemPreference() {
-    if (!window.matchMedia) {
-      return;
-    }
-
-    mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = event => {
-      if (getStoredTheme()) {
-        return;
-      }
-
-      applyTheme(event.matches ? 'dark' : 'light', false);
-    };
-
-    if (typeof mediaQuery.addEventListener === 'function') {
-      mediaQuery.addEventListener('change', handleChange);
-    } else if (typeof mediaQuery.addListener === 'function') {
-      mediaQuery.addListener(handleChange);
-    }
-  }
-
   function initializeDarkMode() {
     applyTheme(getPreferredTheme(), false);
     bindToggleButton();
-    watchSystemPreference();
   }
 
   return {
@@ -461,8 +430,7 @@ function loadProjectContent(path) {
 
     try {
       const text = await response.text();
-      {
-        const html = safeHtml(text);
+      const html = safeHtml(text);
 
         // Try to match the Attachment/Anexo key in markdown
         const attachmentMatch = String(text || '').match(/^[-*]\s+(Attachment|Anexo):\s+(.+)$/mi);
@@ -476,9 +444,6 @@ function loadProjectContent(path) {
         } catch (e) {
           Logger.error('Failed to open generic modal with project content', e);
         }
-      } else {
-        Logger.error('Marked library not found');
-      }
     } catch (err) {
       Logger.error('Error processing project content:', err);
     }

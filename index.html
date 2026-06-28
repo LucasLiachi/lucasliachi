@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://api.github.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
-  <script>(function(){var t=localStorage.getItem('theme');if(t==='dark'||(t==null&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}}());</script>
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='dark'){document.documentElement.classList.add('dark');}}());</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Lucas Liachi — Technology Governance Specialist | Portfólio</title>
@@ -382,11 +382,6 @@
       font-size: 0.9rem;
     }
 
-    .dash-status.loading {
-      background: var(--muted);
-      color: var(--muted-foreground);
-    }
-
     .dash-status.error {
       background: #fee2e2;
       color: #991b1b;
@@ -399,13 +394,9 @@
 
     .dash-cards {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, 1fr);
       gap: 1rem;
       margin-bottom: 2.5rem;
-    }
-
-    @media (min-width: 640px) {
-      .dash-cards { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (min-width: 768px) {
@@ -426,6 +417,17 @@
       align-items: center;
       text-align: center;
       gap: 0.5rem;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+      cursor: pointer;
+    }
+
+    .dash-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
+      color: inherit;
     }
 
     .dash-card-icon {
@@ -475,6 +477,14 @@
     .dash-chart-container {
       position: relative;
       height: 260px;
+    }
+
+    .dash-chart-container.tall {
+      height: 340px;
+    }
+
+    @media (max-width: 640px) {
+      .dash-chart-container.tall { height: 320px; }
     }
 
     .skeleton {
@@ -610,54 +620,52 @@
       <div class="container">
         <h2 data-i18n="pages.dashboard.indicators">Indicators</h2>
 
-        <div id="dash-status" class="dash-status loading" role="status" aria-live="polite">
-          <span data-i18n="pages.dashboard.loading">Loading dashboard data...</span>
-        </div>
+        <div id="dash-status" class="dash-status" role="status" aria-live="polite" style="display:none"></div>
 
         <div class="dash-cards">
-          <div class="dash-card" id="card-projects">
-            <span class="dash-card-icon" aria-hidden="true">&#128193;</span>
-            <span class="dash-card-value skeleton" id="val-projects">--</span>
-            <span class="dash-card-label" data-i18n="pages.dashboard.cards.projects">Total Projects</span>
-          </div>
-          <div class="dash-card" id="card-certificates">
+          <a href="pages/about/" class="dash-card">
+            <span class="dash-card-icon" aria-hidden="true">&#9971;</span>
+            <span class="dash-card-value">20</span>
+            <span class="dash-card-label" data-i18n="pages.dashboard.cards.experience">Years of Experience</span>
+          </a>
+          <a href="pages/about/" class="dash-card">
+            <span class="dash-card-icon" aria-hidden="true">&#127891;</span>
+            <span class="dash-card-value">8,0</span>
+            <span class="dash-card-label" data-i18n="pages.dashboard.cards.graduation">GPA Score</span>
+          </a>
+          <a href="pages/career/" class="dash-card">
+            <span class="dash-card-icon" aria-hidden="true">&#128188;</span>
+            <span class="dash-card-value skeleton" id="val-work">--</span>
+            <span class="dash-card-label" data-i18n="pages.dashboard.cards.work">Projects Delivered</span>
+          </a>
+          <a href="pages/certificate/" class="dash-card">
             <span class="dash-card-icon" aria-hidden="true">&#127941;</span>
             <span class="dash-card-value skeleton" id="val-certificates">--</span>
-            <span class="dash-card-label" data-i18n="pages.dashboard.cards.certificates">Certificates</span>
-          </div>
-          <div class="dash-card" id="card-articles">
+            <span class="dash-card-label" data-i18n="pages.dashboard.cards.certificates">Certifications</span>
+          </a>
+          <a href="pages/Projects/" class="dash-card">
+            <span class="dash-card-icon" aria-hidden="true">&#128193;</span>
+            <span class="dash-card-value skeleton" id="val-projects">--</span>
+            <span class="dash-card-label" data-i18n="pages.dashboard.cards.projects">Projects</span>
+          </a>
+          <a href="pages/articles/" class="dash-card">
             <span class="dash-card-icon" aria-hidden="true">&#128221;</span>
             <span class="dash-card-value skeleton" id="val-articles">--</span>
-            <span class="dash-card-label" data-i18n="pages.dashboard.cards.articles">Published Articles</span>
-          </div>
-          <div class="dash-card" id="card-experience">
-            <span class="dash-card-icon" aria-hidden="true">&#127775;</span>
-            <span class="dash-card-value skeleton" id="val-experience">--</span>
-            <span class="dash-card-label" data-i18n="pages.dashboard.cards.experience">Years of Experience</span>
-          </div>
-          <div class="dash-card" id="card-technologies">
-            <span class="dash-card-icon" aria-hidden="true">&#9881;&#65039;</span>
-            <span class="dash-card-value skeleton" id="val-technologies">--</span>
-            <span class="dash-card-label" data-i18n="pages.dashboard.cards.technologies">Technologies Mastered</span>
-          </div>
-          <div class="dash-card" id="card-repos">
-            <span class="dash-card-icon" aria-hidden="true">&#128025;</span>
-            <span class="dash-card-value skeleton" id="val-repos">--</span>
-            <span class="dash-card-label" data-i18n="pages.dashboard.cards.repos">Public Repositories</span>
-          </div>
+            <span class="dash-card-label" data-i18n="pages.dashboard.cards.articles">Articles</span>
+          </a>
         </div>
 
         <div class="dash-charts">
           <div class="dash-chart-card">
-            <h3 class="dash-chart-title" data-i18n="pages.dashboard.charts.certsByCategory">Certificates by Category</h3>
+            <h3 class="dash-chart-title" data-i18n="pages.dashboard.charts.competencias">Competency DNA</h3>
             <div class="dash-chart-container">
-              <canvas id="chart-certs" aria-label="Certificates by category" role="img"></canvas>
+              <canvas id="chart-competencias" aria-label="Competency DNA" role="img"></canvas>
             </div>
           </div>
           <div class="dash-chart-card">
-            <h3 class="dash-chart-title" data-i18n="pages.dashboard.charts.projectsByTech">Top Technologies in Projects</h3>
-            <div class="dash-chart-container">
-              <canvas id="chart-tech" aria-label="Top technologies in projects" role="img"></canvas>
+            <h3 class="dash-chart-title" data-i18n="pages.dashboard.charts.ramos">Industry Sectors</h3>
+            <div class="dash-chart-container tall">
+              <canvas id="chart-ramos" aria-label="Industry sectors" role="img"></canvas>
             </div>
           </div>
         </div>
@@ -1207,154 +1215,36 @@
     (function () {
       'use strict';
 
-      /* ── Constants ── */
-      var GITHUB_CACHE_KEY = 'github_repos_cache';
-      var GITHUB_CACHE_TTL = 5 * 60 * 1000; // 5 minutes — same key as Fase 4
-      var GITHUB_USER      = 'LucasLiachi';
-
-      /* Chart instances (kept so they can be destroyed on language re-render) */
-      var chartCerts = null;
-      var chartTech  = null;
+      /* Chart instances */
+      var chartComp  = null;
+      var chartRamos = null;
 
       /* ─────────────────────────────────────────
-         DATA FETCHERS
+         COUNT-UP ANIMATION
       ───────────────────────────────────────── */
 
-      async function fetchJSON(url) {
-        var resp = await fetch(url);
-        if (!resp.ok) throw new Error('HTTP ' + resp.status + ' — ' + url);
-        return resp.json();
+      function t(key) {
+        return (window.Translations && window.Translations.get(key)) || key;
       }
 
-      async function fetchGitHubUser() {
-        try {
-          var resp = await fetch('https://api.github.com/users/' + GITHUB_USER);
-          if (!resp.ok) throw new Error('HTTP ' + resp.status);
-          return await resp.json();
-        } catch (e) {
-          return null;
-        }
-      }
-
-      async function fetchGitHubRepos() {
-        try {
-          var cached = sessionStorage.getItem(GITHUB_CACHE_KEY);
-          if (cached) {
-            var parsed = JSON.parse(cached);
-            if (Date.now() - parsed.ts < GITHUB_CACHE_TTL) return parsed.data;
-          }
-          var resp = await fetch(
-            'https://api.github.com/users/' + GITHUB_USER + '/repos?per_page=100&sort=updated'
-          );
-          if (!resp.ok) throw new Error('HTTP ' + resp.status);
-          var data = await resp.json();
-          sessionStorage.setItem(GITHUB_CACHE_KEY, JSON.stringify({ data: data, ts: Date.now() }));
-          return data;
-        } catch (e) {
-          /* Attempt to return stale cache rather than null */
-          var stale = sessionStorage.getItem(GITHUB_CACHE_KEY);
-          if (stale) {
-            try { return JSON.parse(stale).data; } catch (_) {}
-          }
-          return null;
-        }
-      }
-
-      /* ─────────────────────────────────────────
-         CALCULATIONS
-      ───────────────────────────────────────── */
-
-      function calcExperienceYears(carreira) {
-        if (!carreira || !carreira.length) return 0;
-        var earliest = carreira.reduce(function (min, entry) {
-          var d = entry.start || entry.inicio || '';
-          return d < min ? d : min;
-        }, '9999-99');
-        if (!earliest || earliest === '9999-99') return 0;
-        /* Parse YYYY-MM or YYYY-MM-DD */
-        var parts = earliest.split('-');
-        var year  = parseInt(parts[0], 10);
-        var month = parseInt(parts[1] || '1', 10);
-        var startDate = new Date(year, month - 1, 1);
-        var now = new Date();
-        var diffMs    = now - startDate;
-        var diffYears = diffMs / (1000 * 60 * 60 * 24 * 365.25);
-        return Math.floor(diffYears);
-      }
-
-      function collectUniqueTechnologies(carreira, projetos, certificados) {
-        var tech = new Set();
-
-        (carreira || []).forEach(function (entry) {
-          (entry.technologies || []).forEach(function (t) { tech.add(t); });
-        });
-
-        (projetos || []).forEach(function (p) {
-          (p.technologies || []).forEach(function (t) { tech.add(t); });
-        });
-
-        /* Pull tags from certificados as a proxy for knowledge areas */
-        (certificados || []).forEach(function (c) {
-          (c.tags || []).forEach(function (t) { tech.add(t); });
-        });
-
-        return tech.size;
-      }
-
-      function countCertsByCategory(certificados) {
-        var counts = {};
-        (certificados || []).forEach(function (c) {
-          (c.categories || []).forEach(function (cat) {
-            counts[cat] = (counts[cat] || 0) + 1;
-          });
-        });
-        return counts;
-      }
-
-      function topTechFromProjects(projetos, githubRepos, limit) {
-        limit = limit || 8;
-        var counts = {};
-
-        (projetos || []).forEach(function (p) {
-          (p.technologies || []).forEach(function (t) {
-            counts[t] = (counts[t] || 0) + 1;
-          });
-        });
-
-        (githubRepos || []).forEach(function (r) {
-          if (r.language) {
-            counts[r.language] = (counts[r.language] || 0) + 1;
-          }
-        });
-
-        return Object.entries(counts)
-          .sort(function (a, b) { return b[1] - a[1]; })
-          .slice(0, limit);
+      function getCssVar(name, fallback) {
+        return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
       }
 
       /* ─────────────────────────────────────────
          COUNT-UP ANIMATION
       ───────────────────────────────────────── */
 
-      function animateCountUp(element, target, duration) {
-        duration = duration || 1200;
-        var start     = 0;
+      function animateCountUp(el, target) {
         var startTime = null;
-
-        function step(timestamp) {
-          if (!startTime) startTime = timestamp;
-          var progress = Math.min((timestamp - startTime) / duration, 1);
-          /* Ease-out cubic */
+        function step(ts) {
+          if (!startTime) startTime = ts;
+          var progress = Math.min((ts - startTime) / 1200, 1);
           var eased = 1 - Math.pow(1 - progress, 3);
-          var current = Math.round(eased * target);
-          element.textContent = current;
-          if (progress < 1) {
-            requestAnimationFrame(step);
-          } else {
-            element.textContent = target;
-          }
+          el.textContent = Math.round(eased * target);
+          if (progress < 1) requestAnimationFrame(step);
+          else el.textContent = target;
         }
-
         requestAnimationFrame(step);
       }
 
@@ -1362,85 +1252,95 @@
         var el = document.getElementById(id);
         if (!el) return;
         el.classList.remove('skeleton');
-        if (typeof value !== 'number') {
-          el.textContent = value;
-          return;
-        }
-        animateCountUp(el, value);
+        typeof value === 'number' ? animateCountUp(el, value) : (el.textContent = value);
       }
 
       /* ─────────────────────────────────────────
-         CHARTS
+         CHARTS — fixed data
       ───────────────────────────────────────── */
 
-      var CHART_PALETTE = [
-        '#3b82f6', '#10b981', '#f59e0b', '#ef4444',
-        '#8b5cf6', '#06b6d4', '#f97316', '#ec4899',
-        '#6366f1', '#14b8a6'
-      ];
-
-      function buildCertsChart(categoryCounts) {
-        var canvas = document.getElementById('chart-certs');
+      function buildCompetenciasChart() {
+        var canvas = document.getElementById('chart-competencias');
         if (!canvas) return;
-        if (chartCerts) { chartCerts.destroy(); chartCerts = null; }
+        if (chartComp) { chartComp.destroy(); chartComp = null; }
 
-        var labels = Object.keys(categoryCounts);
-        var data   = Object.values(categoryCounts);
+        var fg   = getCssVar('--foreground', '#1f2937');
+        var card = getCssVar('--card', '#ffffff');
 
-        chartCerts = new Chart(canvas, {
+        var centerTextPlugin = {
+          id: 'centerText',
+          afterDraw: function (chart) {
+            var ctx = chart.ctx;
+            var cx  = chart.chartArea.left + chart.chartArea.width  / 2;
+            var cy  = chart.chartArea.top  + chart.chartArea.height / 2;
+            var raw = t('pages.dashboard.charts.centerText');
+            var lines = raw.split('\n');
+            var lineH = 16;
+            ctx.save();
+            ctx.textAlign    = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle    = fg;
+            ctx.font         = 'bold 11px Inter, system-ui, sans-serif';
+            var totalH = lines.length * lineH;
+            lines.forEach(function (line, i) {
+              ctx.fillText(line, cx, cy - totalH / 2 + i * lineH + lineH / 2);
+            });
+            ctx.restore();
+          }
+        };
+
+        chartComp = new Chart(canvas, {
           type: 'doughnut',
           data: {
-            labels: labels,
+            labels: ['Gestão de Processos','Tecnologia','Governança','Gestão de Projetos','Organização'],
             datasets: [{
-              data: data,
-              backgroundColor: CHART_PALETTE.slice(0, labels.length),
+              data: [30, 25, 20, 15, 10],
+              backgroundColor: ['#3b82f6','#10b981','#f59e0b','#8b5cf6','#06b6d4'],
               borderWidth: 2,
-              borderColor: getComputedStyle(document.documentElement)
-                .getPropertyValue('--card').trim() || '#ffffff'
+              borderColor: card
             }]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            cutout: '60%',
             plugins: {
               legend: {
                 position: 'bottom',
-                labels: {
-                  padding: 12,
-                  font: { size: 12 },
-                  color: getComputedStyle(document.documentElement)
-                    .getPropertyValue('--foreground').trim() || '#1f2937'
-                }
+                labels: { padding: 10, font: { size: 11 }, color: fg }
               },
               tooltip: {
                 callbacks: {
-                  label: function (ctx) {
-                    var total = ctx.dataset.data.reduce(function (a, b) { return a + b; }, 0);
-                    var pct   = total ? Math.round((ctx.parsed / total) * 100) : 0;
-                    return ' ' + ctx.label + ': ' + ctx.parsed + ' (' + pct + '%)';
-                  }
+                  label: function (ctx) { return ' ' + ctx.label + ': ' + ctx.parsed + '%'; }
                 }
               }
             }
-          }
+          },
+          plugins: [centerTextPlugin]
         });
       }
 
-      function buildTechChart(topTech) {
-        var canvas = document.getElementById('chart-tech');
+      function buildRamosChart() {
+        var canvas = document.getElementById('chart-ramos');
         if (!canvas) return;
-        if (chartTech) { chartTech.destroy(); chartTech = null; }
+        if (chartRamos) { chartRamos.destroy(); chartRamos = null; }
 
-        var labels = topTech.map(function (t) { return t[0]; });
-        var data   = topTech.map(function (t) { return t[1]; });
+        var fg     = getCssVar('--foreground', '#1f2937');
+        var muted  = getCssVar('--muted-foreground', '#6b7280');
+        var border = getCssVar('--border', '#e5e7eb');
+        var months = t('pages.dashboard.charts.months');
 
-        chartTech = new Chart(canvas, {
+        chartRamos = new Chart(canvas, {
           type: 'bar',
           data: {
-            labels: labels,
+            labels: ['Logística','Saúde','Varejo','Agronegócio','Gestão Pública','Indústria Mecânica','Auditoria de Qualidade','Importação'],
             datasets: [{
-              data: data,
-              backgroundColor: CHART_PALETTE.slice(0, labels.length),
+              data: [36, 24, 18, 15, 12, 10, 8, 6],
+              backgroundColor: [
+                'rgba(59,130,246,0.85)','rgba(59,130,246,0.78)','rgba(59,130,246,0.71)',
+                'rgba(59,130,246,0.64)','rgba(59,130,246,0.57)','rgba(59,130,246,0.50)',
+                'rgba(59,130,246,0.43)','rgba(59,130,246,0.36)'
+              ],
               borderRadius: 4,
               borderSkipped: false
             }]
@@ -1453,174 +1353,81 @@
               legend: { display: false },
               tooltip: {
                 callbacks: {
-                  label: function (ctx) {
-                    return ' ' + ctx.parsed.x + ' projects';
-                  }
+                  label: function (ctx) { return ' ' + ctx.parsed.x + ' ' + months; }
                 }
               }
             },
             scales: {
               x: {
                 beginAtZero: true,
-                ticks: {
-                  stepSize: 1,
-                  color: getComputedStyle(document.documentElement)
-                    .getPropertyValue('--muted-foreground').trim() || '#6b7280'
-                },
-                grid: {
-                  color: getComputedStyle(document.documentElement)
-                    .getPropertyValue('--border').trim() || '#e5e7eb'
-                }
+                ticks: { color: muted, stepSize: 6 },
+                grid:  { color: border }
               },
               y: {
-                ticks: {
-                  color: getComputedStyle(document.documentElement)
-                    .getPropertyValue('--foreground').trim() || '#1f2937'
-                },
-                grid: { display: false }
+                ticks: { color: fg, font: { size: 11 } },
+                grid:  { display: false }
               }
             }
           }
         });
       }
 
-      /* ─────────────────────────────────────────
-         STATUS BANNER
-      ───────────────────────────────────────── */
-
-      function setStatus(type, messageKey) {
-        var el = document.getElementById('dash-status');
-        if (!el) return;
-        if (type === 'hidden') {
-          el.style.display = 'none';
-          return;
-        }
-        el.className = 'dash-status ' + type;
-        el.style.display = '';
-        var span = el.querySelector('[data-i18n]');
-        if (span) {
-          span.setAttribute('data-i18n', messageKey);
-          span.textContent = (window.Translations && window.Translations.get(messageKey)) || '';
-        }
+      function buildCharts() {
+        if (typeof Chart === 'undefined') { setTimeout(buildCharts, 100); return; }
+        buildCompetenciasChart();
+        buildRamosChart();
       }
 
       /* ─────────────────────────────────────────
-         MAIN INIT
+         MAIN INIT — fetch counts only
       ───────────────────────────────────────── */
 
       async function init() {
-        setStatus('loading', 'pages.dashboard.loading');
+        var hasError = false;
 
-        var carreira     = [];
-        var certificados = [];
-        var projetos     = [];
-        var artigos      = [];
-        var hasError     = false;
-
-        /* Fetch local JSONs in parallel */
         var results = await Promise.allSettled([
-          fetchJSON('data/carreira.json'),
-          fetchJSON('data/certificados.json'),
-          fetchJSON('data/projetos.json'),
-          fetchJSON('data/artigos.json')
+          fetch('data/certificados.json').then(function (r) { if (!r.ok) throw r; return r.json(); }),
+          fetch('data/projetos.json').then(function (r)    { if (!r.ok) throw r; return r.json(); }),
+          fetch('data/artigos.json').then(function (r)     { if (!r.ok) throw r; return r.json(); })
         ]);
 
-        if (results[0].status === 'fulfilled') carreira     = results[0].value;
-        else hasError = true;
+        var certificados = results[0].status === 'fulfilled' ? results[0].value : null;
+        var projetos     = results[1].status === 'fulfilled' ? results[1].value : null;
+        var artigos      = results[2].status === 'fulfilled' ? results[2].value : null;
 
-        if (results[1].status === 'fulfilled') certificados = results[1].value;
-        else hasError = true;
+        if (!certificados || !projetos || !artigos) hasError = true;
 
-        if (results[2].status === 'fulfilled') projetos     = results[2].value;
-        else hasError = true;
+        setCardValue('val-work',         projetos     ? projetos.length     : '--');
+        setCardValue('val-certificates', certificados ? certificados.length : '--');
+        setCardValue('val-projects',     projetos     ? projetos.length     : '--');
+        setCardValue('val-articles', artigos
+          ? artigos.filter(function (a) { return a.publicado === true; }).length
+          : '--');
 
-        if (results[3].status === 'fulfilled') artigos      = results[3].value;
-        else hasError = true;
-
-        /* Fetch GitHub data */
-        var ghUser  = await fetchGitHubUser();
-        var ghRepos = await fetchGitHubRepos();
-
-        /* ── Compute indicators ── */
-
-        /* Total projects = local JSON count + unique GitHub repos not in local JSON */
-        var localGithubNames = new Set(
-          projetos
-            .filter(function (p) { return !!p.github_repo; })
-            .map(function (p) {
-              var parts = (p.github_repo || '').split('/');
-              return parts[parts.length - 1].toLowerCase();
-            })
-        );
-        var ghPublicCount = 0;
-        if (ghRepos) {
-          ghPublicCount = ghRepos.filter(function (r) {
-            return !r.fork && !localGithubNames.has(r.name.toLowerCase());
-          }).length;
-        }
-        var totalProjects = projetos.length + ghPublicCount;
-
-        var totalCerts = certificados.length;
-
-        var totalArticles = artigos.filter(function (a) {
-          return a.publicado === true;
-        }).length;
-
-        var yearsExp = calcExperienceYears(carreira);
-
-        var totalTech = collectUniqueTechnologies(carreira, projetos, certificados);
-
-        var publicRepos = ghUser ? (ghUser.public_repos || 0) : '--';
-
-        /* ── Populate cards ── */
-        setCardValue('val-projects',     totalProjects);
-        setCardValue('val-certificates', totalCerts);
-        setCardValue('val-articles',     totalArticles);
-        setCardValue('val-experience',   yearsExp);
-        setCardValue('val-technologies', totalTech);
-        setCardValue('val-repos',        publicRepos);
-
-        /* ── Build charts (Chart.js loaded with defer — wait for it) ── */
-        function tryBuildCharts() {
-          if (typeof Chart === 'undefined') {
-            setTimeout(tryBuildCharts, 100);
-            return;
-          }
-          var catCounts = countCertsByCategory(certificados);
-          if (Object.keys(catCounts).length) buildCertsChart(catCounts);
-
-          var topTech = topTechFromProjects(projetos, ghRepos, 8);
-          if (topTech.length) buildTechChart(topTech);
-        }
-        tryBuildCharts();
-
-        /* ── Update status banner ── */
         if (hasError) {
-          setStatus('error', 'pages.dashboard.error');
-        } else {
-          setStatus('hidden', '');
+          var statusEl = document.getElementById('dash-status');
+          if (statusEl) {
+            statusEl.className = 'dash-status error';
+            statusEl.style.display = '';
+            statusEl.textContent = t('pages.dashboard.error');
+          }
         }
+
+        buildCharts();
       }
 
       /* ─────────────────────────────────────────
-         RE-RENDER CHARTS ON LANGUAGE CHANGE
+         RE-RENDER ON LANGUAGE / THEME CHANGE
       ───────────────────────────────────────── */
-      document.addEventListener('languageChanged', function () {
-        if (chartCerts) {
-          var fg = getComputedStyle(document.documentElement)
-            .getPropertyValue('--foreground').trim() || '#1f2937';
-          chartCerts.options.plugins.legend.labels.color = fg;
-          chartCerts.update('none');
-        }
-        if (chartTech) {
-          var fg2 = getComputedStyle(document.documentElement)
-            .getPropertyValue('--foreground').trim() || '#1f2937';
-          chartTech.options.scales.y.ticks.color = fg2;
-          chartTech.update('none');
-        }
-      });
 
-      /* Trigger when DOM is ready */
+      function rebuildCharts() {
+        if (typeof Chart === 'undefined') return;
+        buildCompetenciasChart();
+        buildRamosChart();
+      }
+
+      document.addEventListener('languageChanged', rebuildCharts);
+      document.addEventListener('themeChanged',   rebuildCharts);
       document.addEventListener('DOMContentLoaded', init);
     })();
   </script>
