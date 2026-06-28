@@ -2,8 +2,10 @@
 <html lang="">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://api.github.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
   <script>(function(){var t=localStorage.getItem('theme');if(t==='dark'||(t==null&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}}());</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title data-i18n="pages.projects.title">Projects — Lucas Liachi</title>
   <meta name="description" content="Catálogo de projetos de Lucas Liachi em governança de TI, melhoria de processos, Python data science, desenvolvimento web e estatística aplicada.">
   <meta name="robots" content="index, follow">
@@ -170,7 +172,8 @@
           );
           if (!resp.ok) throw new Error('HTTP ' + resp.status);
           var data = await resp.json();
-          sessionStorage.setItem(GITHUB_CACHE_KEY, JSON.stringify({ data: data, ts: Date.now() }));
+          var payload = JSON.stringify({ data: data, ts: Date.now() });
+          if (payload.length <= 500000) sessionStorage.setItem(GITHUB_CACHE_KEY, payload);
           return data;
         } catch (e) {
           return null;

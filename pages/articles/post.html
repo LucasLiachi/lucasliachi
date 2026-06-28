@@ -2,8 +2,10 @@
 <html lang="">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://api.github.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
   <script>(function(){var t=localStorage.getItem('theme');if(t==='dark'||(t==null&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}}());</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Artigo — Blog Técnico — Lucas Liachi</title>
   <meta name="description" content="Artigo técnico do blog de Lucas Liachi sobre tecnologia, governança de TI, estatística aplicada, Python e data science.">
   <meta name="robots" content="index, follow">
@@ -209,7 +211,8 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js" integrity="sha384-odPBjvtXVM/5hOYIr3A1dB+flh0c3wAT3bSesIOqEGmyUA4JoKf/YTWy0XKOYAY7" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js" integrity="sha384-+VfUPEb0PdtChMwmBcBmykRMDd+v6D/oFmB3rZM/puCMDYcIvF968OimRh4KQY9a" crossorigin="anonymous"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/main.js"></script>
 
@@ -349,12 +352,6 @@
         return 'cat-' + (cat || '').replace(/\s+/g, '-');
       }
 
-      function sanitizeMarkdownHtml(html) {
-        /* Marked.js renders static repo content; safe for trusted source.
-           Nonetheless strip <script> tags as a precaution. */
-        return html.replace(/<script[\s\S]*?<\/script>/gi, '');
-      }
-
       /* ── State ────────────────────────────────────────────────────── */
       var currentArticle = null;
 
@@ -455,8 +452,7 @@
 
         if (typeof marked !== 'undefined') {
           marked.setOptions({ gfm: true, breaks: false });
-          var rawHtml = marked.parse(mdText);
-          contentEl.innerHTML = sanitizeMarkdownHtml(rawHtml);
+          contentEl.innerHTML = safeHtml(mdText);
         } else {
           /* Fallback: wrap plain text in a pre */
           var pre = document.createElement('pre');

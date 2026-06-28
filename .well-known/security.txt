@@ -1,0 +1,5 @@
+Contact: mailto:lucasliachi@gmail.com
+Expires: 2027-01-01T00:00:00.000Z
+Preferred-Languages: pt, en, es
+Canonical: https://lucasliachi.github.io/lucasliachi/.well-known/security.txt
+Policy: https://lucasliachi.github.io/lucasliachi/.well-known/security.txt

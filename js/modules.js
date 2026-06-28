@@ -113,7 +113,7 @@ function parseCareerSections(markdown) {
     }
 
     const descriptionMarkdown = body.split(/\r?\n/).slice(0, 6).join('\n').trim();
-    const description = (window.marked ? window.marked.parse(descriptionMarkdown) : descriptionMarkdown).replace(/(^<p>|<\/p>$)/g, '').trim();
+    const description = safeHtml(descriptionMarkdown).replace(/(^<p>|<\/p>$)/g, '').trim();
 
     const metaItems = [];
     if (period) metaItems.push(`Period: ${period}`);
@@ -346,8 +346,8 @@ async function loadCareerContent() {
 
           // fallback: use stored section markdown
           const section = link.dataset.section ? decodeURIComponent(link.dataset.section) : '';
-          if (window.marked) {
-            const html = window.marked.parse(section || markdownText);
+          {
+            const html = safeHtml(section || markdownText);
             if (typeof window.showContentModal === 'function') {
               window.showContentModal(html, entry.title);
             } else {
@@ -384,7 +384,7 @@ async function loadCareerContent() {
         });
       });
     } else {
-      const html = window.marked ? window.marked.parse(markdownText) : markdownText;
+      const html = safeHtml(markdownText);
       timelineContainer.innerHTML = `
         <div class="career-markdown-content markdown-content" data-language="${currentLang.toLowerCase()}">
           ${html}
@@ -424,7 +424,7 @@ function loadExperienceContent() {
         fetch(path)
           .then(response => {
             if (!response.ok) {
-              console.log(`File not found in ${langCode}, falling back to EN`);
+              console.debug(`File not found in ${langCode}, falling back to EN`);
               const parts = path.split('/');
               if (parts.length > 1) {
                 parts[1] = 'EN';
@@ -441,8 +441,8 @@ function loadExperienceContent() {
             return response.text();
           })
           .then(text => {
-            if (window.marked) {
-              const html = window.marked.parse(text);
+            {
+              const html = safeHtml(text);
               const contentEl = document.createElement('div');
               contentEl.classList.add('markdown-content');
               contentEl.innerHTML = html;
@@ -483,7 +483,7 @@ function renderExperience(jobs) {
     console.error('Timeline container not found');
     return;
   }
-  console.log('Rendering timeline with', jobs.length, 'jobs');
+  console.debug('Rendering timeline with', jobs.length, 'jobs');
   timelineContainer.innerHTML = '';
   jobs.forEach((job, index) => {
     const jobElement = document.createElement('div');
@@ -523,8 +523,8 @@ function openCareerDetail(folder) {
       return response.text();
     })
     .then(text => {
-      if (window.marked) {
-        const html = window.marked.parse(text);
+      {
+        const html = safeHtml(text);
         const contentEl = document.createElement('div');
         contentEl.classList.add('markdown-content');
         contentEl.innerHTML = html;

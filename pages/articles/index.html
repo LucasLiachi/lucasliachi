@@ -2,8 +2,10 @@
 <html lang="">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://api.github.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
   <script>(function(){var t=localStorage.getItem('theme');if(t==='dark'||(t==null&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}}());</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title data-i18n="pages.blog.title">Blog Técnico — Lucas Liachi</title>
   <meta name="description" content="Artigos técnicos de Lucas Liachi sobre estatística aplicada, Python, dados, ITIL e governança de TI. Conteúdo para profissionais de tecnologia.">
   <meta name="keywords" content="technology governance, IT management, estatística aplicada, Python data science, governança de TI, ITIL, dados, portfólio profissional, Lucas Liachi">
@@ -350,7 +352,7 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
+  <script src="../../js/fuse.min.js"></script>
   <script src="../../js/utils.js"></script>
   <script src="../../js/main.js"></script>
   <script>

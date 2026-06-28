@@ -19,7 +19,8 @@ const Translations = (() => {
         subtitle: 'Strategic alignment of IT initiatives with organizational goals',
         about: 'About me',
         resume: 'Resume',
-        projects: 'Projects'
+        projects: 'Projects',
+        emailAriaLabel: 'Send email'
       },
       about: {
         title: 'Resume',
@@ -285,7 +286,8 @@ const Translations = (() => {
         subtitle: 'Alinhamento estratégico de iniciativas de TI com objetivos organizacionais',
         about: 'Sobre mim',
         resume: 'Currículo',
-        projects: 'Projetos'
+        projects: 'Projetos',
+        emailAriaLabel: 'Enviar e-mail'
       },
       about: {
         title: 'Currículo',
@@ -551,7 +553,8 @@ const Translations = (() => {
         subtitle: 'Alineación estratégica de iniciativas de TI con objetivos organizacionales',
         about: 'Sobre mí',
         resume: 'Currículum',
-        projects: 'Proyectos'
+        projects: 'Proyectos',
+        emailAriaLabel: 'Enviar correo electrónico'
       },
       about: {
         title: 'Currículum',
@@ -900,6 +903,14 @@ function applyLanguageToDocument(language) {
       element.setAttribute('placeholder', translation);
       element.setAttribute('aria-label', translation);
       element.setAttribute('title', translation);
+    }
+  });
+
+  document.querySelectorAll('[data-i18n-aria-label]').forEach(element => {
+    const key = element.getAttribute('data-i18n-aria-label');
+    const translation = Translations.get(key, normalizedLanguage);
+    if (translation !== null && translation !== undefined) {
+      element.setAttribute('aria-label', translation);
     }
   });
 

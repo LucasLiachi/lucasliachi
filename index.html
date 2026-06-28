@@ -2,8 +2,10 @@
 <html lang="">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://api.github.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
   <script>(function(){var t=localStorage.getItem('theme');if(t==='dark'||(t==null&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}}());</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Lucas Liachi — Technology Governance Specialist | Portfólio</title>
   <meta name="description" content="Portfólio profissional de Lucas Liachi: busca global, indicadores de carreira, certificações, projetos e artigos sobre governança de TI e Python data science.">
 
@@ -50,7 +52,7 @@
     "sameAs": [
       "https://www.linkedin.com/in/lucasliachi/",
       "https://github.com/LucasLiachi",
-      "https://medium.com/@lucasliachi"
+      "https://hashnode.com/@lucasliachi"
     ]
   }
   </script>
@@ -539,13 +541,17 @@
               <img src="assets/linkedin.png" alt="LinkedIn" width="18" height="18" loading="lazy">
               LinkedIn
             </a>
-            <a href="https://medium.com/@lucasliachi" target="_blank" rel="noopener noreferrer" class="hero-social-btn">
-              <img src="assets/medium.png" alt="Medium" width="18" height="18" loading="lazy">
-              Medium
+            <a href="https://hashnode.com/@lucasliachi" target="_blank" rel="noopener noreferrer" class="hero-social-btn">
+              <img src="assets/hashnode.png" alt="Hashnode" width="18" height="18" loading="lazy">
+              Hashnode
             </a>
             <a href="https://github.com/LucasLiachi" target="_blank" rel="noopener noreferrer" class="hero-social-btn">
               <img src="assets/github.png" alt="GitHub" width="18" height="18" loading="lazy">
               GitHub
+            </a>
+            <a href="mailto:lucasliachi@gmail.com?subject=Contato%20via%20portfolio&body=Ol%C3%A1%20Lucas%2C" class="hero-social-btn" aria-label="Enviar e-mail" data-i18n-aria-label="hero.emailAriaLabel">
+              <img src="assets/email.svg" alt="E-mail" width="18" height="18" loading="lazy">
+              E-mail
             </a>
           </div>
         </div>
@@ -679,7 +685,7 @@
   </div>
 
   <!-- Scripts -->
-  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js" integrity="sha384-b0GXujLkk9eYYSmcSfoyZbfyElGAQnDyY0skCHSG6w3JgTMFnz11ggrTAr7seu9f" crossorigin="anonymous"></script>
   <script src="js/fuse.min.js"></script>
   <script src="js/utils.js?v=6"></script>
   <script src="js/modules.js?v=5"></script>

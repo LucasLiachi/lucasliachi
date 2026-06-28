@@ -14,9 +14,9 @@ const Logger = {
   log: function(message, data) {
     if (this.isEnabled) {
       if (data) {
-        console.log(`[Portfolio] ${message}`, data);
+        console.debug(`[Portfolio] ${message}`, data);
       } else {
-        console.log(`[Portfolio] ${message}`);
+        console.debug(`[Portfolio] ${message}`);
       }
     }
   },
@@ -31,6 +31,15 @@ const Logger = {
     }
   }
 };
+
+// =============================================================================
+// SAFE HTML — Markdown rendering with DOMPurify sanitization
+// =============================================================================
+
+function safeHtml(markdownText) {
+  const raw = window.marked ? window.marked.parse(markdownText) : markdownText;
+  return window.DOMPurify ? DOMPurify.sanitize(raw) : raw;
+}
 
 // =============================================================================
 // DARK MODE CONTROLLER
@@ -215,11 +224,7 @@ class AboutModal {
       const markdownContent = await response.text();
       
       // Convert markdown to HTML
-      if (window.marked) {
-        this.modalContent.innerHTML = window.marked.parse(markdownContent);
-      } else {
-        this.modalContent.innerHTML = this.simpleMarkdownParse(markdownContent);
-      }
+      this.modalContent.innerHTML = safeHtml(markdownContent);
       
       // Update modal title and close label for accessibility
       const titleEl = this.modal.querySelector('#about-modal-title');
@@ -456,8 +461,8 @@ function loadProjectContent(path) {
 
     try {
       const text = await response.text();
-      if (window.marked) {
-        const html = window.marked.parse(text);
+      {
+        const html = safeHtml(text);
 
         // Try to match the Attachment/Anexo key in markdown
         const attachmentMatch = String(text || '').match(/^[-*]\s+(Attachment|Anexo):\s+(.+)$/mi);
